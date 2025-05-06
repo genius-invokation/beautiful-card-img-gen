@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1712px;
+      background-color: #f7f7eb;
+      position: relative;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .header-decor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1712px;
+      height: auto;
+    }
+
+    .layout {
+      position: absolute;
+      width: 1712px;
+      top: 0px;
+      left: 0px;
+      padding: 0px;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-card {
+      position: relative;
+      width: 1712px;
+      height: 960px;
+    }
+
+    .avatar-card-back {
+      position: absolute;
+      top: 176px;
+      left: 199px;
+      width: 435px;
+      height: 752px;
+      transform: rotate(4.2deg);
+      object-fit: cover;
+    }
+
+    .avatar-card-frame-2 {
+      position: absolute;
+      top: 152px;
+      left: 64px;
+      width: 611px;
+      height: 806px;
+      object-fit: cover;
+    }
+
+    .avatar-card-face {
+      position: absolute;
+      top: 175px;
+      left: 119px;
+      width: 435px;
+      height: 752px;
+      transform: rotate(-2.5deg);
+      object-fit: cover;
+    }
+
+    .avatar-card-frame-1 {
+      position: absolute;
+      top: 164px;
+      left: 101px;
+      width: 476px;
+      height: 780px;
+      object-fit: cover;
+    }
+
+    .avatar-card-hp {
+      position: absolute;
+      top: 145px;
+      left: 60px;
+      width: 161px;
+      height: 193px;
+      object-fit: cover;
+    }
+
+    @font-face {
+      font-family: "HYWH";
+      src: url("assets/font/HYWH.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .hp-text-styled-1 {
+      position: absolute;
+      top: 252px;
+      left: 141px;
+      font-size: 90px;
+      font-family: 'HYWH', sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%) rotate(-2.5deg);
+      white-space: nowrap;
+    }
+
+    .hp-text-styled-2 {
+      position: absolute;
+      top: 252px;
+      left: 141px;
+      font-size: 90px;
+      font-family: 'HYWH', sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%) rotate(-2.5deg);
+      white-space: nowrap;
+      -webkit-text-stroke: 10px #4c443a;
+    }
+
+    .avatar-card-energy {
+      position: absolute;
+      width: 93px;
+      height: 93px;
+    }
+
+    .info-title-icon {
+      position: absolute;
+      top: 314px;
+      left: 670px;
+      width: 937px;
+      height: 112px;
+      object-fit: cover;
+    }
+
+    .info-title-text-styled {
+      position: absolute;
+      top: 318px;
+      left: 786px;
+      font-size: 80px;
+      font-family: 'HYWH', sans-serif;
+      color: #716864;
+      white-space: nowrap;
+    }
+
+    .info-tag {
+      position: absolute;
+      width: 256px;
+      height: 64px;
+      object-fit: contain;
+    }
+
+    .info-divider {
+      position: absolute;
+      height: 5px;
+      background-color: #9d918c;
+      width: 948px;
+      left: 674px;
+    }
+
+    .info-cardstory-text-style {
+      position: absolute;
+      width: 920px;
+      left: 690px;
+      font-size: 40px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #9d918c;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .normal-attack-box {
+      position: absolute;
+      width: 950px;
+      top: 944px;
+      left: 672px;
+      transform: translate(0%, -100%);
+      background-color: #fefef4;
+      border: 1px solid #b4967e;
+      border-radius: 30px 30px 30px 30px;
+      padding: 142px 28px 18px 28px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .leaves-box {
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 215px;
+      height: 65px;
+      background-color: #b4967e;
+      border: 1px solid #b4967e;
+      border-radius: 30px 0px 30px 0px;
+      overflow: hidden;
+    }
+
+    .rich-text-icon {
+      height: auto;
+      vertical-align: -14px;
+      display: inline-flex;
+    }
+
+    .rich-text-mask {
+      display: inline-block;
+      vertical-align: text-top;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: contain;
+    }
+
+    .rich-text-style-dark-24 {
+      position: relative;
+      font-size: 39.5px;
+      line-height: 1.5;
+      font-family: "HYWH", sans-serif;
+      color: #716864;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .rich-text-style-dark-22 {
+      position: relative;
+      font-size: 36.5px;
+      line-height: 1.4;
+      font-family: "HYWH", sans-serif;
+      color: #716864;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .rich-text-style-highlight-light24 {
+      background-color: #f0eadd;
+      border-radius: 12px;
+      padding: 4px 10px 2px 10px;
+      margin-left: 2px;
+      margin-right: 2px;
+      position: relative;
+      font-size: 39.5px;
+      line-height: 1.5;
+      font-family: "HYWH", sans-serif;
+      color: #716864;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;  /* Safari不支持 */
+      display: inline;
+    }
+
+    .rich-text-style-highlight-dark22 {
+      background-color: #b3a5a5;
+      border-radius: 12px;
+      padding: 4px 16px 2px 16px;
+      margin-right: 12px;
+      position: relative;
+      font-size: 36.5px;
+      line-height: 1.4;
+      font-family: "HYWH", sans-serif;
+      color: #fefef4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;  /* Safari不支持 */
+      display: inline;
+    }
+
+    .figure-icon {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 284px;
+      height: 199px;
+      object-fit: cover;
+    }
+
+    .skilltype-text-style {
+      position: absolute;
+      top: 14px;
+      left: 27px;
+      font-size: 40px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #fefef4;
+    }
+
+    .dice-icon {
+      position: absolute;
+      left: 44px;
+      top: 44px;
+      width: 88px;
+      height: 88px;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
+    .dice-readonly {
+      position: absolute;
+      top: 48px;
+      left: 55px;
+      width: 37px;
+      height: 38px;
+      object-fit: cover;
+    }
+
+    .dice-count {
+      position: absolute;
+      left: 44px;
+      top: 48px;
+      font-size: 43px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .dice-count-outline {
+      position: absolute;
+      left: 44px;
+      top: 48px;
+      font-size: 43px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      -webkit-text-stroke: 2px #000000;
+    }
+
+    .skill-icon {
+      position: absolute;
+      top: 68px;
+      left: 25px;
+      width: 75px;
+      height: 75px;
+      background-color: #716864;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: contain;
+    }
+
+    .skillname-text-style {
+      position: absolute;
+      top: 85px;
+      left: 100px;
+      font-size: 46px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #716a64;
+    }
+
+    .skill-box {
+      position: relative;
+      width: 1532px;
+      margin-top: 20px;
+      margin-bottom: 16px;
+      margin-left: 90px;
+      margin-right: 90px;
+      background-color: #fefef4;
+      border: 1px solid #b4967e;
+      border-radius: 30px 30px 30px 30px;
+      padding: 142px 28px 18px 28px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .child-layout {
+      position: relative;
+      width: 1476px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding: 0px;
+      gap: 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .child-box {
+      position: relative;
+      width: 1476px;
+      padding: 0px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .keyword-card-box {
+      position: relative;
+      width: 1326px;
+      margin-left: 150px;
+      background-color: #f0eadd;
+      border-radius: 10px 30px 30px 30px;
+      padding: 121px 22px 15px 48px;
+      box-sizing: border-box;
+      min-height: 240px;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .keyword-text-box {
+      position: relative;
+      width: 1476px;
+      background-color: #f0eadd;
+      border-radius: 30px 30px 30px 30px;
+      padding: 121px 22px 15px 48px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .keyword-card-frame {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 150px;
+      height: 240px;
+      object-fit: cover;
+    }
+
+    .keyword-card-face {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 138px;
+      height: 228px;
+      border-radius: 27px 8px 8px 27px;
+      object-fit: cover;
+    }
+
+    .keyword-card-shadow {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 138px;
+      height: 228px;
+      object-fit: cover;
+    }
+
+    .keyword-card-corner {
+      position: absolute;
+      top: 200px;
+      left: 150px;
+      width: 40px;
+      height: 40px;
+      background-color: #f0eadd;
+      border-radius: 0px 0px 0px 10px;
+    }
+
+    .keyword-sign {
+      position: absolute;
+      top: 16px;
+      left: 25px;
+      width: 12px;
+      height: 40px;
+      background-color: #716864;
+    }
+
+    .keyword-name-text-style {
+      position: absolute;
+      top: 19px;
+      left: 48px;
+      font-size: 36.5px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #716a64;
+    }
+
+    .keyword-tags-box {
+      position: absolute;
+      top: 58px;
+      left: 48px;
+      height: 64px;
+      padding: 0px;
+      gap: 12px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .keyword-tag-image {
+      position: relative;
+      height: 64px;
+      width: auto;
+    }
+
+    .keyword-tag-icon {
+      position: absolute;
+      left: 95px;
+      top: 89px;
+      width: 64px;
+      height: 64px;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
+    .actioncard-layout-right {
+      position: relative;
+      width: 1712px;
+      min-height: 641px;
+      padding-top: 20px;
+      padding-left: 90px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-text-box {
+      position: relative;
+      width: 1060px;
+      min-height: 605px;
+      background-color: #fefef4;
+      border: 1px solid #b4967e;
+      border-radius: 30px 30px 30px 30px;
+      padding: 32px 28px 18px 28px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-child-layout {
+      position: relative;
+      width: 1004px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding: 0px;
+      gap: 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-child-box {
+      position: relative;
+      width: 1004px;
+      padding: 0px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-keyword-card-box {
+      position: relative;
+      width: 854px;
+      margin-left: 150px;
+      background-color: #f0eadd;
+      border-radius: 10px 30px 30px 30px;
+      padding: 121px 22px 15px 48px;
+      box-sizing: border-box;
+      min-height: 240px;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-keyword-text-box {
+      position: relative;
+      width: 1004px;
+      background-color: #f0eadd;
+      border-radius: 30px 30px 30px 30px;
+      padding: 121px 22px 15px 48px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .actioncard-name-text-style {
+      position: relative;
+      font-size: 79px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #716864;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .actioncard-tags-box {
+      position: relative;
+      height: 64px;
+      padding: 0px;
+      margin-top: 10px;
+      gap: 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .actioncard-tag-image {
+      position: relative;
+      height: 64px;
+      width: auto;
+    }
+
+    .dashed-line {
+      border-top: 2px solid transparent;
+      border-image: repeating-linear-gradient(
+        to right,
+        #e6e1d4 0,
+        #e6e1d4 14px,
+        transparent 14px,
+        transparent 20px
+      ) 1;
+      width: 100%;
+      margin: 12px 0;
+    }
+
+    .actioncard-image-box-right {
+      position: absolute;
+      left: 1150px;
+      top: 0px;
+      width: 502px;
+      height: 645px;
+    }
+
+    .action-card-back {
+      position: absolute;
+      top: 18px;
+      left: 119px;
+      width: 353px;
+      height: 605px;
+      transform: rotate(4.2deg);
+      object-fit: cover;
+    }
+
+    .action-card-frame-2 {
+      position: absolute;
+      top: 0px;
+      left: 13px;
+      width: 489px;
+      height: 645px;
+      object-fit: cover;
+    }
+
+    .action-card-face {
+      position: absolute;
+      top: 18px;
+      left: 57px;
+      width: 353px;
+      height: 605px;
+      transform: rotate(-2.5deg);
+      object-fit: cover;
+    }
+
+    .action-card-frame-1 {
+      position: absolute;
+      top: 10px;
+      left: 43px;
+      width: 381px;
+      height: 624px;
+      object-fit: cover;
+    }
+
+    .actioncard-cost-text-styled {
+      position: absolute;
+      top: 76px;
+      left: 71px;
+      font-size: 71px;
+      font-family: 'HYWH', sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%) rotate(-2.5deg);
+      white-space: nowrap;
+    }
+
+    .actioncard-cost-text-styled-outline {
+      position: absolute;
+      top: 76px;
+      left: 71px;
+      font-size: 71px;
+      font-family: 'HYWH', sans-serif;
+      color: #ffffff;
+      transform: translate(-50%, -50%) rotate(-2.5deg);
+      white-space: nowrap;
+      -webkit-text-stroke: 6px #4c443a;
+    }
+
+    .actioncard-cost-dice {
+      position: absolute;
+      top: 72px;
+      left: 72px;
+      width: 144px;
+      height: 144px;
+      transform: translate(-50%, -50%) rotate(-2.5deg);
+      object-fit: cover;
+    }
+
+    .version-layout {
+      position: relative;
+      width: 1712px;
+      height: 120px;
+    }
+
+    .version-text-box {
+      position: absolute;
+      top: 20px;
+      left: 90px;
+      width: 264px;
+      height: 48px;
+      background-color: #fefef4;
+      border: 1px solid #b4967e;
+      border-radius: 24px 24px 24px 24px;
+      box-sizing: border-box;
+      overflow: hidden;
+      word-break: break-word;
+    }
+
+    .version-text-style {
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 36px;
+      line-height: 1.0;
+      font-family: "HYWH", sans-serif;
+      color: #bdb6af;
+      white-space: pre-wrap;
+      word-break: break-word;
+      text-align: justify;
+      text-indent: 0;
+    }
+
+    .version-ninthspace {
+      position: absolute;
+      top: 0px;
+      right: 90px;
+      width: 444px;
+      height: 92px;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 页眉装饰图 -->
+  <img src="{{ header_decor }}" class="header-decor">
+
+  <div class="layout">
+    <div class="info-card">
+      <!-- 角色牌牌背 -->
+      <img src="{{ card_back }}" class="avatar-card-back">
+      <!-- 牌背边框 -->
+      <img src="{{ avatar_card_frame_2 }}" class="avatar-card-frame-2">
+      <!-- 角色牌牌面 -->
+      <img src="{{ avatar_card_face }}" class="avatar-card-face">
+      <!-- 牌面边框 -->
+      <img src="{{ avatar_card_frame_1 }}" class="avatar-card-frame-1">
+
+      <!-- 生命值 -->
+      <img src="{{ avatar_card_hp }}" class="avatar-card-hp">
+      <div class="hp-text-styled-2">{{ HP }}</div>
+      <div class="hp-text-styled-1">{{ HP }}</div>
+
+      <!-- 能量 -->
+      {% set base_top = 241 %}
+      {% set base_left = 504 %}
+      {% for i in range(ENERGY) %}
+        <img
+          src="{{ avatar_card_energy }}"
+          class="avatar-card-energy"
+          style="
+            top: {{ base_top + i * 74 }}px;
+            left: {{ base_left + i * 3 }}px;
+          "
+        >
+      {% endfor %}
+
+      <!-- 角色名 -->
+      <img src="{{ title_icon }}" class="info-title-icon">
+      <div class="info-title-text-styled">{{ avatar_name }}</div>
+
+      <!-- 角色tag -->
+      {% set tag_base_x = 759 %}
+      {% set tag_base_y = 428 %}
+      {% for tag_img in tags_imgpath %}
+        {% set i = loop.index0 %}
+        {% set row = i // 3 %}
+        {% set col = i % 3 %}
+        <img
+          src="{{ tag_img }}"
+          class="info-tag"
+          style="
+            top: {{ tag_base_y + row * 80 }}px;
+            left: {{ tag_base_x + col * 272 }}px;
+          "
+        >
+      {% endfor %}
+
+      <!-- 分隔线 -->
+      {% set total_rows = ((tags|length - 1) // 3) + 1 %}
+      {% set divider_y = tag_base_y + total_rows * 80 %}
+      <div class="info-divider" style="top: {{ divider_y }}px;"></div>
+
+      <!-- 卡牌故事 -->
+      <div class="info-cardstory-text-style" style="top: {{ divider_y + 21 }}px;">{{ cardstory }}</div>
+
+      <!-- 普通攻击 -->
+      <div class="normal-attack-box">
+        <!-- leaves -->
+        <div class="leaves-box"></div>
+        <!-- skill type -->
+        <div class="skilltype-text-style">{{ Normal_Attack.type }}</div>
+        <!-- figure -->
+        <img src="{{ figure }}" class="figure-icon">
+        <!-- cost -->
+        {% for dice in Normal_Attack.cost | reverse %}
+          {% set i = loop.index0 %}
+          <div style="position: absolute; top: 16px; right: {{ 115 + i*80 }}px;">
+            <img src="{{ dice.icon }}" class="dice-icon">
+            <div class="dice-count-outline">{{ dice.count }}</div>
+            <div class="dice-count">{{ dice.count }}</div>
+          </div>
+        {% endfor %}
+        <!-- skill icon -->
+        <div class="skill-icon"
+             style="
+             -webkit-mask-image: url({{ Normal_Attack.icon }});
+             mask-image: url({{ Normal_Attack.icon }});"
+        ></div>
+        <!-- skill name -->
+        <div class="skillname-text-style">{{ Normal_Attack.skill_name }}</div>
+        <!-- skill description -->
+        <div class="rich-text-style-dark-24">{{ Normal_Attack.richtext_description | safe }}</div>
+      </div>
+    </div>
+    {% for skill in skill_list %}
+      <div class="skill-box">
+        <!-- leaves -->
+        <div class="leaves-box"></div>
+        <!-- skill type -->
+        <div class="skilltype-text-style">{{ skill.type }}</div>
+        <!-- figure -->
+        <img src="{{ figure }}" class="figure-icon">
+        <!-- cost -->
+        {% if skill.cost %}
+          {% for dice in skill.cost | reverse %}
+            {% set i = loop.index0 %}
+            <div style="position: absolute; top: 16px; right: {{ 115 + i*80 }}px;">
+              <img src="{{ dice.icon }}" class="dice-icon">
+              <div class="dice-count-outline">{{ dice.count }}</div>
+              <div class="dice-count">{{ dice.count }}</div>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <!-- skill icon -->
+        <div class="skill-icon"
+          style="
+          -webkit-mask-image: url({{ skill.icon }});
+          mask-image: url({{ skill.icon }});"
+        ></div>
+        <!-- skill name -->
+        <div class="skillname-text-style">{{ skill.skill_name }}</div>
+        <!-- skill description -->
+        <div class="rich-text-style-dark-24">{{ skill.richtext_description | safe }}</div>
+        <!-- child -->
+        {% if skill.child %}
+          <div class="child-layout">
+          {% for keyword in skill.child %}
+            <!-- 带卡图 -->
+            {% if keyword.box_type == "card" %}
+              <div class="child-box">
+                <!-- 卡图 -->
+                <img src="{{ keyword_card_frame }}" class="keyword-card-frame">
+                <img src="{{ keyword.card_face }}" class="keyword-card-face">
+                <img src="{{ keyword_card_shadow }}" class="keyword-card-shadow">
+                <div class="keyword-card-corner"></div>
+                <!-- 文本框 -->
+                <div class="keyword-card-box">
+                  <!-- name -->
+                  <div class="keyword-sign"></div>
+                  <div class="keyword-name-text-style">{{ keyword.name }}</div>
+                  <!-- tag -->
+                  <div class="keyword-tags-box">
+                    {% for tag_img in keyword.tags_imgpath %}
+                      <img src="{{ tag_img }}" class="keyword-tag-image">
+                    {% endfor %}
+                  </div>
+                  {% if keyword.icon %}
+                    <img src="{{ keyword.icon }}" class="keyword-tag-icon">
+                  {% endif %}
+                  <!-- cost -->
+                  {% if keyword.cost %}
+                    {% for dice in keyword.cost | reverse %}
+                      {% set i = loop.index0 %}
+                      <div style="position: absolute; top: 16px; right: {{ 105 + i*80 }}px;">
+                        <img src="{{ dice.icon }}" class="dice-icon">
+                        {% if keyword.cost_readonly %}
+                          <img src="{{ dice_readonly }}" class="dice-readonly">
+                        {% endif %}
+                        <div class="dice-count-outline">{{ dice.count }}</div>
+                        <div class="dice-count">{{ dice.count }}</div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <!-- description -->
+                  <div class="rich-text-style-dark-22">{{ keyword.richtext_description | safe }}</div>
+                </div>
+              </div>
+            <!-- 不带卡图 -->
+            {% elif keyword.box_type == "text" %}
+              <div class="child-box">
+                <!-- 文本框 -->
+                <div class="keyword-text-box">
+                  <!-- name -->
+                  <div class="keyword-sign"></div>
+                  <div class="keyword-name-text-style">{{ keyword.name }}</div>
+                  <!-- tag -->
+                  <div class="keyword-tags-box">
+                    {% for tag_img in keyword.tags_imgpath %}
+                      <img src="{{ tag_img }}" class="keyword-tag-image">
+                    {% endfor %}
+                  </div>
+                  {% if keyword.icon %}
+                    <img src="{{ keyword.icon }}" class="keyword-tag-icon">
+                  {% endif %}
+                  <!-- cost -->
+                  {% if keyword.cost %}
+                    {% for dice in keyword.cost | reverse %}
+                      {% set i = loop.index0 %}
+                      <div style="position: absolute; top: 16px; right: {{ 105 + i*80 }}px;">
+                        <img src="{{ dice.icon }}" class="dice-icon">
+                        {% if keyword.cost_readonly %}
+                          <img src="{{ dice_readonly }}" class="dice-readonly">
+                        {% endif %}
+                        <div class="dice-count-outline">{{ dice.count }}</div>
+                        <div class="dice-count">{{ dice.count }}</div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <!-- description -->
+                  <div class="rich-text-style-dark-22">{{ keyword.richtext_description | safe }}</div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <!-- 天赋牌 -->
+    <div class="actioncard-layout-right">
+      <!-- 卡面 -->
+      <div class="actioncard-image-box-right">
+        <!-- 牌背 -->
+        <img src="{{ card_back }}" class="action-card-back">
+        <!-- 牌背边框 -->
+        <img src="{{ avatar_card_frame_2 }}" class="action-card-frame-2">
+        <!-- 牌面 -->
+        <img src="{{ talent.card_face }}" class="action-card-face">
+        <!-- 牌面边框 -->
+        {% if talent.cost | selectattr("type", "equalto", "秘传点") | list | length > 0 %}
+          <!-- 秘传边框 -->
+          <img src="{{ avatar_card_frame_3 }}" class="action-card-frame-1">
+        {% else %}
+          <!-- 普通边框 -->
+          <img src="{{ avatar_card_frame_1 }}" class="action-card-frame-1">
+        {% endif %}
+        <!-- 费用 -->
+        {% for dice in talent.cost %}
+          {% set i = loop.index0 %}
+          <div style="position: absolute; top: {{ 3 + i*124 }}px; left: {{ 2 + i*6 }}px;">
+            <img src="{{ dice.icon }}" class="actioncard-cost-dice">
+            <div class="actioncard-cost-text-styled-outline">{{ dice.count }}</div>
+            <div class="actioncard-cost-text-styled">{{ dice.count }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- 描述卡 -->
+      <div class="actioncard-text-box">
+        <!-- figure -->
+        <img src="{{ figure }}" class="figure-icon">
+        <!-- card name -->
+        <div class="actioncard-name-text-style">{{ talent.card_name }}</div>
+        <!-- card tag -->
+        <div class="actioncard-tags-box">
+          {% for tag_img in talent.tags_imgpath %}
+            <img src="{{ tag_img }}" class="actioncard-tag-image">
+          {% endfor %}
+        </div>
+        <!-- 虚线 -->
+        <div class="dashed-line"></div>
+        <!-- card description -->
+        <div class="rich-text-style-dark-24">{{ talent.richtext_description | safe }}</div>
+        <!-- child -->
+        {% if talent.child %}
+          <div class="actioncard-child-layout">
+          {% for keyword in talent.child %}
+            <!-- 带卡图 -->
+            {% if keyword.box_type == "card" %}
+              <div class="actioncard-child-box">
+                <!-- 卡图 -->
+                <img src="{{ keyword_card_frame }}" class="keyword-card-frame">
+                <img src="{{ keyword.card_face }}" class="keyword-card-face">
+                <img src="{{ keyword_card_shadow }}" class="keyword-card-shadow">
+                <div class="keyword-card-corner"></div>
+                <!-- 文本框 -->
+                <div class="actioncard-keyword-card-box">
+                  <!-- name -->
+                  <div class="keyword-sign"></div>
+                  <div class="keyword-name-text-style">{{ keyword.name }}</div>
+                  <!-- tag -->
+                  <div class="keyword-tags-box">
+                    {% for tag_img in keyword.tags_imgpath %}
+                      <img src="{{ tag_img }}" class="keyword-tag-image">
+                    {% endfor %}
+                  </div>
+                  {% if keyword.icon %}
+                    <img src="{{ keyword.icon }}" class="keyword-tag-icon">
+                  {% endif %}
+                  <!-- cost -->
+                  {% if keyword.cost %}
+                    {% for dice in keyword.cost | reverse %}
+                      {% set i = loop.index0 %}
+                      <div style="position: absolute; top: 16px; right: {{ 105 + i*80 }}px;">
+                        <img src="{{ dice.icon }}" class="dice-icon">
+                        {% if keyword.cost_readonly %}
+                          <img src="{{ dice_readonly }}" class="dice-readonly">
+                        {% endif %}
+                        <div class="dice-count-outline">{{ dice.count }}</div>
+                        <div class="dice-count">{{ dice.count }}</div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <!-- description -->
+                  <div class="rich-text-style-dark-22">{{ keyword.richtext_description | safe }}</div>
+                </div>
+              </div>
+            <!-- 不带卡图 -->
+            {% elif keyword.box_type == "text" %}
+              <div class="actioncard-child-box">
+                <!-- 文本框 -->
+                <div class="actioncard-keyword-text-box">
+                  <!-- name -->
+                  <div class="keyword-sign"></div>
+                  <div class="keyword-name-text-style">{{ keyword.name }}</div>
+                  <!-- tag -->
+                  <div class="keyword-tags-box">
+                    {% for tag_img in keyword.tags_imgpath %}
+                      <img src="{{ tag_img }}" class="keyword-tag-image">
+                    {% endfor %}
+                  </div>
+                  {% if keyword.icon %}
+                    <img src="{{ keyword.icon }}" class="keyword-tag-icon">
+                  {% endif %}
+                  <!-- cost -->
+                  {% if keyword.cost %}
+                    {% for dice in keyword.cost | reverse %}
+                      {% set i = loop.index0 %}
+                      <div style="position: absolute; top: 16px; right: {{ 105 + i*80 }}px;">
+                        <img src="{{ dice.icon }}" class="dice-icon">
+                        {% if keyword.cost_readonly %}
+                          <img src="{{ dice_readonly }}" class="dice-readonly">
+                        {% endif %}
+                        <div class="dice-count-outline">{{ dice.count }}</div>
+                        <div class="dice-count">{{ dice.count }}</div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                  <!-- description -->
+                  <div class="rich-text-style-dark-22">{{ keyword.richtext_description | safe }}</div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="version-layout">
+      <div class="version-text-box">
+        <div class="version-text-style">{{ version }}</div>
+      </div>
+      <img src="{{ ninthspace }}" class="version-ninthspace">
+    </div>
+  </div>
+</body>
+</html>
