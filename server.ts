@@ -9,6 +9,6 @@ Bun.serve({
       const file = Bun.file(path);
       return new Response(file);
     },
-  }
+  },
 });
 console.log("Server running at http://localhost:3000/");

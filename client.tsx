@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { JSX, useCallback } from "react";
 import "./style.css";
 import { createRoot } from "react-dom/client";
 import {
@@ -33,8 +33,6 @@ let dice_readonly = "./assets/frame/read.png";
 
 let avatar_card_face =
   "./assets/card/demo/UI_Gcg_CardFace_Char_Avatar_Sigewinne.png";
-let HP = 10;
-let ENERGY = 2;
 let avatar_name = "希格雯";
 let cardstory = "卡牌故事卡牌故事卡牌故事。";
 let Normal_Attack = {
@@ -138,54 +136,52 @@ const VENTI: CharacterRawData = {
   maxEnergy: 2,
   cardFace: "UI_Gcg_CardFace_Char_Avatar_Venti",
   icon: "UI_Gcg_Char_AvatarIcon_Venti",
-  category: "characters",
+  // category: "characters",
 };
 
-let talent = {
-  card_face: "./assets/card/demo/UI_Gcg_History_Event_Event_JifengLong.png",
-  card_name: "香香软软小蛋糕",
-  cost: [{ type: "GCG_COST_ENERGY", count: 2 }],
-  skill_name: "音火锻淬",
-  richtext_description:
-    "造成2点$e[物理伤害,48]。若自身附属$c[夜魂加持,key]，则恢复1点$c[「夜魂值」,key]。",
-  tags: ["GCG_TAG_RESONANCE"],
-  child: [
+const A313006: ActionCardRawData = {
+  id: 313006,
+  shareId: 449,
+  sinceVersion: "v5.3.0",
+  obtainable: true,
+  type: "GCG_CARD_MODIFY",
+  name: "绒翼龙",
+  englishName: "Qucusaurus",
+  tags: ["GCG_TAG_VEHICLE"],
+  targetList: [
     {
-      box_type: "text",
-      id: 1,
-      name: "音火锻淬",
-      tags: ["GCG_TAG_VEHICLE"],
-      cost: [
-        {
-          type: "GCG_COST_ENERGY",
-          count: 2,
-        },
-      ],
-      cost_readonly: false,
-      richtext_description:
-        "造成2点$e[物理伤害,48]。若自身附属$c[夜魂加持,key]，则恢复1点$c[「夜魂值」,key]。",
-    },
-    {
-      name: "222",
-      box_type: "card",
-      id: 2,
-      tags: ["GCG_TAG_FOOD"],
-      card_face: "./assets/card/demo/UI_Gcg_History_Event_Event_JifengLong.png",
-      icon: "./assets/skillmask/单手剑.png",
-      cost: [
-        {
-          type: "GCG_COST_ENERGY",
-          count: 2,
-        },
-      ],
-      cost_readonly: false,
-      richtext_description:
-        "造成2点$e[物理伤害,48]。若自身附属$c[夜魂加持,key]，则恢复1点$c[「夜魂值」,key]。",
+      id: 128,
+      type: "GCG_CARD_CHARACTER",
+      camp: "FRIENDLY",
+      tags: [],
+      rawHintText: "请选择要装备<color=#FFD780FF>特技</color>的角色",
+      hintText: "请选择要装备特技的角色",
     },
   ],
+  relatedCharacterId: null,
+  relatedCharacterTags: [],
+  storyTitle: "绒翼龙·迅疾滑翔",
+  storyText:
+    "据说绒翼龙的先祖是最接近巨大翼龙形态的龙兽，能够如云一般在天际巡游。",
+  playCost: [
+    {
+      type: "GCG_COST_DICE_SAME",
+      count: 1,
+    },
+  ],
+  rawDescription:
+    "<color=#FFFFFFFF>入场时：</color>敌方出战角色附属<color=#FFFFFFFF>$[C301302]</color>。\\n<color=#FFFFFFFF>附属角色切换为出战角色，且敌方出战角色附属<color=#FFFFFFFF>$[C301302]</color>时：</color>如可能，$[K56]原本元素骰费用最高的1张手牌，将此次切换视为「$[K2]」而非「$[K1]」，少花费1个元素骰，并移除对方所有角色的<color=#FFFFFFFF>$[C301302]</color>。\\n$[K58]：$[S3130063]\\n<color=#FFFFFFFF>$[K3]：2</color>\\n（角色最多装备1个「{SPRITE_PRESET#3008}特技」）",
+  description:
+    "入场时：敌方出战角色附属目标。\n附属角色切换为出战角色，且敌方出战角色附属目标时：如可能，舍弃原本元素骰费用最高的1张手牌，将此次切换视为「快速行动」而非「战斗行动」，少花费1个元素骰，并移除对方所有角色的目标。\n特技：迅疾滑翔\n可用次数：2\n（角色最多装备1个「特技」）",
+  rawPlayingDescription:
+    "<color=#FFFFFFFF>入场时：</color>敌方出战角色附属<color=#FFFFFFFF>$[C301302]</color>。\\n<color=#FFFFFFFF>附属角色切换为出战角色，且敌方出战角色附属<color=#FFFFFFFF>$[C301302]</color>时：</color>如可能，$[K56]原本元素骰费用最高的1张手牌，将此次切换视为「$[K2]」而非「$[K1]」，少花费1个元素骰，并移除对方所有角色的<color=#FFFFFFFF>$[C301302]</color>。\\n$[K58]：$[S3130063]\\n<color=#FFFFFFFF>$[K3]：2</color>",
+  playingDescription:
+    "入场时：敌方出战角色附属目标。\n附属角色切换为出战角色，且敌方出战角色附属目标时：如可能，舍弃原本元素骰费用最高的1张手牌，将此次切换视为「快速行动」而非「战斗行动」，少花费1个元素骰，并移除对方所有角色的目标。\n特技：迅疾滑翔\n可用次数：2",
+  cardFace: "UI_Gcg_CardFace_Modify_Vehicle_RongyiLong",
+  // category: "action_cards",
 };
 
-let version;
+let version = "GYTX";
 
 let base_left = 504;
 let base_top = 241;
@@ -256,6 +252,12 @@ const CARD_TAG_TEXT_MAP = {
 } as Record<string, string>;
 
 const CARD_TAG_IMG_NAME_MAP = {
+  GCG_CARD_EVENT: "Custom_ActionCard",
+  GCG_CARD_ONSTAGE: "Custom_Summon",
+  GCG_CARD_STATE: "Custom_Summon",
+  GCG_CARD_SUMMON: "Custom_Summon",
+  GCG_CARD_SUPPORT: "Custom_ActionCard",
+  GCG_CARD_MODIFY: "Custom_ActionCard",
   GCG_TAG_ELEMENT_CRYO: "Element_Ice",
   GCG_TAG_ELEMENT_HYDRO: "Element_Water",
   GCG_TAG_ELEMENT_PYRO: "Element_Fire",
@@ -332,7 +334,6 @@ const KeywordTag = (props: {
   image?: string;
   className?: string;
 }) => {
-  // TODO
   return (
     <div className={`keyword-tag ${props.className ?? ""}`}>
       <div className="keyword-tag-icon-container">
@@ -340,7 +341,7 @@ const KeywordTag = (props: {
           <img className="keyword-tag-image" src={cardFaceUrl(props.image)} />
         ) : (
           <div
-            className="tag-icon"
+            className="keyword-tag-icon"
             style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
           />
         )}
@@ -351,46 +352,45 @@ const KeywordTag = (props: {
 };
 
 const Cost = (props: { cost: PlayCost[] }) => {
-  return props.cost.map(({ type, count }, i) => (
-    <div style={{ position: "absolute", top: 16, right: 115 + i * 80 }}>
-      <img src={diceImageUrl(type)} className="dice-icon" />
-      <div className="dice-count-outline">{count}</div>
-      <div className="dice-count">{count}</div>
+  return (
+    <div className="skill-cost-group">
+      {props.cost.map(({ type, count }, i) => (
+        <div className="cost">
+          <img src={diceImageUrl(type)} className="dice-icon" />
+          <div className="stroked-text-top">{count}</div>
+          <div className="stroked-text-bottom">{count}</div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 const KeywordCost = (props: { readonly: boolean; cost: PlayCost[] }) => {
-  return props.cost.map(({ type, count }, i) => (
-    <div
-      style={{
-        position: "absolute",
-        top: 16,
-        right: 105 + i * 80,
-      }}
-    >
-      <img src={diceImageUrl(type)} className="dice-icon" />
-      {props.readonly && <img src={dice_readonly} className="dice-readonly" />}
-      <div className="dice-count-outline">{count}</div>
-      <div className="dice-count">{count}</div>
+  return (
+    <div className="keyword-cost-group">
+      {props.cost.map(({ type, count }, i) => (
+        <div className="cost" data-readonly={props.readonly}>
+          <img src={diceImageUrl(type)} className="dice-icon" />
+          <div className="stroked-text-top">{count}</div>
+          <div className="stroked-text-bottom">{count}</div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 const ActionCost = (props: { cost: PlayCost[] }) => {
-  return props.cost.map(({ type, count }, i) => (
-    <div
-      style={{
-        position: "absolute",
-        top: 3 + i * 124,
-        left: 2 + i * 6,
-      }}
-    >
-      <img src={diceImageUrl(type)} className="actioncard-cost-dice" />
-      <div className="actioncard-cost-text-styled-outline">{count}</div>
-      <div className="actioncard-cost-text-styled">{count}</div>
+  return (
+    <div className="action-card-cost-group">
+      {props.cost.map(({ type, count }, i) => (
+        <div className="cost">
+          <img src={diceImageUrl(type)} className="action-card-cost-dice" />
+          <div className="stroked-text-top">{count}</div>
+          <div className="stroked-text-bottom">{count}</div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 type ChildData = EntityRawData | KeywordRawData | ActionCardRawData;
@@ -463,14 +463,16 @@ const Children = ({ children }: { children: ChildData[] }) => {
             </div>
             {"playCost" in keyword && (
               <KeywordCost
-                cost={keyword.playCost}
+                cost={
+                  keyword.playCost.length === 0
+                    ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
+                    : keyword.playCost
+                }
                 readonly={keyword.type !== "GCG_CARD_EVENT"}
               />
             )}
             {/* <!-- description --> */}
-            <div className="keyword-description">
-              {keyword.rawDescription}
-            </div>
+            <div className="keyword-description">{keyword.rawDescription}</div>
           </div>
         </div>
       ))}
@@ -487,12 +489,8 @@ const SkillBox = ({ skill }: { skill: SkillRawData }) => {
       : [];
   return (
     <div className="skill-box">
-      {/* <!-- leaves --> */}
-      <div className="leaves-box"></div>
       {/* <!-- skill type --> */}
-      <div className="skilltype-text-style">
-        {SKILL_TYPE_TEXT_MAP[skill.type]}
-      </div>
+      <div className="skill-type">{SKILL_TYPE_TEXT_MAP[skill.type]}</div>
       {/* <!-- figure --> */}
       <img src={figure} className="figure-icon" />
       {/* <!-- cost --> */}
@@ -515,58 +513,57 @@ const SkillBox = ({ skill }: { skill: SkillRawData }) => {
 };
 
 const cardFrameImgUrl = "/assets/frame/card_frame_normal.png";
+const cardFrameLegendImgUrl = "/assets/frame/card_frame_legend.png";
+
+const CardFace = (props: {
+  className?: string;
+  isLegend?: boolean;
+  cardFace: string;
+  children?: React.ReactNode;
+}) => {
+  return (
+    <div className={`card-face-component ${props.className ?? ""}`}>
+      <img src={card_back} className="card-back" />
+      <img src={CARD_BACK_FRAME} className="card-frame-shadow" />
+      {/* <!-- 角色牌牌面 --> */}
+      <div className="card-face">
+        <img src={cardFaceUrl(props.cardFace)} className="card-face-image" />
+        <img
+          src={props.isLegend ? cardFrameLegendImgUrl : cardFrameImgUrl}
+          className="card-frame"
+        />
+        {props.children}
+      </div>
+    </div>
+  );
+};
 
 const Character = ({ character }: { character: CharacterRawData }) => {
   const [normalSkill, ...otherSkills] = character.skills;
   return (
     <>
       <div className="character-header">
-        <div className="character-image-container">
-          {/* <!-- 角色牌牌背 --> */}
-          <img src={card_back} className="card-back" />
-          <img src={CARD_BACK_FRAME} className="card-frame-shadow" />
-          {/* <!-- 角色牌牌面 --> */}
-          <div className="card-face">
-            <img
-              src={cardFaceUrl(character.cardFace)}
-              className="card-face-image"
-            />
-            <img src={cardFrameImgUrl} className="card-frame" />
-            <div className="avatar-card-hp">
-              <img src={avatar_card_hp} className="avatar-card-hp-image" />
-              <div className="hp-text-styled-2">{HP}</div>
-              <div className="hp-text-styled-1">{HP}</div>˝
-            </div>
-            {/* <!-- 能量 --> */}
-            <div className="energy-bar">
-              {Array.from({ length: ENERGY }).map((_, i) => (
-                <img
-                  src={avatar_card_energy}
-                  className="energy"
-                  style={{
-                    top: base_top + i * 74,
-                    left: base_left + i * 3,
-                  }}
-                />
-              ))}
-            </div>
+        <CardFace
+          className="character-image-container"
+          cardFace={character.cardFace}
+        >
+          <div className="avatar-card-hp">
+            <img src={avatar_card_hp} className="avatar-card-hp-image" />
+            <div className="stroked-text-top">{character.hp}</div>
+            <div className="stroked-text-bottom">{character.hp}</div>
           </div>
-          {/* <!-- 牌背边框 --> */}
-
-          {/* <!-- 生命值 --> */}
-        </div>
+          {/* <!-- 能量 --> */}
+          <div className="energy-bar">
+            {Array.from({ length: character.maxEnergy }).map((_, i) => (
+              <img src={avatar_card_energy} className="energy" />
+            ))}
+          </div>
+        </CardFace>
 
         <div className="character-info">
           {/* <!-- 角色名 --> */}
           <div className="character-title-wrapper">
-            <div
-              className="character-title"
-              style={{
-                backgroundImage: `url(${title_icon})`,
-              }}
-            >
-              {character.name}
-            </div>
+            <div className="character-title">{character.name}</div>
           </div>
 
           <div className="character-tags">
@@ -575,12 +572,8 @@ const Character = ({ character }: { character: CharacterRawData }) => {
             ))}
           </div>
 
-          {/* // <!-- 分隔线 --> */}
-          {/* {% set total_rows = ((tags|length - 1) // 3) + 1 %}
-      {% set divider_y = tag_base_y + total_rows * 80 %} */}
           <hr className="info-divider" />
 
-          {/* <!-- 卡牌故事 --> */}
           <p className="info-story">{character.storyText}</p>
 
           <div className="spacer"></div>
@@ -596,6 +589,41 @@ const Character = ({ character }: { character: CharacterRawData }) => {
   );
 };
 
+const ActionCard = ({ card }: { card: ActionCardRawData }) => {
+  const children = [C115031, C116102];
+  return (
+    <div className="action-card">
+      {/* <!-- 卡面 --> */}
+      <CardFace
+        className="action-card-image-container"
+        cardFace={card.cardFace}
+      >
+        <ActionCost cost={card.playCost} />
+      </CardFace>
+      {/* <!-- 描述卡 --> */}
+      <div className="action-card-info">
+        {/* <!-- figure --> */}
+        <img src={figure} className="figure-icon" />
+        {/* <!-- card name --> */}
+        <div className="action-card-title">{card.name}</div>
+        {/* <!-- card tag --> */}
+        <div className="action-card-tags">
+          <Tag type="cardType" tag={card.type} />
+          {card.tags.map((tag) => (
+            <Tag type="cardTag" tag={tag} />
+          ))}
+        </div>
+        {/* <!-- 虚线 --> */}
+        <div className="dashed-line" />
+        {/* <!-- card description --> */}
+        <div className="description">{card.rawDescription}</div>
+        {/* <!-- child --> */}
+        {children && <Children children={children} />}
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <>
@@ -604,135 +632,14 @@ const App = () => {
         style={{ "--header-decoration": `url("${header_decor}")` }}
       >
         <Character character={VENTI} />
-        {/* <!-- 天赋牌 --> */}
-        <div className="actioncard-layout-right">
-          {/* <!-- 卡面 --> */}
-          <div className="actioncard-image-box-right">
-            {/* <!-- 牌背 --> */}
-            <img src={card_back} className="action-card-back" />
-            {/* <!-- 牌背边框 --> */}
-            <img src={CARD_BACK_FRAME} className="action-card-frame-2" />
-            {/* <!-- 牌面 --> */}
-            <img src={talent.card_face} className="action-card-face" />
-            {/* <!-- 牌面边框 --> */}
-            {talent.cost.find(({ type }) => type === "GCG_COST_LEGEND") ? (
-              // <!-- 秘传边框 -->
-              <img src={LEGEND_CARD_FRAME} className="action-card-frame-1" />
-            ) : (
-              // <!-- 普通边框 -->
-              <img src={CARD_FRAME} className="action-card-frame-1" />
-            )}
-            {/* <!-- 费用 --> */}
-            <ActionCost cost={talent.cost} />
-          </div>
-          {/* <!-- 描述卡 --> */}
-          <div className="actioncard-text-box">
-            {/* <!-- figure --> */}
-            <img src={figure} className="figure-icon" />
-            {/* <!-- card name --> */}
-            <div className="actioncard-name-text-style">{talent.card_name}</div>
-            {/* <!-- card tag --> */}
-            <div className="actioncard-tags-box">
-              {talent.tags.map((tag) => (
-                <Tag type="cardTag" tag={tag} />
-              ))}
-            </div>
-            {/* <!-- 虚线 --> */}
-            <div className="dashed-line"></div>
-            {/* <!-- card description --> */}
-            <div className="description">
-              {talent.richtext_description}
-            </div>
-            {/* <!-- child --> */}
-            {talent.child && (
-              <div className="actioncard-child-layout">
-                {talent.child.map(
-                  (keyword) =>
-                    // <!-- 带卡图 -->
-
-                    (keyword.box_type == "card" && (
-                      <div className="actioncard-child-box" key="id">
-                        {/* <!-- 卡图 --> */}
-                        <img
-                          src={keyword_card_frame}
-                          className="keyword-card-frame"
-                        />
-                        <img
-                          src={keyword.card_face}
-                          className="keyword-card-face"
-                        />
-                        <img
-                          src={keyword_card_shadow}
-                          className="keyword-card-shadow"
-                        />
-                        <div className="keyword-card-corner"></div>
-                        {/* <!-- 文本框 --> */}
-                        <div className="actioncard-keyword-card-box">
-                          {/* <!-- name --> */}
-                          <div className="keyword-sign"></div>
-                          <div className="keyword-name-text-style">
-                            {keyword.name}
-                          </div>
-                          {/* <!-- tag --> */}
-                          <div className="keyword-tags-box">
-                            {keyword.tags.map((tag) => (
-                              <KeywordTag tag={tag} />
-                            ))}
-                          </div>
-                          <KeywordCost
-                            cost={keyword.cost}
-                            readonly={keyword.cost_readonly}
-                          />
-                          {/* <!-- description --> */}
-                          <div className="keyword-description">
-                            {keyword.richtext_description}
-                          </div>
-                        </div>
-                      </div>
-                    )) ||
-                    // <!-- 不带卡图 -->
-                    (keyword.box_type == "text" && (
-                      <div className="actioncard-child-box">
-                        {/* <!-- 文本框 --> */}
-                        <div className="actioncard-keyword-text-box">
-                          {/* <!-- name --> */}
-                          <div className="keyword-sign"></div>
-                          <div className="keyword-name-text-style">
-                            {keyword.name}
-                          </div>
-                          {/* <!-- tag --> */}
-                          <div className="keyword-tags-box">
-                            {keyword.tags.map((tag) => (
-                              <KeywordTag tag={tag} />
-                            ))}
-                          </div>
-                          {/* <!-- cost --> */}
-                          <KeywordCost
-                            cost={keyword.cost}
-                            readonly={keyword.cost_readonly}
-                          />
-
-                          {/* <!-- description --> */}
-                          <div className="keyword-description">
-                            {keyword.richtext_description}
-                          </div>
-                        </div>
-                      </div>
-                    )),
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+        <ActionCard card={A313006} />
         <div className="version-layout">
-          <div className="version-text-box">
-            <div className="version-text-style">{version}</div>
-          </div>
-          <img src={ninthspace} className="version-ninthspace" />
+          <div className="version-text">{version}</div>
+          <img src={ninthspace} className="ninthspace" />
         </div>
       </div>
     </>
   );
 };
 
-createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")!).render(<App />);
