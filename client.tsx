@@ -21,7 +21,6 @@ declare module "react" {
 }
 
 let ninthspace = "./assets/frame/ninthspace.png";
-let header_decor = "/assets/frame/header_decor.png";
 let CARD_BACK_FRAME = "./assets/frame/avatar_card_frame_2.png";
 let CARD_FRAME = "./assets/frame/avatar_card_frame_1.png";
 let LEGEND_CARD_FRAME = "./assets/frame/avatar_card_frame_3.png";
@@ -65,6 +64,7 @@ const COST_TYPE_IMG_NAME_MAP = {
 } as Record<string, string>;
 
 const TYPE_TAG_TEXT_MAP = {
+  GCG_RULE_EXPLANATION: "规则解释",
   GCG_SKILL_TAG_A: "普通攻击",
   GCG_SKILL_TAG_E: "元素战技",
   GCG_SKILL_TAG_Q: "元素爆发",
@@ -115,7 +115,7 @@ const TYPE_TAG_TEXT_MAP = {
   GCG_TAG_ITEM: "道具",
 } as Record<string, string>;
 
-const CARD_TAG_IMG_NAME_MAP = {
+const TYPE_TAG_IMG_NAME_MAP = {
   GCG_CARD_EVENT: "Custom_ActionCard",
   GCG_CARD_ONSTAGE: "Custom_Summon",
   GCG_CARD_STATE: "Custom_Summon",
@@ -165,24 +165,69 @@ const diceImageUrl = (type: string) =>
   `/assets/UI_Gcg_DiceL_${COST_TYPE_IMG_NAME_MAP[type]}_Glow_HD.png`;
 
 const tagImageUrl = (tag: string) =>
-  `/assets/UI_Gcg_Tag_${CARD_TAG_IMG_NAME_MAP[tag]}.png`;
+  `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
 
 const cardFaceUrl = (cardFace: string) =>
   `https://assets.gi-tcg.guyutongxue.site/assets/${cardFace}.webp`;
+
+const PREPEND_ICONS = {
+  6: cardFaceUrl(`UI_Gcg_Buff_Common_Shield`),
+  100: cardFaceUrl("UI_Gcg_Buff_Common_Element_Physics"),
+  101: cardFaceUrl("UI_Gcg_Buff_Common_Element_Ice"),
+  102: cardFaceUrl("UI_Gcg_Buff_Common_Element_Water"),
+  103: cardFaceUrl("UI_Gcg_Buff_Common_Element_Fire"),
+  104: cardFaceUrl("UI_Gcg_Buff_Common_Element_Electric"),
+  105: cardFaceUrl("UI_Gcg_Buff_Common_Element_Wind"),
+  106: cardFaceUrl("UI_Gcg_Buff_Common_Element_Rock"),
+  107: cardFaceUrl("UI_Gcg_Buff_Common_Element_Grass"),
+  301: `/assets/UI_Gcg_DiceL_Ice.png`,
+  302: `/assets/UI_Gcg_DiceL_Water.png`,
+  303: `/assets/UI_Gcg_DiceL_Fire.png`,
+  304: `/assets/UI_Gcg_DiceL_Electric.png`,
+  305: `/assets/UI_Gcg_DiceL_Wind.png`,
+  306: `/assets/UI_Gcg_DiceL_Rock.png`,
+  307: `/assets/UI_Gcg_DiceL_Grass.png`,
+  308: `/assets/UI_Gcg_DiceL_Same.png`,
+  309: `/assets/UI_Gcg_DiceL_Diff.png`,
+  310: `/assets/UI_Gcg_DiceL_Energy_Glow_HD.png`,
+  411: `/assets/UI_Gcg_DiceL_Any.png`,
+} as Record<number, string>;
+
+const KEYWORD_COLORS = {
+  101: "#91d5ff",
+  102: "#1890ff",
+  103: "#f5222d",
+  104: "#722ed1",
+  105: "#36cfc9",
+  106: "#d4b106",
+  107: "#52c41a",
+  301: "#91d5ff",
+  302: "#1890ff",
+  303: "#f5222d",
+  304: "#722ed1",
+  305: "#36cfc9",
+  306: "#d4b106",
+  307: "#52c41a",
+} as Record<number, string>;
 
 type TagType = "character" | "cardType" | "cardTag";
 
 const Tag = (props: { type: TagType; tag: string; className?: string }) => {
   return (
-    <div className={`tag ${props.className ?? ""}`} data-tag-type={props.type}>
-      <div className="tag-icon-container">
-        <div
-          className="tag-icon"
-          style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
-        />
+    TYPE_TAG_TEXT_MAP[props.tag] && (
+      <div
+        className={`tag ${props.className ?? ""}`}
+        data-tag-type={props.type}
+      >
+        <div className="tag-icon-container">
+          <div
+            className="tag-icon"
+            style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
+          />
+        </div>
+        <div className="tag-text">{TYPE_TAG_TEXT_MAP[props.tag]}</div>
       </div>
-      <div className="tag-text">{TYPE_TAG_TEXT_MAP[props.tag]}</div>
-    </div>
+    )
   );
 };
 
@@ -194,16 +239,21 @@ const KeywordTag = (props: {
   return (
     TYPE_TAG_TEXT_MAP[props.tag] && (
       <div className={`keyword-tag ${props.className ?? ""}`}>
-        <div className="keyword-tag-icon-container">
-          {props.image ? (
-            <img className="keyword-tag-image" src={cardFaceUrl(props.image)} />
-          ) : (
-            <div
-              className="keyword-tag-icon"
-              style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
-            />
-          )}
-        </div>
+        {(props.image || TYPE_TAG_IMG_NAME_MAP[props.tag]) && (
+          <div className="keyword-tag-icon-container">
+            {props.image ? (
+              <img
+                className="keyword-tag-image"
+                src={cardFaceUrl(props.image)}
+              />
+            ) : (
+              <div
+                className="keyword-tag-icon"
+                style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
+              />
+            )}
+          </div>
+        )}
         <div className="keyword-tag-text">{TYPE_TAG_TEXT_MAP[props.tag]}</div>
       </div>
     )
@@ -257,7 +307,22 @@ const Token = ({ token }: { token: DescriptionToken }) => {
           </span>
         );
       } else {
-        return <span className="description-keyword">{name}</span>;
+        return (
+          <>
+            {PREPEND_ICONS[token.id] && (
+              <img
+                className="description-keyword-icon"
+                src={PREPEND_ICONS[token.id]}
+              />
+            )}
+            <span
+              className="description-keyword"
+              style={{ "--color": KEYWORD_COLORS[token.id] }}
+            >
+              {name}
+            </span>
+          </>
+        );
       }
     }
     case "reference":
@@ -378,7 +443,7 @@ const CardFace = (props: {
 const Character = ({ character }: { character: ParsedCharacter }) => {
   const [normalSkill, ...otherSkills] = character.parsedSkills;
   return (
-    <>
+    <div className="character">
       <div className="character-header">
         <CardFace
           className="character-image-container"
@@ -413,7 +478,7 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
       {otherSkills.map((skill) => (
         <SkillBox skill={skill} />
       ))}
-    </>
+    </div>
   );
 };
 
@@ -447,12 +512,9 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
 const App = () => {
   return (
     <>
-      <div
-        className="layout"
-        style={{ "--header-decoration": `url("${header_decor}")` }}
-      >
-        <Character character={CHARACTER_PARESED} />
-        <ActionCard card={CARD_PARESED} />
+      <div className="layout">
+        <Character character={CHARACTER_PARSED} />
+        <ActionCard card={CARD_PARSED} />
         <div className="version-layout">
           <div className="version-text">{version}</div>
           <img src={ninthspace} className="ninthspace" />
@@ -522,6 +584,8 @@ const DAMAGE_KEYWORD_MAP = {
   GCG_ELEMENT_GEO: 106,
   GCG_ELEMENT_DENDRO: 107,
 } as Record<string, number>;
+
+const shownKeywords = [7];
 
 const parseDescription = (
   rawDescription: string,
@@ -696,6 +760,19 @@ const appendChildren = (
           break;
         }
       }
+    } else if (child.type === "keyword" && shownKeywords.includes(child.id)) {
+      if (suppressedReferencedIds.includes(-child.id)) {
+        continue;
+      }
+      suppressedReferencedIds.push(-child.id);
+      const data = keywords.find((e) => e.id === child.id);
+      if (data) {
+        result.push({
+          ...data,
+          type: "GCG_RULE_EXPLANATION",
+          parsedDescription: parseDescription(data.rawDescription),
+        });
+      }
     }
   }
   return result;
@@ -725,12 +802,12 @@ const parseActionCard = (
   };
 };
 
-const CHARACTER = characters.find((c) => c.id === 1610)!;
+const CHARACTER = characters.find((c) => c.id === 1503)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 
 const supIds: number[] = [];
-const CHARACTER_PARESED = parseCharacter(CHARACTER, supIds);
-const CARD_PARESED = parseActionCard(CARD, supIds);
-console.log(CHARACTER_PARESED);
-console.log(CARD_PARESED);
+const CHARACTER_PARSED = parseCharacter(CHARACTER, supIds);
+const CARD_PARSED = parseActionCard(CARD, supIds);
+console.log(CHARACTER_PARSED);
+console.log(CARD_PARSED);
 createRoot(document.getElementById("root")!).render(<App />);

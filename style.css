@@ -11,7 +11,7 @@ body {
   font-family: "HYWH", sans-serif;
 
   --keyword-bg-color: #f0eadd;
-  transform: scale(30%);
+  transform: scale(50%);
   transform-origin: 0 0;
 }
 
@@ -113,10 +113,16 @@ img {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background-image: var(--header-decoration);
+  background-image: url("assets/frame/header_decor.png");
   background-size: contain;
   background-position: top;
   background-repeat: no-repeat;
+}
+
+.character {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .character-header {
@@ -247,12 +253,12 @@ img {
 }
 
 .character-title-wrapper {
+  margin-top: 12rem;
   border-radius: 1rem;
   background-color: rgb(var(--page-bg-color), 0.8);
 }
 
 .character-title {
-  margin-top: 12rem;
   margin-left: 0.5rem;
 
   width: 100%;
@@ -387,9 +393,16 @@ span:not(.keyword-description):has(
   line-height: 1.5;
 }
 
+.description-keyword-icon {
+  height: 1.2em;
+  aspect-ratio: 1;
+  margin-inline: 0.2em;
+  vertical-align: middle;
+}
+
 .description-keyword,
 .description-strong {
-  color: #aa8d76;
+  color: var(--color, #aa8d76);
 }
 
 .description-light {
