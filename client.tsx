@@ -1,4 +1,3 @@
-import { JSX, useCallback } from "react";
 import "./style.css";
 import { createRoot } from "react-dom/client";
 import {
@@ -14,40 +13,26 @@ import {
   SkillRawData,
 } from "@gi-tcg/static-data";
 
+
+const VERSION = "GYTX";
+const CARD_BACK_IMAGE = "./assets/UI_Gcg_CardBack_LevelReward.png";
+
+const shownKeywords = [7];
+
 declare module "react" {
   interface CSSProperties {
     [key: `--${string}`]: string | number;
   }
 }
 
-let ninthspace = "./assets/frame/ninthspace.png";
-let CARD_BACK_FRAME = "./assets/frame/avatar_card_frame_2.png";
-let CARD_FRAME = "./assets/frame/avatar_card_frame_1.png";
-let LEGEND_CARD_FRAME = "./assets/frame/avatar_card_frame_3.png";
-let card_back = "./assets/UI_Gcg_CardBack_LevelReward.png";
-let avatar_card_hp = "./assets/frame/icon_HP.png";
-let avatar_card_energy = "./assets/frame/icon_E.png";
-let title_icon = "./assets/frame/TitleIcon.png";
-let tags_imgpath = ["./assets/avatar_tag/弓.png"];
-let figure = "./assets/frame/figure.png";
-let keyword_card_frame = "./assets/frame/keyword_card_frame.png";
-let keyword_card_shadow = "./assets/frame/keyword_card_shadow.png";
-let dice_readonly = "./assets/frame/read.png";
-
-let avatar_card_face =
-  "./assets/card/demo/UI_Gcg_CardFace_Char_Avatar_Sigewinne.png";
-let avatar_name = "希格雯";
-let cardstory = "卡牌故事卡牌故事卡牌故事。";
-let Normal_Attack = {
-  type: "normal",
-  cost: [{ type: "GCG_COST_DICE_HYDRO", count: 2 }],
-  icon: "./assets/skillmask/单手剑.png",
-  skill_name: "",
-  richtext_description: "",
-  tags_imgpath: ["./assets/keyword_tag/特技.png"],
-};
-
-let version = "GYTX";
+const ninthspace = "./assets/frame/ninthspace.png";
+const CARD_BACK_FRAME = "/assets/frame/avatar_card_frame_2.png";
+const CARD_NORMAL_FRAME = "/assets/frame/card_frame_normal.png";
+const CARD_LEGEND_FRAME = "/assets/frame/card_frame_legend.png";
+const avatar_card_hp = "./assets/frame/icon_HP.png";
+const avatar_card_energy = "./assets/frame/icon_E.png";
+const keyword_card_frame = "./assets/frame/keyword_card_frame.png";
+const keyword_card_shadow = "./assets/frame/keyword_card_shadow.png";
 
 const COST_TYPE_IMG_NAME_MAP = {
   GCG_COST_DICE_VOID: "Diff",
@@ -414,8 +399,6 @@ const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
   );
 };
 
-const cardFrameImgUrl = "/assets/frame/card_frame_normal.png";
-const cardFrameLegendImgUrl = "/assets/frame/card_frame_legend.png";
 
 const CardFace = (props: {
   className?: string;
@@ -425,13 +408,13 @@ const CardFace = (props: {
 }) => {
   return (
     <div className={`card-face-component ${props.className ?? ""}`}>
-      <img src={card_back} className="card-back" />
+      <img src={CARD_BACK_IMAGE} className="card-back" />
       <img src={CARD_BACK_FRAME} className="card-frame-shadow" />
       {/* <!-- 角色牌牌面 --> */}
       <div className="card-face">
         <img src={cardFaceUrl(props.cardFace)} className="card-face-image" />
         <img
-          src={props.isLegend ? cardFrameLegendImgUrl : cardFrameImgUrl}
+          src={props.isLegend ? CARD_LEGEND_FRAME : CARD_NORMAL_FRAME}
           className="card-frame"
         />
         {props.children}
@@ -516,7 +499,7 @@ const App = () => {
         <Character character={CHARACTER_PARSED} />
         <ActionCard card={CARD_PARSED} />
         <div className="version-layout">
-          <div className="version-text">{version}</div>
+          <div className="version-text">{VERSION}</div>
           <img src={ninthspace} className="ninthspace" />
         </div>
       </div>
@@ -584,8 +567,6 @@ const DAMAGE_KEYWORD_MAP = {
   GCG_ELEMENT_GEO: 106,
   GCG_ELEMENT_DENDRO: 107,
 } as Record<string, number>;
-
-const shownKeywords = [7];
 
 const parseDescription = (
   rawDescription: string,
