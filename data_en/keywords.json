@@ -1,0 +1,800 @@
+[
+  {
+    "id": 1,
+    "rawName": "<color=#FFFFFFFF>Combat Action</color>",
+    "name": "Combat Action",
+    "rawDescription": "After you finish 1 Combat Action, it will be your opponent's turn.\\n<color=#FFFFFFFF>Playing a card from your Hand with this rule is also a Combat Action rather than a Fast Action</color>.",
+    "description": "After you finish 1 Combat Action, it will be your opponent's turn.\nPlaying a card from your Hand with this rule is also a Combat Action rather than a Fast Action."
+  },
+  {
+    "id": 2,
+    "rawName": "<color=#FFFFFFFF>Fast Action</color>",
+    "name": "Fast Action",
+    "rawDescription": "You can continue with other actions after conducting 1 Fast Action.\\nOnly after conducting 1 Combat Action will the turn pass over to your opponent.",
+    "description": "You can continue with other actions after conducting 1 Fast Action.\nOnly after conducting 1 Combat Action will the turn pass over to your opponent."
+  },
+  {
+    "id": 3,
+    "rawName": "<color=#FFFFFFFF>Usage(s)</color>",
+    "name": "Usage(s)",
+    "rawDescription": "After this card's effect is triggered, 1 <color=#FFFFFFFF>Usage</color> of it will be consumed.\\nThis card will be discarded immediately once it has 0 <color=#FFFFFFFF>Usages</color> remaining.",
+    "description": "After this card's effect is triggered, 1 Usage of it will be consumed.\nThis card will be discarded immediately once it has 0 Usages remaining."
+  },
+  {
+    "id": 4,
+    "rawName": "<color=#FFFFFFFF>Duration (Rounds)</color>",
+    "name": "Duration (Rounds)",
+    "rawDescription": "Each time you reach the end of a Round, <color=#FFFFFFFF>Duration (Rounds)</color> -1.\\nThis card will be discarded immediately once <color=#FFFFFFFF>Duration (Rounds)</color> runs out.",
+    "description": "Each time you reach the end of a Round, Duration (Rounds) -1.\nThis card will be discarded immediately once Duration (Rounds) runs out."
+  },
+  {
+    "id": 5,
+    "rawName": "<color=#FFFFFFFF>Piercing DMG</color>",
+    "name": "Piercing DMG",
+    "rawDescription": "Piercing DMG cannot be increased by any bonuses, but cannot be defended against using Shields or DMG Immunity either.",
+    "description": "Piercing DMG cannot be increased by any bonuses, but cannot be defended against using Shields or DMG Immunity either."
+  },
+  {
+    "id": 6,
+    "rawName": "{SPRITE_PRESET#4007}<color=#FFFFFFFF>Shield</color>",
+    "name": "Shield",
+    "rawDescription": "This Shield will be consumed to protect the character who equips it from DMG.",
+    "description": "This Shield will be consumed to protect the character who equips it from DMG."
+  },
+  {
+    "id": 7,
+    "rawName": "<color=#FFFFFFFF>Character Closest to Your Current Active Character</color>",
+    "name": "Character Closest to Your Current Active Character",
+    "rawDescription": "The opposing \"character closest to your current active character\" is the opposing character whose position is closest to that of your active character.\\nIf multiple such characters exist, the one with the foremost position will be viewed as being \"closest.\"",
+    "description": "The opposing \"character closest to your current active character\" is the opposing character whose position is closest to that of your active character.\nIf multiple such characters exist, the one with the foremost position will be viewed as being \"closest.\""
+  },
+  {
+    "id": 51,
+    "rawName": "<color=#FFFFFFFF>Charged Attack</color>",
+    "name": "Charged Attack",
+    "rawDescription": "Before your Action Phase, should the total number of your Elemental Dice be even, your Normal Attack will be considered a Charged Attack.",
+    "description": "Before your Action Phase, should the total number of your Elemental Dice be even, your Normal Attack will be considered a Charged Attack."
+  },
+  {
+    "id": 52,
+    "rawName": "<color=#FFFFFFFF>Plunging Attack</color>",
+    "name": "Plunging Attack",
+    "rawDescription": "After a character is switched in to be the Active Character, should their next Combat Action within this Round be a Normal Attack, it will be considered a Plunging Attack for the instance.",
+    "description": "After a character is switched in to be the Active Character, should their next Combat Action within this Round be a Normal Attack, it will be considered a Plunging Attack for the instance."
+  },
+  {
+    "id": 53,
+    "rawName": "<color=#FFFFFFFF>Prepare Skill</color>|s1:<color=#FFFFFFFF>prepares</color>",
+    "name": "Prepare Skill|s1:prepares",
+    "rawDescription": "Some Skills cannot be used directly. Instead, they need to be <color=#FFFFFFFF>prepared</color> over a certain number of turns.\\nWhen it is a certain player's turn, and this player's active character is currently <color=#FFFFFFFF>preparing</color> a Skill, this player's turn will be skipped. If the Skill has finished being <color=#FFFFFFFF>prepared</color>, the character will directly use that Skill at this time. (Skills that require <color=#FFFFFFFF>preparing</color> cannot activate effects triggered by \"using a Skill\" or \"triggering an Elemental Reaction\" or other such effects.)\\nOnly active characters can <color=#FFFFFFFF>prepare</color> Skills, and if an active character who is <color=#FFFFFFFF>preparing</color> a Skill gets switched off-field, their <color=#FFFFFFFF>preparation</color> will be interrupted.",
+    "description": "Some Skills cannot be used directly. Instead, they need to be prepared over a certain number of turns.\nWhen it is a certain player's turn, and this player's active character is currently preparing a Skill, this player's turn will be skipped. If the Skill has finished being prepared, the character will directly use that Skill at this time. (Skills that require preparing cannot activate effects triggered by \"using a Skill\" or \"triggering an Elemental Reaction\" or other such effects.)\nOnly active characters can prepare Skills, and if an active character who is preparing a Skill gets switched off-field, their preparation will be interrupted."
+  },
+  {
+    "id": 54,
+    "rawName": "<color=#FFFFFFFF>Immunity to Defeat</color>|s1:<color=#FFFFFFFF>will not be defeated</color>",
+    "name": "Immunity to Defeat|s1:will not be defeated",
+    "rawDescription": "Certain effects will grant characters an <color=#FFFFFFFF>immunity to being defeated</color> when their HP hits 0, and will heal them for a certain amount thereafter.\\nWhen this occurs, characters will not be regarded as having experienced a <color=#FFFFFFFF>defeat.</color> (Hence, their attached equipment and statuses will not be removed, and their Energy will remain uncleared.)",
+    "description": "Certain effects will grant characters an immunity to being defeated when their HP hits 0, and will heal them for a certain amount thereafter.\nWhen this occurs, characters will not be regarded as having experienced a defeat. (Hence, their attached equipment and statuses will not be removed, and their Energy will remain uncleared.)"
+  },
+  {
+    "id": 55,
+    "rawName": "<color=#FFFFFFFF>Stunned</color>",
+    "name": "Stunned",
+    "rawDescription": "<color=#FFFFFFFF>Character cannot use Skills.</color> (Lasts until the end of this Round)",
+    "description": "Character cannot use Skills. (Lasts until the end of this Round)"
+  },
+  {
+    "id": 56,
+    "rawName": "<color=#FFFFFFFF>Discard</color>",
+    "name": "Discard",
+    "rawDescription": "Use Action Cards or Character Skill effects to Discard Action Cards from Hand or Deck.",
+    "description": "Use Action Cards or Character Skill effects to Discard Action Cards from Hand or Deck."
+  },
+  {
+    "id": 57,
+    "rawName": "<color=#FFFFFFFF>Tune</color>",
+    "name": "Tune",
+    "rawDescription": "Discard Action Cards from Hand to initiate Elemental Tuning",
+    "description": "Discard Action Cards from Hand to initiate Elemental Tuning"
+  },
+  {
+    "id": 58,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#3008}Technique</color>",
+    "name": "Technique",
+    "rawDescription": "When the active character is equipped with a {SPRITE_PRESET#3008}Technique card, they can use the corresponding {SPRITE_PRESET#3008}Technique.\\nUsing a {SPRITE_PRESET#3008} Technique counts as a Combat Action. If the character is unable to use Skills due to conditions like Frozen, Petrification, or Stun, they are also unable to use the {SPRITE_PRESET#3008}Technique.\\nUsing a {SPRITE_PRESET#3008}Technique is not considered as using a Skill. Therefore, it cannot trigger effects such as \"After using a skill\" or \"After the character triggers an Elemental Reaction.\" Damage dealt by using a {SPRITE_PRESET#3008}Technique is not considered Damage dealt by the character.",
+    "description": "When the active character is equipped with a Technique card, they can use the corresponding Technique.\nUsing a  Technique counts as a Combat Action. If the character is unable to use Skills due to conditions like Frozen, Petrification, or Stun, they are also unable to use the Technique.\nUsing a Technique is not considered as using a Skill. Therefore, it cannot trigger effects such as \"After using a skill\" or \"After the character triggers an Elemental Reaction.\" Damage dealt by using a Technique is not considered Damage dealt by the character."
+  },
+  {
+    "id": 59,
+    "rawName": "<color=#FFFFFFFF>Select</color>",
+    "name": "Select",
+    "rawDescription": "Select 1 card from a specific number of cards and activate its effects.",
+    "description": "Select 1 card from a specific number of cards and activate its effects."
+  },
+  {
+    "id": 60,
+    "rawName": "<color=#FFFFFFFF>Whole Match</color>",
+    "name": "Whole Match",
+    "rawDescription": "This effect will remain active until the entire match ends.",
+    "description": "This effect will remain active until the entire match ends."
+  },
+  {
+    "id": 61,
+    "rawName": "<color=#FFFFFFFF>Charge</color>",
+    "name": "Charge",
+    "rawDescription": "Complete certain amounts of charging actions to unleash corresponding Skills.",
+    "description": "Complete certain amounts of charging actions to unleash corresponding Skills."
+  },
+  {
+    "id": 62,
+    "rawName": "{SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color>",
+    "name": "Elemental Mastery",
+    "rawDescription": "Every 1 Elemental Mastery increases the <color=#FFCC33>effects</color> of Elemental Reactions that the opponent receives by a factor of 1.",
+    "description": "Every 1 Elemental Mastery increases the effects of Elemental Reactions that the opponent receives by a factor of 1."
+  },
+  {
+    "id": 63,
+    "rawName": "<color=#FFFFFFFF>Extra Action</color>",
+    "name": "Extra Action",
+    "rawDescription": "Characters will not gain Energy from Extra Actions.",
+    "description": "Characters will not gain Energy from Extra Actions."
+  },
+  {
+    "id": 64,
+    "rawName": "<color=#FFFFFFFF>Character Level</color>",
+    "name": "Character Level",
+    "rawDescription": "Obtaining the same character multiple times allows you to increase their level, thereby enhancing their attributes.",
+    "description": "Obtaining the same character multiple times allows you to increase their level, thereby enhancing their attributes."
+  },
+  {
+    "id": 65,
+    "rawName": "<color=#FFFFFFFF>Character Rank</color>",
+    "name": "Character Rank",
+    "rawDescription": "Characters' ranks will ascend when they reach levels 2, 4, and 7.\\nWhen a character ascends, they can gain the chance to choose a Talent or upgrade a Skill.",
+    "description": "Characters' ranks will ascend when they reach levels 2, 4, and 7.\nWhen a character ascends, they can gain the chance to choose a Talent or upgrade a Skill."
+  },
+  {
+    "id": 100,
+    "rawName": "{SPRITE_PRESET#2100}<color=#FFFFFFFF>Physical DMG</color>",
+    "name": "Physical DMG",
+    "rawDescription": "Physical DMG will not apply any Elements, nor can it engage in Elemental Reactions.",
+    "description": "Physical DMG will not apply any Elements, nor can it engage in Elemental Reactions."
+  },
+  {
+    "id": 101,
+    "rawName": "{SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo DMG</color>",
+    "name": "Cryo DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2101}Cryo and can trigger the following Elemental Reactions:\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)",
+    "description": "Applies Cryo and can trigger the following Elemental Reactions:\nMelt: DMG +2 for this instance\nSuperconduct: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nFrozen: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)"
+  },
+  {
+    "id": 102,
+    "rawName": "{SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>",
+    "name": "Hydro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2102}Hydro and can trigger the following Elemental Reactions:\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Frozen</color>: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives +2 Physical or Pyro DMG)\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG",
+    "description": "Applies Hydro and can trigger the following Elemental Reactions:\nVaporize: DMG +2 for this instance\nElectro-Charged: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nFrozen: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives +2 Physical or Pyro DMG)\nBloom: DMG +1 for this instance, creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG"
+  },
+  {
+    "id": 103,
+    "rawName": "{SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color>",
+    "name": "Pyro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2103}Pyro and can trigger the following Elemental Reactions:\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Melt</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Vaporize</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG +2 for this instance, the target is forcibly switched to the next character\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)",
+    "description": "Applies Pyro and can trigger the following Elemental Reactions:\nMelt: DMG +2 for this instance\nVaporize: DMG +2 for this instance\nOverloaded: DMG +2 for this instance, the target is forcibly switched to the next character\nBurning: DMG +1 for this instance, creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)"
+  },
+  {
+    "id": 104,
+    "rawName": "{SPRITE_PRESET#2104}<color=#FFACFFFF>Electro DMG</color>",
+    "name": "Electro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2104}Electro and can trigger the following Elemental Reactions:\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Overloaded</color>: DMG +2 for this instance, the target is forcibly switched to the next character\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Superconduct</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Electro-Charged</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG",
+    "description": "Applies Electro and can trigger the following Elemental Reactions:\nOverloaded: DMG +2 for this instance, the target is forcibly switched to the next character\nSuperconduct: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nElectro-Charged: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nQuicken: DMG +1 for this instance, creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG"
+  },
+  {
+    "id": 105,
+    "rawName": "{SPRITE_PRESET#2105}<color=#80FFD7FF>Anemo DMG</color>",
+    "name": "Anemo DMG",
+    "rawDescription": "Reacts with Elements if they are already applied:\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Swirl</color>: Deals 1 Cryo DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Swirl</color>: Deals 1 Hydro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Swirl</color>: Deals 1 Pyro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Swirl</color>: Deals 1 Electro DMG to all opposing characters except the target",
+    "description": "Reacts with Elements if they are already applied:\nCryo Swirl: Deals 1 Cryo DMG to all opposing characters except the target\nHydro Swirl: Deals 1 Hydro DMG to all opposing characters except the target\nPyro Swirl: Deals 1 Pyro DMG to all opposing characters except the target\nElectro Swirl: Deals 1 Electro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 106,
+    "rawName": "{SPRITE_PRESET#2106}<color=#FFE699FF>Geo DMG</color>",
+    "name": "Geo DMG",
+    "rawDescription": "Reacts with Elements if they are already applied:\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)",
+    "description": "Reacts with Elements if they are already applied:\nCryo Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nHydro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nPyro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nElectro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)"
+  },
+  {
+    "id": 107,
+    "rawName": "{SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color>",
+    "name": "Dendro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2107}Dendro and can trigger the following Elemental Reactions:\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Bloom</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Burning</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Quicken</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG",
+    "description": "Applies Dendro and can trigger the following Elemental Reactions:\nBloom: DMG +1 for this instance, creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG\nBurning: DMG +1 for this instance, creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\nQuicken: DMG +1 for this instance, creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG"
+  },
+  {
+    "id": 150,
+    "rawName": "{SPRITE_PRESET#2100}<color=#FFFFFFFF>Physical DMG</color>",
+    "name": "Physical DMG",
+    "rawDescription": "Physical DMG will not apply any Elements, nor can it engage in Elemental Reactions.",
+    "description": "Physical DMG will not apply any Elements, nor can it engage in Elemental Reactions."
+  },
+  {
+    "id": 151,
+    "rawName": "{SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo DMG</color>",
+    "name": "Cryo DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2101}Cryo and can trigger the following Elemental Reactions:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Frostbite</color> to all opposing characters\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: Apply <color=#FFCC33>4</color> stacks of <color=#FFFFFFFF>Frostbite</color> to the target",
+    "description": "Applies Cryo and can trigger the following Elemental Reactions:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1\nMelt: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nSuperconduct: Apply 1 stack of Frostbite to all opposing characters\nFrozen: Apply 4 stacks of Frostbite to the target"
+  },
+  {
+    "id": 152,
+    "rawName": "{SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>",
+    "name": "Hydro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2102}Hydro and can trigger the following Elemental Reactions:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: Deal <color=#FFCC33>1</color> Piercing DMG to all opposing characters\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: Apply <color=#FFCC33>4</color> stacks of <color=#FFFFFFFF>Frostbite</color> to the target\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Create <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Dendro Core</color>",
+    "description": "Applies Hydro and can trigger the following Elemental Reactions:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1\nVaporize: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nElectro-Charged: Deal 1 Piercing DMG to all opposing characters\nFrozen: Apply 4 stacks of Frostbite to the target\nBloom: Create 1 stack of Dendro Core"
+  },
+  {
+    "id": 153,
+    "rawName": "{SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color>",
+    "name": "Pyro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2103}Pyro and can trigger the following Elemental Reactions:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1.\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG +<color=#FFCC33>1</color>, the target is switched to the previous character, with the two characters switching places and taking <color=#FFCC33>1</color> Piercing DMG\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Perpetual Burn</color> to the target",
+    "description": "Applies Pyro and can trigger the following Elemental Reactions:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1.\nVaporize: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nMelt: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nOverloaded: DMG +1, the target is switched to the previous character, with the two characters switching places and taking 1 Piercing DMG\nBurning: Apply 1 stack of Perpetual Burn to the target"
+  },
+  {
+    "id": 154,
+    "rawName": "{SPRITE_PRESET#2104}<color=#FFACFFFF>Electro DMG</color>",
+    "name": "Electro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2104}Electro and can trigger the following Elemental Reactions:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1.\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG +<color=#FFCC33>1</color>, the target is switched to the previous character, with the two characters switching places and taking <color=#FFCC33>1</color> Piercing DMG\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Frostbite</color> to all opposing characters\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: Deal <color=#FFCC33>1</color> Piercing DMG to all opposing characters\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: Create 2 stacks of <color=#FFFFFFFF>Catalyzing Field</color> (Max <color=#FFCC33>2</color> stacks)",
+    "description": "Applies Electro and can trigger the following Elemental Reactions:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1.\nOverloaded: DMG +1, the target is switched to the previous character, with the two characters switching places and taking 1 Piercing DMG\nSuperconduct: Apply 1 stack of Frostbite to all opposing characters\nElectro-Charged: Deal 1 Piercing DMG to all opposing characters\nQuicken: Create 2 stacks of Catalyzing Field (Max 2 stacks)"
+  },
+  {
+    "id": 155,
+    "rawName": "{SPRITE_PRESET#2105}<color=#80FFD7FF>Anemo DMG</color>",
+    "name": "Anemo DMG",
+    "rawDescription": "Reacts with Elements if they are already applied:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1.\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Cryo DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Hydro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Pyro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Electro DMG to all opposing characters except the target",
+    "description": "Reacts with Elements if they are already applied:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1.\nCryo Swirl: DMG +1, deals 1 Cryo DMG to all opposing characters except the target\nHydro Swirl: DMG +1, deals 1 Hydro DMG to all opposing characters except the target\nPyro Swirl: DMG +1, deals 1 Pyro DMG to all opposing characters except the target\nElectro Swirl: DMG +1, deals 1 Electro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 156,
+    "rawName": "{SPRITE_PRESET#2106}<color=#FFE699FF>Geo DMG</color>",
+    "name": "Geo DMG",
+    "rawDescription": "Reacts with Elements if they are already applied:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points",
+    "description": "Reacts with Elements if they are already applied:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1\nCryo Crystallize: Create 3 Shield points\nHydro Crystallize: Create 3 Shield points\nPyro Crystallize: Create 3 Shield points\nElectro Crystallize: Create 3 Shield points"
+  },
+  {
+    "id": 157,
+    "rawName": "{SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color>",
+    "name": "Dendro DMG",
+    "rawDescription": "Applies {SPRITE_PRESET#2107}Dendro and can trigger the following Elemental Reactions:\\nEvery 1 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> increases the <color=#FFCC33>specified effect</color> by a factor of 1.\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Create <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Dendro Core</color>\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Perpetual Burn</color> to the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: Create 2 stacks of <color=#FFFFFFFF>Catalyzing Field</color> (Max <color=#FFCC33>2</color> stacks)",
+    "description": "Applies Dendro and can trigger the following Elemental Reactions:\nEvery 1 Elemental Mastery increases the specified effect by a factor of 1.\nBloom: Create 1 stack of Dendro Core\nBurning: Apply 1 stack of Perpetual Burn to the target\nQuicken: Create 2 stacks of Catalyzing Field (Max 2 stacks)"
+  },
+  {
+    "id": 111,
+    "rawName": "{SPRITE_PRESET#2101}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 112,
+    "rawName": "{SPRITE_PRESET#2102}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 113,
+    "rawName": "{SPRITE_PRESET#2103}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 114,
+    "rawName": "{SPRITE_PRESET#2104}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 115,
+    "rawName": "{SPRITE_PRESET#2105}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 116,
+    "rawName": "{SPRITE_PRESET#2106}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 117,
+    "rawName": "{SPRITE_PRESET#2107}",
+    "name": "",
+    "rawDescription": "",
+    "description": ""
+  },
+  {
+    "id": 201,
+    "rawName": "<color=#99FFFFFF>{SPRITE_PRESET#2101}Cryo Application</color>",
+    "name": "Cryo Application",
+    "rawDescription": "When {SPRITE_PRESET#2101}Cryo is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: No effect\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: No effect\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: The target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)",
+    "description": "When Cryo is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nMelt: No effect\nSuperconduct: No effect\nFrozen: The target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)"
+  },
+  {
+    "id": 202,
+    "rawName": "<color=#80C0FFFF>{SPRITE_PRESET#2102}Hydro Application</color>",
+    "name": "Hydro Application",
+    "rawDescription": "When {SPRITE_PRESET#2102}Hydro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: No effect\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: No effect\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Frozen</color>: The target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG",
+    "description": "When Hydro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nVaporize: No effect\nElectro-Charged: No effect\nFrozen: The target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)\nBloom: Creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG"
+  },
+  {
+    "id": 252,
+    "rawName": "<color=#80C0FFFF>{SPRITE_PRESET#2102}Hydro Application</color>",
+    "name": "Hydro Application",
+    "rawDescription": "When {SPRITE_PRESET#2102}Hydro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: No effect\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: No effect\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Frozen</color>: ATK -2 for target's next action\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG",
+    "description": "When Hydro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nVaporize: No effect\nElectro-Charged: No effect\nFrozen: ATK -2 for target's next action\nBloom: Creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG"
+  },
+  {
+    "id": 203,
+    "rawName": "<color=#FF9999FF>{SPRITE_PRESET#2103}Pyro Application</color>",
+    "name": "Pyro Application",
+    "rawDescription": "When {SPRITE_PRESET#2103}Pyro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Melt</color>: No effect\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Vaporize</color>: No effect\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: The target is forcibly switched to the next character\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: Creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)",
+    "description": "When Pyro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nMelt: No effect\nVaporize: No effect\nOverloaded: The target is forcibly switched to the next character\nBurning: Creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)"
+  },
+  {
+    "id": 204,
+    "rawName": "<color=#FFACFFFF>{SPRITE_PRESET#2104}Electro Application</color>",
+    "name": "Electro Application",
+    "rawDescription": "When {SPRITE_PRESET#2104}Electro is applied without dealing any DMG, the Elemental Reactions triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Overloaded</color>: The target is forcibly switched to the next character\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Superconduct</color>: No effect\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Electro-Charged</color>: No effect\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: Creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG",
+    "description": "When Electro is applied without dealing any DMG, the Elemental Reactions triggered will ignore DMG-dealing effects:\nOverloaded: The target is forcibly switched to the next character\nSuperconduct: No effect\nElectro-Charged: No effect\nQuicken: Creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG"
+  },
+  {
+    "id": 206,
+    "rawName": "<color=#FFE699FF>{SPRITE_PRESET#2106}Geo Application</color>",
+    "name": "Geo Application",
+    "rawDescription": "When {SPRITE_PRESET#2106}Geo is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Crystallize</color>: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Crystallize</color>: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Crystallize</color>: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Crystallize</color>: The opponent's active character gains 1 Shield point (Can stack, max 2 points).",
+    "description": "When Geo is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nCryo Crystallize: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\nHydro Crystallize: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\nPyro Crystallize: The opponent's active character gains 1 Shield point (Can stack, max 2 points).\nElectro Crystallize: The opponent's active character gains 1 Shield point (Can stack, max 2 points)."
+  },
+  {
+    "id": 207,
+    "rawName": "<color=#7EC236FF>{SPRITE_PRESET#2107}Dendro Application</color>",
+    "name": "Dendro Application",
+    "rawDescription": "When {SPRITE_PRESET#2107}Dendro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Bloom</color>: Creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Burning</color>: Creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Quicken</color>: Creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG",
+    "description": "When Dendro is applied without dealing any DMG, the Elemental Reaction triggered will ignore DMG-dealing effects:\nBloom: Creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG\nBurning: Creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\nQuicken: Creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG"
+  },
+  {
+    "id": 212,
+    "rawName": "<color=#80C0FFFF>{SPRITE_PRESET#2102}Hydro-Related Reactions</color>",
+    "name": "Hydro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Frozen</color>: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Swirl</color>: Deals 1 Hydro DMG to all opposing characters except the target",
+    "description": "Vaporize: DMG +2 for this instance\nElectro-Charged: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nFrozen: DMG +1 for this instance, the target is unable to perform any Actions this Round (Can be removed in advance after the target receives Physical or Pyro DMG, in which case they will take +2 DMG)\nBloom: Creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG\nHydro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nHydro Swirl: Deals 1 Hydro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 213,
+    "rawName": "<color=#FF9999FF>{SPRITE_PRESET#2103}Pyro-Related Reactions</color>",
+    "name": "Pyro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2103}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Melt</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Vaporize</color>: DMG +2 for this instance\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG +2 for this instance, the target is forcibly switched to the next character\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Swirl</color>: Deals 1 Pyro DMG to all opposing characters except the target",
+    "description": "Melt: DMG +2 for this instance\nVaporize: DMG +2 for this instance\nOverloaded: DMG +2 for this instance, the target is forcibly switched to the next character\nBurning: DMG +1 for this instance, creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\nPyro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nPyro Swirl: Deals 1 Pyro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 214,
+    "rawName": "<color=#FFACFFFF>{SPRITE_PRESET#2104}Electro-Related Reactions</color>",
+    "name": "Electro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2104}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Overloaded</color>: DMG +2 for this instance, the target is forcibly switched to the next character\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Superconduct</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Electro-Charged</color>: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Crystallize</color>: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Swirl</color>: Deal 1 Electro DMG to all opposing characters except the target",
+    "description": "Overloaded: DMG +2 for this instance, the target is forcibly switched to the next character\nSuperconduct: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nElectro-Charged: DMG +1 for this instance, deal 1 Piercing DMG to all opposing characters except the target\nQuicken: DMG +1 for this instance, creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG\nElectro Crystallize: DMG +1 for this instance, your active character gains 1 Shield point (Can stack, max 2 points)\nElectro Swirl: Deal 1 Electro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 217,
+    "rawName": "<color=#7EC236FF>{SPRITE_PRESET#2107}Dendro-Related Reactions</color>",
+    "name": "Dendro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2107}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Bloom</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Dendro Core</color>] that grants +2 DMG to the next instance of Pyro or Electro DMG\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Burning</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Burning Flame</color>] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\\n{SPRITE_PRESET#2107}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Quicken</color>: DMG +1 for this instance, creates a [<color=#FFFFFFFF>Catalyzing Field</color>] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG",
+    "description": "Bloom: DMG +1 for this instance, creates a [Dendro Core] that grants +2 DMG to the next instance of Pyro or Electro DMG\nBurning: DMG +1 for this instance, creates a [Burning Flame] that will deal 1 Pyro DMG at the end of the Round (Takes effect once, max 2 stacks)\nQuicken: DMG +1 for this instance, creates a [Catalyzing Field] that grants +1 DMG to the next 2 instances of Dendro or Electro DMG"
+  },
+  {
+    "id": 261,
+    "rawName": "<color=#99FFFFFF>{SPRITE_PRESET#2101}Cryo-Related Reactions</color>",
+    "name": "Cryo-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Frostbite</color> to all opposing characters\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: Apply <color=#FFCC33>4</color> stacks of <color=#FFFFFFFF>Frostbite</color> to the target\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2106}<color=#FFFFFFFF>Cryo Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2105}<color=#FFFFFFFF>Cryo Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Cryo DMG to all opposing characters except the target",
+    "description": "Melt: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nSuperconduct: Apply 1 stack of Frostbite to all opposing characters\nFrozen: Apply 4 stacks of Frostbite to the target\nCryo Crystallize: Create 3 Shield points\nCryo Swirl: DMG +1, deals 1 Cryo DMG to all opposing characters except the target"
+  },
+  {
+    "id": 262,
+    "rawName": "<color=#80C0FFFF>{SPRITE_PRESET#2102}Hydro-Related Reactions</color>",
+    "name": "Hydro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: Deal <color=#FFCC33>1</color> Piercing DMG to all opposing characters\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Frozen</color>: Apply <color=#FFCC33>4</color> stacks of <color=#FFFFFFFF>Frostbite</color> to the target\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Create <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Dendro Core</color>\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2106}<color=#FFFFFFFF>Hydro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2105}<color=#FFFFFFFF>Hydro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Hydro DMG to all opposing characters except the target",
+    "description": "Vaporize: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nElectro-Charged: Deal 1 Piercing DMG to all opposing characters\nFrozen: Apply 4 stacks of Frostbite to the target\nBloom: Create 1 stack of Dendro Core\nHydro Crystallize: Create 3 Shield points\nHydro Swirl: DMG +1, deals 1 Hydro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 263,
+    "rawName": "<color=#FF9999FF>{SPRITE_PRESET#2103}Pyro-Related Reactions</color>",
+    "name": "Pyro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2102}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Vaporize</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Melt</color>: DMG +100% for this instance, with every 8 {SPRITE_PRESET#1113}<color=#FFFFFFFF>Elemental Mastery</color> contributing an additional 100%\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG + <color=#FFCC33>1</color>, the target is switched to the previous character, with the two characters switching places and taking <color=#FFCC33>1</color> Piercing DMG\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Perpetual Burn</color> to the target\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2106}<color=#FFFFFFFF>Pyro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2105}<color=#FFFFFFFF>Pyro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Pyro DMG to all opposing characters except the target",
+    "description": "Vaporize: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nMelt: DMG +100% for this instance, with every 8 Elemental Mastery contributing an additional 100%\nOverloaded: DMG + 1, the target is switched to the previous character, with the two characters switching places and taking 1 Piercing DMG\nBurning: Apply 1 stack of Perpetual Burn to the target\nPyro Crystallize: Create 3 Shield points\nPyro Swirl: DMG +1, deals 1 Pyro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 264,
+    "rawName": "<color=#FFACFFFF>{SPRITE_PRESET#2104}Electro-Related Reactions</color>",
+    "name": "Electro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2103}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Overloaded</color>: DMG +<color=#FFCC33>1</color>, the target is switched to the previous character, with the two characters switching places and taking <color=#FFCC33>1</color> Piercing DMG\\n{SPRITE_PRESET#2101}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Superconduct</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Frostbite</color> to all opposing characters\\n{SPRITE_PRESET#2102}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro-Charged</color>: Deal <color=#FFCC33>1</color> Piercing DMG to all opposing characters\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: Create 2 stacks of <color=#FFFFFFFF>Catalyzing Field</color> (Max <color=#FFCC33>2</color> stacks)\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2106}<color=#FFFFFFFF>Electro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2105}<color=#FFFFFFFF>Electro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Electro DMG to all opposing characters except the target",
+    "description": "Overloaded: DMG +1, the target is switched to the previous character, with the two characters switching places and taking 1 Piercing DMG\nSuperconduct: Apply 1 stack of Frostbite to all opposing characters\nElectro-Charged: Deal 1 Piercing DMG to all opposing characters\nQuicken: Create 2 stacks of Catalyzing Field (Max 2 stacks)\nElectro Crystallize: Create 3 Shield points\nElectro Swirl: DMG +1, deals 1 Electro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 265,
+    "rawName": "<color=#80FFD7FF>{SPRITE_PRESET#2105}Anemo-Related Reactions</color>",
+    "name": "Anemo-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2105}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Cryo DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Hydro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Pyro DMG to all opposing characters except the target\\n{SPRITE_PRESET#2105}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Swirl</color>: DMG +<color=#FFCC33>1</color>, deals 1 Electro DMG to all opposing characters except the target",
+    "description": "Cryo Swirl: DMG +1, deals 1 Cryo DMG to all opposing characters except the target\nHydro Swirl: DMG +1, deals 1 Hydro DMG to all opposing characters except the target\nPyro Swirl: DMG +1, deals 1 Pyro DMG to all opposing characters except the target\nElectro Swirl: DMG +1, deals 1 Electro DMG to all opposing characters except the target"
+  },
+  {
+    "id": 266,
+    "rawName": "<color=#FFE699FF>{SPRITE_PRESET#2106}Geo-Related Reactions</color>",
+    "name": "Geo-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2106}{SPRITE_PRESET#2101}<color=#FFFFFFFF>Cryo Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2102}<color=#FFFFFFFF>Hydro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2103}<color=#FFFFFFFF>Pyro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points\\n{SPRITE_PRESET#2106}{SPRITE_PRESET#2104}<color=#FFFFFFFF>Electro Crystallize</color>: Create <color=#FFCC33>3</color> Shield points",
+    "description": "Cryo Crystallize: Create 3 Shield points\nHydro Crystallize: Create 3 Shield points\nPyro Crystallize: Create 3 Shield points\nElectro Crystallize: Create 3 Shield points"
+  },
+  {
+    "id": 267,
+    "rawName": "<color=#7EC236FF>{SPRITE_PRESET#2107}Dendro-Related Reactions</color>",
+    "name": "Dendro-Related Reactions",
+    "rawDescription": "{SPRITE_PRESET#2102}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Bloom</color>: Create <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Dendro Core</color>\\n{SPRITE_PRESET#2103}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Burning</color>: Apply <color=#FFCC33>1</color> stack of <color=#FFFFFFFF>Perpetual Burn</color> to the target\\n{SPRITE_PRESET#2104}{SPRITE_PRESET#2107}<color=#FFFFFFFF>Quicken</color>: Create 2 stacks of <color=#FFFFFFFF>Catalyzing Field</color> (Max <color=#FFCC33>2</color> stacks)",
+    "description": "Bloom: Create 1 stack of Dendro Core\nBurning: Apply 1 stack of Perpetual Burn to the target\nQuicken: Create 2 stacks of Catalyzing Field (Max 2 stacks)"
+  },
+  {
+    "id": 301,
+    "rawName": "{SPRITE_PRESET#1101}Cryo",
+    "name": "Cryo",
+    "rawDescription": "Spend the <color=#99FFFFFF>{SPRITE_PRESET#1101}Cryo</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Cryo Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 302,
+    "rawName": "{SPRITE_PRESET#1102}Hydro",
+    "name": "Hydro",
+    "rawDescription": "Spend the <color=#80C0FFFF>{SPRITE_PRESET#1102}Hydro</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Hydro Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 303,
+    "rawName": "{SPRITE_PRESET#1103}Pyro",
+    "name": "Pyro",
+    "rawDescription": "Spend the <color=#FF9999FF>{SPRITE_PRESET#1103}Pyro</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Pyro Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 304,
+    "rawName": "{SPRITE_PRESET#1104}Electro",
+    "name": "Electro",
+    "rawDescription": "Spend the <color=#FFACFFFF>{SPRITE_PRESET#1104}Electro</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Electro Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 305,
+    "rawName": "{SPRITE_PRESET#1105}Anemo",
+    "name": "Anemo",
+    "rawDescription": "Spend the <color=#80FFD7FF>{SPRITE_PRESET#1105}Anemo</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Anemo Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 306,
+    "rawName": "{SPRITE_PRESET#1106}Geo",
+    "name": "Geo",
+    "rawDescription": "Spend the <color=#FFE699FF>{SPRITE_PRESET#1106}Geo</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Geo Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 307,
+    "rawName": "{SPRITE_PRESET#1107}Dendro",
+    "name": "Dendro",
+    "rawDescription": "Spend the <color=#7EC236FF>{SPRITE_PRESET#1107}Dendro</color> Dice you have rolled to pay for this cost.\\n({SPRITE_PRESET#1111}Omni Dice may also be used to pay for this.)",
+    "description": "Spend the Dendro Dice you have rolled to pay for this cost.\n(Omni Dice may also be used to pay for this.)"
+  },
+  {
+    "id": 308,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#1108}Matching Element</color>",
+    "name": "Matching Element",
+    "rawDescription": "You must use Elemental Dice that match the number and element featured here to pay this type of cost.\\n(An {SPRITE_PRESET#1111}Omni Die can be considered of any Element.)",
+    "description": "You must use Elemental Dice that match the number and element featured here to pay this type of cost.\n(An Omni Die can be considered of any Element.)"
+  },
+  {
+    "id": 309,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#1109}Unaligned Element</color>",
+    "name": "Unaligned Element",
+    "rawDescription": "You may use Elemental Dice of any element to pay this type of cost.",
+    "description": "You may use Elemental Dice of any element to pay this type of cost."
+  },
+  {
+    "id": 310,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#1110}Energy</color>",
+    "name": "Energy",
+    "rawDescription": "Characters must consume {SPRITE_PRESET#1110}Energy to use their Elemental Bursts.\\nWhen characters use an Elemental Skill or a Normal Attack, they will gain 1 {SPRITE_PRESET#1110}Energy.",
+    "description": "Characters must consume Energy to use their Elemental Bursts.\nWhen characters use an Elemental Skill or a Normal Attack, they will gain 1 Energy."
+  },
+  {
+    "id": 311,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#1112}Arcane Edict</color>",
+    "name": "Arcane Edict",
+    "rawDescription": "Each player can only use 1 {SPRITE_PRESET#3007}Arcane Legend card per match.\\nAn {SPRITE_PRESET#3007}Arcane Legend card can only be played should an {SPRITE_PRESET#1112}Arcane Edict still be present. After an {SPRITE_PRESET#3007}Arcane Legend card is played, the current match's {SPRITE_PRESET#1112}Arcane Edict use will be consumed.",
+    "description": "Each player can only use 1 Arcane Legend card per match.\nAn Arcane Legend card can only be played should an Arcane Edict still be present. After an Arcane Legend card is played, the current match's Arcane Edict use will be consumed."
+  },
+  {
+    "id": 411,
+    "rawName": "<color=#FFFFFFFF>{SPRITE_PRESET#1111}Omni Element</color>",
+    "name": "Omni Element",
+    "rawDescription": "The {SPRITE_PRESET#1111}Omni Element can be considered as any kind of element, and can be used to pay for costs of various kinds.",
+    "description": "The Omni Element can be considered as any kind of element, and can be used to pay for costs of various kinds."
+  },
+  {
+    "id": 501,
+    "rawName": "Elemental Burst",
+    "name": "Elemental Burst",
+    "rawDescription": "When the character's {SPRITE_PRESET#1110}Energy is maxed out, you can consume that {SPRITE_PRESET#1110}Energy to use a powerful Elemental Burst.",
+    "description": "When the character's Energy is maxed out, you can consume that Energy to use a powerful Elemental Burst."
+  },
+  {
+    "id": 502,
+    "rawName": "Passive Skill",
+    "name": "Passive Skill",
+    "rawDescription": "This Skill is constantly in effect and need not to be activated.",
+    "description": "This Skill is constantly in effect and need not to be activated."
+  },
+  {
+    "id": 1001,
+    "rawName": "<color=#FFFFFFFF>Random Hilichurl Summon</color>",
+    "name": "Random Hilichurl Summon",
+    "rawDescription": "There are 4 kinds of Hilichurl Summons in total:\\n<color=#FFFFFFFF>Cryo Hilichurl Shooter</color>: Deal 1 {SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo DMG</color> at the End Phase. Usage(s): 2.\\n<color=#FFFFFFFF>Hydro Samachurl</color>: Deal 1 {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color> at the End Phase. Usage(s): 2.\\n<color=#FFFFFFFF>Hilichurl Berserker</color>: Deal 1 {SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color> at the End Phase. Usage(s): 2.\\n<color=#FFFFFFFF>Electro Hilichurl Shooter</color>: Deal 1 {SPRITE_PRESET#2104}<color=#FFACFFFF>Electro DMG</color> at the End Phase. Usage(s): 2.",
+    "description": "There are 4 kinds of Hilichurl Summons in total:\nCryo Hilichurl Shooter: Deal 1 Cryo DMG at the End Phase. Usage(s): 2.\nHydro Samachurl: Deal 1 Hydro DMG at the End Phase. Usage(s): 2.\nHilichurl Berserker: Deal 1 Pyro DMG at the End Phase. Usage(s): 2.\nElectro Hilichurl Shooter: Deal 1 Electro DMG at the End Phase. Usage(s): 2."
+  },
+  {
+    "id": 1002,
+    "rawName": "<color=#FFFFFFFF>Electro Infusion</color>",
+    "name": "Electro Infusion",
+    "rawDescription": "When the character to which it is attached to deals {SPRITE_PRESET#2100}<color=#FFFFFFFF>Physical Damage</color>, it will be turned into {SPRITE_PRESET#2104}<color=#FFACFFFF>Electro DMG</color>.\\n<color=#FFFFFFFF>Duration (Rounds)</color>: 2",
+    "description": "When the character to which it is attached to deals Physical Damage, it will be turned into Electro DMG.\nDuration (Rounds): 2"
+  },
+  {
+    "id": 1003,
+    "rawName": "<color=#FFFFFFFF>Crowfeather Cover</color>",
+    "name": "Crowfeather Cover",
+    "rawDescription": "The character with this attached deals +1 <color=#FFFFFFFF>Elemental Skill</color> and <color=#FFFFFFFF>Elemental Burst</color> DMG.\\n<color=#FFFFFFFF>Usages: 2</color>",
+    "description": "The character with this attached deals +1 Elemental Skill and Elemental Burst DMG.\nUsages: 2"
+  },
+  {
+    "id": 1004,
+    "rawName": "<color=#FFFFFFFF>Fatui Ambusher</color>",
+    "name": "Fatui Ambusher",
+    "rawDescription": "Fatui Ambushers will trigger their effects after characters on the side of the field they are at use Skills, and will deal DMG to the active character on that side of the field. (Once per Round)\\nThere are 4 kinds of Fatui Ambushers in total:\\n<color=#FFFFFFFF>Cryo Cicin Mage</color>: Deals 1 {SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo DMG</color> when triggered, 2 Usages.\\n<color=#FFFFFFFF>Mirror Maiden</color>: Deals 1 {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color> when triggered, 2 Usages.\\n<color=#FFFFFFFF>Pyroslinger Bracer</color>: Deals 1 {SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color> when triggered, 2 Usages.\\n<color=#FFFFFFFF>Electrohammer Vanguard</color>: Deals 1 {SPRITE_PRESET#2104}<color=#FFACFFFF>Electro DMG</color> when triggered, 2 Usages.",
+    "description": "Fatui Ambushers will trigger their effects after characters on the side of the field they are at use Skills, and will deal DMG to the active character on that side of the field. (Once per Round)\nThere are 4 kinds of Fatui Ambushers in total:\nCryo Cicin Mage: Deals 1 Cryo DMG when triggered, 2 Usages.\nMirror Maiden: Deals 1 Hydro DMG when triggered, 2 Usages.\nPyroslinger Bracer: Deals 1 Pyro DMG when triggered, 2 Usages.\nElectrohammer Vanguard: Deals 1 Electro DMG when triggered, 2 Usages."
+  },
+  {
+    "id": 1005,
+    "rawName": "<color=#FFFFFFFF>Riptide</color>",
+    "name": "Riptide",
+    "rawDescription": "<color=#FFFFFFFF>When the character to which this is attached is defeated: </color>Apply Riptide to active character.\\nWhen <color=#FFFFFFFF>Tartaglia</color> is in <color=#FFFFFFFF>Melee Stance</color>, he will deal additional DMG when attacking the character to which this is attached.",
+    "description": "When the character to which this is attached is defeated: Apply Riptide to active character.\nWhen Tartaglia is in Melee Stance, he will deal additional DMG when attacking the character to which this is attached."
+  },
+  {
+    "id": 1006,
+    "rawName": "<color=#FFFFFFFF>Aegis of Abyssal Flame</color>",
+    "name": "Aegis of Abyssal Flame",
+    "rawDescription": "Provide <color=#FFFFFFFF>2 {SPRITE_PRESET#4007}<color=#FFFFFFFF>Shield</color> points</color> to the character to which this card is attached.\\n<color=#FFFFFFFF>After said {SPRITE_PRESET#4007}Shield points are depleted:</color> Deal 1 <color=#FFFFFFFF>Piercing DMG</color> to all opposing characters.",
+    "description": "Provide 2 Shield points to the character to which this card is attached.\nAfter said Shield points are depleted: Deal 1 Piercing DMG to all opposing characters."
+  },
+  {
+    "id": 1007,
+    "rawName": "<color=#FFFFFFFF>Superlative Superstrength</color>",
+    "name": "Superlative Superstrength",
+    "rawDescription": "<color=#FFFFFFFF>When the character to which this is attached uses a <color=#FFFFFFFF>Charged Attack</color>: </color>Deal +1 DMG. If the <color=#FFFFFFFF>Usages</color> are no less than 2, then costs 1 less <color=#FFFFFFFF>{SPRITE_PRESET#1109}Unaligned Element</color>.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>: 1</color> (Can stack. Max 3 stacks.)",
+    "description": "When the character to which this is attached uses a Charged Attack: Deal +1 DMG. If the Usages are no less than 2, then costs 1 less Unaligned Element.\nUsage(s): 1 (Can stack. Max 3 stacks.)"
+  },
+  {
+    "id": 1008,
+    "rawName": "<color=#FFFFFFFF>Clusterbloom Arrow</color>",
+    "name": "Clusterbloom Arrow",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 1 {SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color>.\\n<color=#FFFFFFFF>Usage(s): 1</color> (Can stack. Max 2 stacks.)",
+    "description": "End Phase: Deal 1 Dendro DMG.\nUsage(s): 1 (Can stack. Max 2 stacks.)"
+  },
+  {
+    "id": 1009,
+    "rawName": "<color=#FFFFFFFF>Blood Blossom</color>",
+    "name": "Blood Blossom",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 1 {SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color> to the character to which this is attached.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>:1</color>",
+    "description": "End Phase: Deal 1 Pyro DMG to the character to which this is attached.\nUsage(s):1"
+  },
+  {
+    "id": 1010,
+    "rawName": "<color=#FFFFFFFF>Scarlet Seal</color>",
+    "name": "Scarlet Seal",
+    "rawDescription": "<color=#FFFFFFFF>When the character uses a <color=#FFFFFFFF>Charged Attack</color>:</color> DMG dealt +2.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>: 1</color> (Can stack. Max 2 stacks.)",
+    "description": "When the character uses a Charged Attack: DMG dealt +2.\nUsage(s): 1 (Can stack. Max 2 stacks.)"
+  },
+  {
+    "id": 1011,
+    "rawName": "<color=#FFFFFFFF>Bountiful Core</color>",
+    "name": "Bountiful Core",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 2 {SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color>.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s): </color>1</color> (Can stack, max 3 stacks)\\n<color=#FFFFFFFF>When you declare the end of your Round:</color> If this summon has at least 2 Usages remaining, deal 2 {SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color>. (Consumes <color=#FFFFFFFF>Usages</color>)",
+    "description": "End Phase: Deal 2 Dendro DMG.\nUsage(s): 1 (Can stack, max 3 stacks)\nWhen you declare the end of your Round: If this summon has at least 2 Usages remaining, deal 2 Dendro DMG. (Consumes Usages)"
+  },
+  {
+    "id": 1012,
+    "rawName": "<color=#FFFFFFFF>Elemental Absorption</color>",
+    "name": "Elemental Absorption",
+    "rawDescription": "Azhdaha can absorb the power of {SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo</color>/{SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro</color>/{SPRITE_PRESET#2103}<color=#FF9999FF>Pyro</color>/{SPRITE_PRESET#2104}<color=#FFACFFFF>Electro</color>. (Only 1 can be absorbed at any one time)\\n<color=#FFFFFFFF>When Azhdaha has absorbed any of the above Elements:</color> Based on the type of Element that was absorbed, gain the skills {SPRITE_PRESET#2101}<color=#99FFFFFF>Frostspike Wave</color>/{SPRITE_PRESET#2102}<color=#80C0FFFF>Torrential Rebuke</color>/{SPRITE_PRESET#2103}<color=#FF9999FF>Blazing Rebuke</color>/{SPRITE_PRESET#2104}<color=#FFACFFFF>Thunderstorm Wave</color>.",
+    "description": "Azhdaha can absorb the power of Cryo/Hydro/Pyro/Electro. (Only 1 can be absorbed at any one time)\nWhen Azhdaha has absorbed any of the above Elements: Based on the type of Element that was absorbed, gain the skills Frostspike Wave/Torrential Rebuke/Blazing Rebuke/Thunderstorm Wave."
+  },
+  {
+    "id": 1013,
+    "rawName": "<color=#FFFFFFFF>Crimson Witch of Embers</color>",
+    "name": "Crimson Witch of Embers",
+    "rawDescription": "La Signora can permanently change into the \"Crimson Witch of Embers\" state.\\nAfter changing, La Signora's Elemental Type changes from {SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo</color> to {SPRITE_PRESET#2103}<color=#FF9999FF>Pyro</color>.\\nAfter changing, this character can use the skills of the Crimson Witch of Embers, but can no longer use La Signora's original skills.",
+    "description": "La Signora can permanently change into the \"Crimson Witch of Embers\" state.\nAfter changing, La Signora's Elemental Type changes from Cryo to Pyro.\nAfter changing, this character can use the skills of the Crimson Witch of Embers, but can no longer use La Signora's original skills."
+  },
+  {
+    "id": 1014,
+    "rawName": "<color=#FFFFFFFF>Deactivated</color>",
+    "name": "Deactivated",
+    "rawDescription": "When clockwork meka that have either Arkhe: Ousia or Arkhe: Pneuma receive DMG aligned with the opposite Arkhe, a pneuma-ousia annihilation reaction will occur, and they will become Deactivated.\\nDeactivated clockwork meka will not be able to use their original abilities, and can only use Deactivated abilities. Deactivated abilities cannot deal Elemental DMG, and can only deal Physical DMG.",
+    "description": "When clockwork meka that have either Arkhe: Ousia or Arkhe: Pneuma receive DMG aligned with the opposite Arkhe, a pneuma-ousia annihilation reaction will occur, and they will become Deactivated.\nDeactivated clockwork meka will not be able to use their original abilities, and can only use Deactivated abilities. Deactivated abilities cannot deal Elemental DMG, and can only deal Physical DMG."
+  },
+  {
+    "id": 1015,
+    "rawName": "Pneuma-Ousia Annihilation Reaction",
+    "name": "Pneuma-Ousia Annihilation Reaction",
+    "rawDescription": "After an Ousia-aligned character takes {SPRITE_PRESET#3505}Arkhe: Pneuma-aligned DMG, or after Pneuma-aligned characters take {SPRITE_PRESET#3504}Arkhe: Ousia-aligned DMG, a Pneuma-Ousia Annihilation Reaction will occur.\\nPneuma-Ousia Annihilation reactions will have different effects on different types of cards.",
+    "description": "After an Ousia-aligned character takes Arkhe: Pneuma-aligned DMG, or after Pneuma-aligned characters take Arkhe: Ousia-aligned DMG, a Pneuma-Ousia Annihilation Reaction will occur.\nPneuma-Ousia Annihilation reactions will have different effects on different types of cards."
+  },
+  {
+    "id": 1016,
+    "rawName": "Sheer Cold",
+    "name": "Sheer Cold",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 1 {SPRITE_PRESET#2101}<color=#99FFFFFF>Cryo DMG</color> to the character to which this is attached.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>:1</color> (When the character with this attached has <color=#FFFFFFFF>Blazing Heat</color> attached to them, remove this effect.)",
+    "description": "End Phase: Deal 1 Cryo DMG to the character to which this is attached.\nUsage(s):1 (When the character with this attached has Blazing Heat attached to them, remove this effect.)"
+  },
+  {
+    "id": 1017,
+    "rawName": "Blazing Heat",
+    "name": "Blazing Heat",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 1 {SPRITE_PRESET#2103}<color=#FF9999FF>Pyro DMG</color> to the character to which this is attached.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>:1</color> (When the character with this attached has <color=#FFFFFFFF>Sheer Cold</color> attached to them, remove this effect.)",
+    "description": "End Phase: Deal 1 Pyro DMG to the character to which this is attached.\nUsage(s):1 (When the character with this attached has Sheer Cold attached to them, remove this effect.)"
+  },
+  {
+    "id": 1018,
+    "rawName": "Blazing Barrier",
+    "name": "Blazing Barrier",
+    "rawDescription": "Grants <color=#FFFFFFFF>1 {SPRITE_PRESET#4007}<color=#FFFFFFFF>Shield</color> point</color> to your active character. (Can stack. Max 3 points.)",
+    "description": "Grants 1 Shield point to your active character. (Can stack. Max 3 points.)"
+  },
+  {
+    "id": 1019,
+    "rawName": "Gurgling Bubble",
+    "name": "Gurgling Bubble",
+    "rawDescription": "Character cannot use Skills. (Lasts until the end of this Round)",
+    "description": "Character cannot use Skills. (Lasts until the end of this Round)"
+  },
+  {
+    "id": 1020,
+    "rawName": "<color=#FFFFFFFF>Equitable Judgment</color>",
+    "name": "Equitable Judgment",
+    "rawDescription": "<color=#D3BC8E>Normal Attack</color>\\n(Prepare for 1 turn)\\nDeals 2 {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>. If this character has at least 6 HP, then this DMG is increased by 1 and this character deals 1 Piercing DMG to self.",
+    "description": "Normal Attack\n(Prepare for 1 turn)\nDeals 2 Hydro DMG. If this character has at least 6 HP, then this DMG is increased by 1 and this character deals 1 Piercing DMG to self."
+  },
+  {
+    "id": 1021,
+    "rawName": "Taroumaru Enraged",
+    "name": "Taroumaru Enraged",
+    "rawDescription": "<color=#FFFFFFFF>End Phase</color>: Deal 2 {SPRITE_PRESET#2100}<color=#FFFFFFFF>Physical DMG</color>.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usages</color>: 2</color>",
+    "description": "End Phase: Deal 2 Physical DMG.\nUsages: 2"
+  },
+  {
+    "id": 1022,
+    "rawName": "<color=#FFFFFFFF>Curse of the Undercurrent</color>",
+    "name": "Curse of the Undercurrent",
+    "rawDescription": "<color=#FFFFFFFF>When character(s) on this side of the playing field use Elemental Skills or Elemental Bursts:</color> They must spend 1 extra Elemental Die.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usages</color>: 2</color>",
+    "description": "When character(s) on this side of the playing field use Elemental Skills or Elemental Bursts: They must spend 1 extra Elemental Die.\nUsages: 2"
+  },
+  {
+    "id": 1023,
+    "rawName": "<color=#FFFFFFFF>Armored Crab Carapace</color>",
+    "name": "Armored Crab Carapace",
+    "rawDescription": "Each stack provides 1 {SPRITE_PRESET#4007}<color=#FFFFFFFF>Shield</color> to protect the equipped character.",
+    "description": "Each stack provides 1 Shield to protect the equipped character."
+  },
+  {
+    "id": 1024,
+    "rawName": "<color=#FFFFFFFF>Pressurized Collapse</color>",
+    "name": "Pressurized Collapse",
+    "rawDescription": "<color=#FFFFFFFF>End Phase: </color>Switch the character to which this is attached to be the Active Character.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>: 1</color>\\n(Only 1 such effect can be on the same side of the playing field)",
+    "description": "End Phase: Switch the character to which this is attached to be the Active Character.\nUsage(s): 1\n(Only 1 such effect can be on the same side of the playing field)"
+  },
+  {
+    "id": 1025,
+    "rawName": "<color=#FFFFFFFF>Distant Storm</color>",
+    "name": "Distant Storm",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 2 <color=#FFFFFFFF>Piercing DMG</color> to the character to which this is attached.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usage(s)</color>:1</color>",
+    "description": "End Phase: Deal 2 Piercing DMG to the character to which this is attached.\nUsage(s):1"
+  },
+  {
+    "id": 1027,
+    "rawName": "<color=#FFFFFFFF>Starry Semblance</color>",
+    "name": "Starry Semblance",
+    "rawDescription": "The All-Devouring Narwhal gains 1 extra Max HP per stack.",
+    "description": "The All-Devouring Narwhal gains 1 extra Max HP per stack."
+  },
+  {
+    "id": 1028,
+    "rawName": "<color=#FFFFFFFF>Sand and Dreams</color>",
+    "name": "Sand and Dreams",
+    "rawDescription": "<color=#FFFFFFFF>When you play a {SPRITE_PRESET#3006}Talent card or a Character uses a Skill:</color> Spend 3 fewer Elemental Dice.\\n<color=#FFFFFFFF>Usages: 1</color>",
+    "description": "When you play a Talent card or a Character uses a Skill: Spend 3 fewer Elemental Dice.\nUsages: 1"
+  },
+  {
+    "id": 1029,
+    "rawName": "<color=#FFFFFFFF>Revelry</color>",
+    "name": "Revelry",
+    "rawDescription": "Your side deals +1 DMG. (Including Swirl DMG triggered by Characters)\\n<color=#FFFFFFFF>Usages: 1</color> (Can stack. No stack limit)",
+    "description": "Your side deals +1 DMG. (Including Swirl DMG triggered by Characters)\nUsages: 1 (Can stack. No stack limit)"
+  },
+  {
+    "id": 1030,
+    "rawName": "<color=#FFFFFFFF>Center of Attention</color>",
+    "name": "Center of Attention",
+    "rawDescription": "<color=#FFFFFFFF>When the character uses a Normal Attack:</color> {SPRITE_PRESET#2100}<color=#FFFFFFFF>Physical DMG</color> dealt by the character is converted to {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>. If the character is in the {SPRITE_PRESET#3504}Ousia state, heal all of your characters on standby for 1 HP. If the character is in the {SPRITE_PRESET#3505}Pneuma state, deal +2 DMG for this instance, but deal 1 Piercing DMG to your character who has taken the least DMG.\\n<color=#FFFFFFFF>Usage(s): 1</color>",
+    "description": "When the character uses a Normal Attack: Physical DMG dealt by the character is converted to Hydro DMG. If the character is in the Ousia state, heal all of your characters on standby for 1 HP. If the character is in the Pneuma state, deal +2 DMG for this instance, but deal 1 Piercing DMG to your character who has taken the least DMG.\nUsage(s): 1"
+  },
+  {
+    "id": 1031,
+    "rawName": "<color=#FFFFFFFF>Salon Members</color>",
+    "name": "Salon Members",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Deal 1 {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>. If your side has characters with at least 6 HP, deal 1 <color=#FFFFFFFF>Piercing DMG</color> to your character who has taken the least DMG, and deal another 1 {SPRITE_PRESET#2102}<color=#80C0FFFF>Hydro DMG</color>.\\n<color=#FFFFFFFF>Usages: 2</color> (Can stack. Max 4 stacks)",
+    "description": "End Phase: Deal 1 Hydro DMG. If your side has characters with at least 6 HP, deal 1 Piercing DMG to your character who has taken the least DMG, and deal another 1 Hydro DMG.\nUsages: 2 (Can stack. Max 4 stacks)"
+  },
+  {
+    "id": 1032,
+    "rawName": "<color=#FFFFFFFF>Singer of Many Waters</color>",
+    "name": "Singer of Many Waters",
+    "rawDescription": "<color=#FFFFFFFF>End Phase:</color> Heal all your characters for 1 HP. If your side has characters with no more than 5 HP, heal the most injured character for an additional 1 HP.\\n<color=#FFFFFFFF>Usages: 2</color> (Can stack. Max 4 stacks)",
+    "description": "End Phase: Heal all your characters for 1 HP. If your side has characters with no more than 5 HP, heal the most injured character for an additional 1 HP.\nUsages: 2 (Can stack. Max 4 stacks)"
+  },
+  {
+    "id": 1033,
+    "rawName": "<color=#FFFFFFFF>Burst Scan</color>",
+    "name": "Burst Scan",
+    "rawDescription": "<color=#FFFFFFFF>Before either side chooses their action:</color> If your side has Dendro Cores or Bountiful Cores, their <color=#FFFFFFFF>Usages</color> are decreased by 1, and <color=#FFFFFFFF>Discard</color> 1 card from the top of your deck. After this, deal {SPRITE_PRESET#2107}<color=#7EC236FF>Dendro DMG</color> equal to the Elemental Dice Cost of the <color=#FFFFFFFF>discarded</color> card.\\n<color=#FFFFFFFF><color=#FFFFFFFF>Usages:</color> 1</color> (Can stack. Max 3 stacks)",
+    "description": "Before either side chooses their action: If your side has Dendro Cores or Bountiful Cores, their Usages are decreased by 1, and Discard 1 card from the top of your deck. After this, deal Dendro DMG equal to the Elemental Dice Cost of the discarded card.\nUsages: 1 (Can stack. Max 3 stacks)"
+  },
+  {
+    "id": 1034,
+    "rawName": "<color=#FFFFFFFF>Bite Target</color>",
+    "name": "Bite Target",
+    "rawDescription": "<color=#FFFFFFFF>When receiving damage dealt by Mualani or <color=#FFFFFFFF>Shark Missile</color>:</color> Remove this effect. For each stack, increase the damage by 2.\\n(Stacks are accumulative, with no limit.)",
+    "description": "When receiving damage dealt by Mualani or Shark Missile: Remove this effect. For each stack, increase the damage by 2.\n(Stacks are accumulative, with no limit.)"
+  },
+  {
+    "id": 2001,
+    "rawName": "Taroumaru's Savings",
+    "name": "Taroumaru's Savings",
+    "rawDescription": "Cost: 0{SPRITE_PRESET#1108}\\nCreate 1 {SPRITE_PRESET#1111}Omni Die.",
+    "description": "Cost: 0\nCreate 1 Omni Die."
+  },
+  {
+    "id": 2002,
+    "rawName": "\"Called In For Cleanup\"",
+    "name": "\"Called In For Cleanup\"",
+    "rawDescription": "Cost: 0{SPRITE_PRESET#1108}\\nYour active character will deal +1 DMG the next time they deal DMG. (Can stack. Max +2)",
+    "description": "Cost: 0\nYour active character will deal +1 DMG the next time they deal DMG. (Can stack. Max +2)"
+  },
+  {
+    "id": 2003,
+    "rawName": "Undersea Treasure",
+    "name": "Undersea Treasure",
+    "rawDescription": "Cost: 0{SPRITE_PRESET#1108}\\nCreate 1 random Basic Elemental Die and heal your active character for 1 HP. (Each character can receive healing from this effect once per Round)",
+    "description": "Cost: 0\nCreate 1 random Basic Elemental Die and heal your active character for 1 HP. (Each character can receive healing from this effect once per Round)"
+  },
+  {
+    "id": 2004,
+    "rawName": "Forbidden Knowledge",
+    "name": "Forbidden Knowledge",
+    "rawDescription": "Cost: 0{SPRITE_PRESET#1108}\\nCannot use this card in Elemental Tuning, and only one copy of \"Forbidden Knowledge\" can be played each round.\\nDeal 1 Piercing DMG to your active character and draw 1 card.",
+    "description": "Cost: 0\nCannot use this card in Elemental Tuning, and only one copy of \"Forbidden Knowledge\" can be played each round.\nDeal 1 Piercing DMG to your active character and draw 1 card."
+  }
+]

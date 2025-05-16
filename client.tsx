@@ -2,37 +2,103 @@ import "./style.css";
 import { createRoot } from "react-dom/client";
 import {
   ActionCardRawData,
-  actionCards,
+  // actionCards,
   CharacterRawData,
-  characters,
-  entities,
+  // characters,
+  // entities,
   EntityRawData,
   KeywordRawData,
-  keywords,
+  // keywords,
   PlayCost,
   SkillRawData,
 } from "@gi-tcg/static-data";
 
+import zh_characters from "./data_zh/characters.json";
+import zh_actionCards from "./data_zh/action_cards.json";
+import zh_keywords from "./data_zh/keywords.json";
+import zh_entities from "./data_zh/entities.json";
 
-const VERSION = "GYTX";
-const CARD_BACK_IMAGE = "./assets/UI_Gcg_CardBack_LevelReward.png";
+import en_characters from "./data_en/characters.json";
+import en_actionCards from "./data_en/action_cards.json";
+import en_keywords from "./data_en/keywords.json";
+import en_entities from "./data_en/entities.json";
 
-const shownKeywords = [7];
+const LANGUAGE = "zh" as "zh" | "en"; //语言zh en
+const AUTHOR_CONFIG = [
+  { name: "ninthspace", img: "/assets/frame/ninthspace.png" },
+  { name: "guyutongxue", img: "/assets/frame/guyu.png" },
+  { name: "dudu-bot", img: "/assets/frame/dudubot.png" },
+][0]; //作者信息 0:ninthspace, 1:guyu, 2:dudu-bot
+const VERSION = "Beta 5.6 v3"; //版本号
+const CARD_BACK_IMAGE = "./assets/UI_Gcg_CardBack_Championship_09.png"; //牌背
+const DISPLAY_ID = true; //显示ID
+
+// 手动配置的child
+const CHILDREN_CONFIG = {
+  13152: "$[C113151],$[C113154],$[C117053],$[C122],$[C113155],$[C113156]",
+} as Record<number, string>;
+
+// 新卡技能icon //老卡我也不知道怎么实现的guyu再改改
+const SKILL_ICON_MAP = {
+  13152: "./assets/card/demo/Skill_S_Mavuika_01.png",
+  13153: "./assets/card/demo/UI_Talent_U_Mavuika_01.png",
+  13154: "./assets/card/demo/Skill_S_Mavuika_06.png",
+} as Record<number, string>;
+
+// 新卡bufficon
+// 应该是兼容老卡的，老卡用的是函数cardfaceurl，只是我目标路径没有老卡
+// 可能新卡和老卡都有用到cardfaceurl的地方，如果能作出区分也行
+const BUFF_ICON_MAP = {
+  13155: "./assets/card/demo/UI_Gcg_Buff_Common_Special.png",
+  113151: "./assets/card/demo/UI_Gcg_Buff_Nightsoul_Fire.webp",
+  113152: "./assets/card/demo/UI_Gcg_Buff_Mavuika_S.png",
+  113153: "./assets/card/demo/UI_Gcg_Buff_Mavuika_E.png",
+  1131541: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika2.png",
+  1131551: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika3.png",
+  1131561: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika1.png",
+} as Record<number, string>;
+
+const shownKeywords = [7]; //需要展示的规则解释ID
+const costReadonly = [0]; //费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 
 declare module "react" {
   interface CSSProperties {
-    [key: `--${string}`]: string | number;
+    [key: `--${string}`]: string | number | undefined;
   }
 }
 
-const ninthspace = "./assets/frame/ninthspace.png";
+const Data = {
+  zh: {
+    characters: zh_characters,
+    actionCards: zh_actionCards,
+    keywords: zh_keywords,
+    entities: zh_entities,
+  },
+  en: {
+    characters: en_characters,
+    actionCards: en_actionCards,
+    keywords: en_keywords,
+    entities: en_entities,
+  },
+};
+
+const { characters, actionCards, keywords, entities } = Data[LANGUAGE];
+
+const LOGO = AUTHOR_CONFIG.img;
 const CARD_BACK_FRAME = "/assets/frame/avatar_card_frame_2.png";
 const CARD_NORMAL_FRAME = "/assets/frame/card_frame_normal.png";
 const CARD_LEGEND_FRAME = "/assets/frame/card_frame_legend.png";
-const avatar_card_hp = "./assets/frame/icon_HP.png";
-const avatar_card_energy = "./assets/frame/icon_E.png";
-const keyword_card_frame = "./assets/frame/keyword_card_frame.png";
-const keyword_card_shadow = "./assets/frame/keyword_card_shadow.png";
+const avatar_card_hp = "/assets/frame/UI_TeyvatCard_LifeBg.png";
+const avatar_card_energy = "/assets/frame/UI_TeyvatCard_LifeBg3.png";
+const keyword_card_frame = "/assets/frame/keyword_card_frame.png";
+// const keyword_card_shadow = "/assets/frame/keyword_card_shadow.png";
+const keyword_cardback_repeat = "/assets/frame/UI_Gcg_CardBack_Repeat.png";
+const keyword_cardback_bottom = "/assets/frame/UI_Gcg_CardBack_Bottom.png";
+
+// 特殊能量，卡图右侧的能量条
+const SPECIAL_ENERGY_MAP = {
+  1315: "/assets/frame/UI_TeyvatCard_LifeBg_Mavuika1.png",
+} as Record<number, string>;
 
 const COST_TYPE_IMG_NAME_MAP = {
   GCG_COST_DICE_VOID: "Diff",
@@ -46,59 +112,113 @@ const COST_TYPE_IMG_NAME_MAP = {
   GCG_COST_DICE_SAME: "Same",
   GCG_COST_ENERGY: "Energy",
   GCG_COST_LEGEND: "Legend",
+  GCG_COST_SPECIAL_ENERGY: "Energy_Mavuika",
 } as Record<string, string>;
 
 const TYPE_TAG_TEXT_MAP = {
-  GCG_RULE_EXPLANATION: "规则解释",
-  GCG_SKILL_TAG_A: "普通攻击",
-  GCG_SKILL_TAG_E: "元素战技",
-  GCG_SKILL_TAG_Q: "元素爆发",
-  GCG_SKILL_TAG_PASSIVE: "被动技能",
-  GCG_SKILL_TAG_VEHICLE: "特技",
-  GCG_CARD_EVENT: "事件牌",
-  GCG_CARD_ONSTAGE: "出战状态",
-  GCG_CARD_STATE: "状态",
-  GCG_CARD_SUMMON: "召唤物",
-  GCG_CARD_SUPPORT: "支援牌",
-  GCG_CARD_MODIFY: "装备牌",
-  GCG_TAG_ELEMENT_CRYO: "冰元素",
-  GCG_TAG_ELEMENT_HYDRO: "水元素",
-  GCG_TAG_ELEMENT_PYRO: "火元素",
-  GCG_TAG_ELEMENT_ELECTRO: "雷元素",
-  GCG_TAG_ELEMENT_ANEMO: "风元素",
-  GCG_TAG_ELEMENT_GEO: "岩元素",
-  GCG_TAG_ELEMENT_DENDRO: "草元素",
-  GCG_TAG_NATION_MONDSTADT: "蒙德",
-  GCG_TAG_NATION_LIYUE: "璃月",
-  GCG_TAG_NATION_INAZUMA: "稻妻",
-  GCG_TAG_NATION_SUMERU: "须弥",
-  GCG_TAG_NATION_FONTAINE: "枫丹",
-  GCG_TAG_NATION_NATLAN: "纳塔",
-  GCG_TAG_NATION_SNEZHNAYA: "至冬",
-  GCG_TAG_CAMP_ERIMITE: "镀金旅团",
-  GCG_TAG_CAMP_FATUI: "愚人众",
-  GCG_TAG_CAMP_MONSTER: "魔物",
-  GCG_TAG_CAMP_SACREAD: "圣骸兽",
-  GCG_TAG_CAMP_HILICHURL: "丘丘人",
-  GCG_TAG_ARKHE_PNEUMA: "始基力：荒性",
-  GCG_TAG_ARKHE_OUSIA: "始基力：芒性",
-  GCG_TAG_WEAPON: "武器",
-  GCG_TAG_WEAPON_BOW: "弓",
-  GCG_TAG_WEAPON_SWORD: "单手剑",
-  GCG_TAG_WEAPON_CLAYMORE: "双手剑",
-  GCG_TAG_WEAPON_POLE: "长柄武器",
-  GCG_TAG_WEAPON_CATALYST: "法器",
-  GCG_TAG_WEAPON_NONE: "其它武器",
-  GCG_TAG_ARTIFACT: "圣遗物",
-  GCG_TAG_TALENT: "天赋",
-  GCG_TAG_VEHICLE: "特技",
-  GCG_TAG_LEGEND: "秘传",
-  GCG_TAG_FOOD: "食物",
-  GCG_TAG_RESONANCE: "元素共鸣",
-  GCG_TAG_PLACE: "场地",
-  GCG_TAG_ALLY: "伙伴",
-  GCG_TAG_ITEM: "道具",
-} as Record<string, string>;
+  zh: {
+    GCG_RULE_EXPLANATION: "规则解释",
+    GCG_SKILL_TAG_A: "普通攻击",
+    GCG_SKILL_TAG_E: "元素战技",
+    GCG_SKILL_TAG_Q: "元素爆发",
+    GCG_SKILL_TAG_PASSIVE: "被动技能",
+    GCG_SKILL_TAG_VEHICLE: "特技",
+    GCG_CARD_EVENT: "事件牌",
+    GCG_CARD_ONSTAGE: "出战状态",
+    GCG_CARD_STATE: "状态",
+    GCG_CARD_SUMMON: "召唤物",
+    GCG_CARD_SUPPORT: "支援牌",
+    GCG_CARD_MODIFY: "装备牌",
+    GCG_TAG_ELEMENT_CRYO: "冰元素",
+    GCG_TAG_ELEMENT_HYDRO: "水元素",
+    GCG_TAG_ELEMENT_PYRO: "火元素",
+    GCG_TAG_ELEMENT_ELECTRO: "雷元素",
+    GCG_TAG_ELEMENT_ANEMO: "风元素",
+    GCG_TAG_ELEMENT_GEO: "岩元素",
+    GCG_TAG_ELEMENT_DENDRO: "草元素",
+    GCG_TAG_NATION_MONDSTADT: "蒙德",
+    GCG_TAG_NATION_LIYUE: "璃月",
+    GCG_TAG_NATION_INAZUMA: "稻妻",
+    GCG_TAG_NATION_SUMERU: "须弥",
+    GCG_TAG_NATION_FONTAINE: "枫丹",
+    GCG_TAG_NATION_NATLAN: "纳塔",
+    GCG_TAG_NATION_SNEZHNAYA: "至冬",
+    GCG_TAG_CAMP_ERIMITE: "镀金旅团",
+    GCG_TAG_CAMP_FATUI: "愚人众",
+    GCG_TAG_CAMP_MONSTER: "魔物",
+    GCG_TAG_CAMP_SACREAD: "圣骸兽",
+    GCG_TAG_CAMP_HILICHURL: "丘丘人",
+    GCG_TAG_ARKHE_PNEUMA: "始基力：荒性",
+    GCG_TAG_ARKHE_OUSIA: "始基力：芒性",
+    GCG_TAG_WEAPON: "武器",
+    GCG_TAG_WEAPON_BOW: "弓",
+    GCG_TAG_WEAPON_SWORD: "单手剑",
+    GCG_TAG_WEAPON_CLAYMORE: "双手剑",
+    GCG_TAG_WEAPON_POLE: "长柄武器",
+    GCG_TAG_WEAPON_CATALYST: "法器",
+    GCG_TAG_WEAPON_NONE: "其它武器",
+    GCG_TAG_ARTIFACT: "圣遗物",
+    GCG_TAG_TALENT: "天赋",
+    GCG_TAG_VEHICLE: "特技",
+    GCG_TAG_LEGEND: "秘传",
+    GCG_TAG_FOOD: "料理",
+    GCG_TAG_RESONANCE: "元素共鸣",
+    GCG_TAG_PLACE: "场地",
+    GCG_TAG_ALLY: "伙伴",
+    GCG_TAG_ITEM: "道具",
+  },
+  en: {
+    GCG_RULE_EXPLANATION: "Detailed Rules",
+    GCG_SKILL_TAG_A: "Normal Attack",
+    GCG_SKILL_TAG_E: "Elemental Skill",
+    GCG_SKILL_TAG_Q: "Elemental Burst",
+    GCG_SKILL_TAG_PASSIVE: "Passive Skill",
+    GCG_SKILL_TAG_VEHICLE: "Technique",
+    GCG_CARD_EVENT: "Event Card",
+    GCG_CARD_ONSTAGE: "Combat Status",
+    GCG_CARD_STATE: "Status",
+    GCG_CARD_SUMMON: "Summon",
+    GCG_CARD_SUPPORT: "Support Card",
+    GCG_CARD_MODIFY: "Equipment Card",
+    GCG_TAG_ELEMENT_CRYO: "Cryo",
+    GCG_TAG_ELEMENT_HYDRO: "Hydro",
+    GCG_TAG_ELEMENT_PYRO: "Pyro",
+    GCG_TAG_ELEMENT_ELECTRO: "Electro",
+    GCG_TAG_ELEMENT_ANEMO: "Anemo",
+    GCG_TAG_ELEMENT_GEO: "Geo",
+    GCG_TAG_ELEMENT_DENDRO: "Dendro",
+    GCG_TAG_NATION_MONDSTADT: "Mondstadt",
+    GCG_TAG_NATION_LIYUE: "Liyue",
+    GCG_TAG_NATION_INAZUMA: "Inazuma",
+    GCG_TAG_NATION_SUMERU: "Sumeru",
+    GCG_TAG_NATION_FONTAINE: "Fontaine",
+    GCG_TAG_NATION_NATLAN: "Natlan",
+    GCG_TAG_NATION_SNEZHNAYA: "Snezhnaya",
+    GCG_TAG_CAMP_ERIMITE: "The Eremites",
+    GCG_TAG_CAMP_FATUI: "Fatui",
+    GCG_TAG_CAMP_MONSTER: "Monster",
+    GCG_TAG_CAMP_SACREAD: "Sacread",
+    GCG_TAG_CAMP_HILICHURL: "Hilichurl",
+    GCG_TAG_ARKHE_PNEUMA: "Arkhe: Pneuma",
+    GCG_TAG_ARKHE_OUSIA: "Arkhe: Ousia",
+    GCG_TAG_WEAPON: "Weapon",
+    GCG_TAG_WEAPON_BOW: "Bow",
+    GCG_TAG_WEAPON_SWORD: "Sword",
+    GCG_TAG_WEAPON_CLAYMORE: "Claymore",
+    GCG_TAG_WEAPON_POLE: "Polearm",
+    GCG_TAG_WEAPON_CATALYST: "Catalyst",
+    GCG_TAG_WEAPON_NONE: "Other Weapon",
+    GCG_TAG_ARTIFACT: "Artifact",
+    GCG_TAG_TALENT: "Talent",
+    GCG_TAG_VEHICLE: "Technique",
+    GCG_TAG_LEGEND: "Arcane Legend",
+    GCG_TAG_FOOD: "Food",
+    GCG_TAG_RESONANCE: "Elemental Resonance",
+    GCG_TAG_PLACE: "Location",
+    GCG_TAG_ALLY: "Companion",
+    GCG_TAG_ITEM: "Item",
+  },
+} as Record<string, Record<string, string>>;
 
 const TYPE_TAG_IMG_NAME_MAP = {
   GCG_CARD_EVENT: "Custom_ActionCard",
@@ -152,65 +272,173 @@ const diceImageUrl = (type: string) =>
 const tagImageUrl = (tag: string) =>
   `/assets/UI_Gcg_Tag_${TYPE_TAG_IMG_NAME_MAP[tag]}.png`;
 
-const cardFaceUrl = (cardFace: string) =>
-  `https://assets.gi-tcg.guyutongxue.site/assets/${cardFace}.webp`;
+const buffImageUrl = (buff: string) =>
+  `/assets/UI_Gcg_Buff_Common_${TYPE_TAG_IMG_NAME_MAP[buff]}.png`;
 
-const PREPEND_ICONS = {
-  6: cardFaceUrl(`UI_Gcg_Buff_Common_Shield`),
-  100: cardFaceUrl("UI_Gcg_Buff_Common_Element_Physics"),
-  101: cardFaceUrl("UI_Gcg_Buff_Common_Element_Ice"),
-  102: cardFaceUrl("UI_Gcg_Buff_Common_Element_Water"),
-  103: cardFaceUrl("UI_Gcg_Buff_Common_Element_Fire"),
-  104: cardFaceUrl("UI_Gcg_Buff_Common_Element_Electric"),
-  105: cardFaceUrl("UI_Gcg_Buff_Common_Element_Wind"),
-  106: cardFaceUrl("UI_Gcg_Buff_Common_Element_Rock"),
-  107: cardFaceUrl("UI_Gcg_Buff_Common_Element_Grass"),
-  301: `/assets/UI_Gcg_DiceL_Ice.png`,
-  302: `/assets/UI_Gcg_DiceL_Water.png`,
-  303: `/assets/UI_Gcg_DiceL_Fire.png`,
-  304: `/assets/UI_Gcg_DiceL_Electric.png`,
-  305: `/assets/UI_Gcg_DiceL_Wind.png`,
-  306: `/assets/UI_Gcg_DiceL_Rock.png`,
-  307: `/assets/UI_Gcg_DiceL_Grass.png`,
-  308: `/assets/UI_Gcg_DiceL_Same.png`,
-  309: `/assets/UI_Gcg_DiceL_Diff.png`,
-  310: `/assets/UI_Gcg_DiceL_Energy_Glow_HD.png`,
-  411: `/assets/UI_Gcg_DiceL_Any.png`,
-} as Record<number, string>;
+const cardFaceUrl = (cardFace: string) => `/assets/card/demo/${cardFace}.png`;
+
+interface DescriptionIconImage {
+  imageUrl?: string;
+  tagIcon?: string;
+}
+
+const DESCRIPTION_ICON_IMAGES = {
+  4007: { imageUrl: `/assets/UI_Gcg_Keyword_Shield.png` },
+  2100: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Physics.png` },
+  2101: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Ice.png` },
+  2102: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Water.png` },
+  2103: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Fire.png` },
+  2104: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Electric.png` },
+  2105: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Wind.png` },
+  2106: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Rock.png` },
+  2107: { imageUrl: `/assets/UI_Gcg_Keyword_Element_Grass.png` },
+  1101: { imageUrl: `/assets/UI_Gcg_DiceL_Ice.png` },
+  1102: { imageUrl: `/assets/UI_Gcg_DiceL_Water.png` },
+  1103: { imageUrl: `/assets/UI_Gcg_DiceL_Fire.png` },
+  1104: { imageUrl: `/assets/UI_Gcg_DiceL_Electric.png` },
+  1105: { imageUrl: `/assets/UI_Gcg_DiceL_Wind.png` },
+  1106: { imageUrl: `/assets/UI_Gcg_DiceL_Rock.png` },
+  1107: { imageUrl: `/assets/UI_Gcg_DiceL_Grass.png` },
+  1108: { imageUrl: `/assets/UI_Gcg_DiceL_Same.png` },
+  1109: { imageUrl: `/assets/UI_Gcg_DiceL_Diff.png` },
+  1110: { imageUrl: `/assets/UI_Gcg_Keyword_Energy.png` },
+  1111: { imageUrl: `/assets/UI_Gcg_DiceL_Any.png` },
+  1112: { imageUrl: `/assets/UI_Gcg_Keyword_Legend.png` },
+  // 1113: "元素精通",
+  4008: { imageUrl: `/assets/UI_Gcg_Keyword_Fighting_Spirit.png` },
+  3003: { tagIcon: "GCG_TAG_WEAPON" },
+  3004: { tagIcon: "GCG_TAG_ARTIFACT" },
+  3006: { tagIcon: "GCG_TAG_TALENT" },
+  3007: { tagIcon: "GCG_TAG_LEGEND" },
+  3008: { tagIcon: "GCG_TAG_VEHICLE" },
+  3101: { tagIcon: "GCG_TAG_FOOD" },
+  3102: { tagIcon: "GCG_TAG_ITEM" },
+  3103: { tagIcon: "GCG_TAG_ALLY" },
+  3104: { tagIcon: "GCG_TAG_PLACE" },
+  3200: { tagIcon: "GCG_TAG_WEAPON_NONE" },
+  3201: { tagIcon: "GCG_TAG_WEAPON_CATALYST" },
+  3202: { tagIcon: "GCG_TAG_WEAPON_BOW" },
+  3203: { tagIcon: "GCG_TAG_WEAPON_CLAYMORE" },
+  3204: { tagIcon: "GCG_TAG_WEAPON_POLE" },
+  3205: { tagIcon: "GCG_TAG_WEAPON_SWORD" },
+  3401: { tagIcon: "GCG_TAG_NATION_MONDSTADT" },
+  3402: { tagIcon: "GCG_TAG_NATION_LIYUE" },
+  3403: { tagIcon: "GCG_TAG_NATION_INAZUMA" },
+  3404: { tagIcon: "GCG_TAG_NATION_SUMERU" },
+  3405: { tagIcon: "GCG_TAG_NATION_FONTAINE" },
+  3406: { tagIcon: "GCG_TAG_NATION_NATLAN" },
+  3407: { tagIcon: "GCG_TAG_NATION_SNEZHNAYA" },
+  3501: { tagIcon: "GCG_TAG_CAMP_FATUI" },
+  3502: { tagIcon: "GCG_TAG_CAMP_HILICHURL" },
+  3503: { tagIcon: "GCG_TAG_CAMP_MONSTER" },
+  3504: { tagIcon: "GCG_TAG_ARKHE_PNEUMA" },
+  3505: { tagIcon: "GCG_TAG_ARKHE_OUSIA" },
+  // ?: { tagIcon: "GCG_TAG_CAMP_SACREAD" },
+  // ?: { tagIcon: "GCG_TAG_CAMP_ERIMITE" },
+} as Record<number, DescriptionIconImage>;
 
 const KEYWORD_COLORS = {
-  101: "#91d5ff",
-  102: "#1890ff",
-  103: "#f5222d",
-  104: "#722ed1",
-  105: "#36cfc9",
-  106: "#d4b106",
-  107: "#52c41a",
-  301: "#91d5ff",
-  302: "#1890ff",
-  303: "#f5222d",
-  304: "#722ed1",
-  305: "#36cfc9",
-  306: "#d4b106",
-  307: "#52c41a",
+  310: "#d8b456",
+  100: "#d9b253",
+  101: "#63bacd",
+  102: "#488ccb",
+  103: "#d6684b",
+  104: "#917ce8",
+  105: "#5ca8a6",
+  106: "#d29d5d",
+  107: "#88b750",
+  150: "#d9b253",
+  151: "#63bacd",
+  152: "#488ccb",
+  153: "#d6684b",
+  154: "#917ce8",
+  155: "#5ca8a6",
+  156: "#d29d5d",
+  157: "#88b750",
+  200: "#d9b253",
+  201: "#63bacd",
+  202: "#488ccb",
+  203: "#d6684b",
+  204: "#917ce8",
+  205: "#5ca8a6",
+  206: "#d29d5d",
+  207: "#88b750",
+  210: "#d9b253",
+  211: "#63bacd",
+  212: "#488ccb",
+  213: "#d6684b",
+  214: "#917ce8",
+  215: "#5ca8a6",
+  216: "#d29d5d",
+  217: "#88b750",
+  250: "#d9b253",
+  251: "#63bacd",
+  252: "#488ccb",
+  253: "#d6684b",
+  254: "#917ce8",
+  255: "#5ca8a6",
+  256: "#d29d5d",
+  257: "#88b750",
+  260: "#d9b253",
+  261: "#63bacd",
+  262: "#488ccb",
+  263: "#d6684b",
+  264: "#917ce8",
+  265: "#5ca8a6",
+  266: "#d29d5d",
+  267: "#88b750",
+  300: "#d9b253",
+  301: "#63bacd",
+  302: "#488ccb",
+  303: "#d6684b",
+  304: "#917ce8",
+  305: "#5ca8a6",
+  306: "#d29d5d",
+  307: "#88b750",
 } as Record<number, string>;
+
+/** 处理中间点间距 */
+const Text = ({ text }: { text: string | undefined | null }) => {
+  // : (string | JSX.Element)[]
+  if (LANGUAGE === "en") {
+    return <span className="english-text">{text}</span>;
+  }
+
+  if (typeof text !== "string" || !text.includes("·")) return text;
+  return text.split("·").flatMap((part, i, arr) =>
+    i < arr.length - 1
+      ? [
+          part,
+          <span key={i} className="middot">
+            ·
+          </span>,
+        ]
+      : [part],
+  );
+};
 
 type TagType = "character" | "cardType" | "cardTag";
 
 const Tag = (props: { type: TagType; tag: string; className?: string }) => {
   return (
-    TYPE_TAG_TEXT_MAP[props.tag] && (
+    TYPE_TAG_TEXT_MAP[LANGUAGE][props.tag] && (
       <div
         className={`tag ${props.className ?? ""}`}
         data-tag-type={props.type}
       >
         <div className="tag-icon-container">
-          <div
-            className="tag-icon"
-            style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
-          />
+          {props.tag.startsWith("GCG_TAG_ELEMENT_") ? (
+            <img className="tag-icon-image" src={buffImageUrl(props.tag)} />
+          ) : (
+            <div
+              className="tag-icon-mask"
+              style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
+            />
+          )}
         </div>
-        <div className="tag-text">{TYPE_TAG_TEXT_MAP[props.tag]}</div>
+        <div className="tag-text">
+          <Text text={TYPE_TAG_TEXT_MAP[LANGUAGE][props.tag]} />
+        </div>
       </div>
     )
   );
@@ -222,9 +450,9 @@ const KeywordTag = (props: {
   className?: string;
 }) => {
   return (
-    TYPE_TAG_TEXT_MAP[props.tag] && (
+    TYPE_TAG_TEXT_MAP[LANGUAGE][props.tag] && (
       <div className={`keyword-tag ${props.className ?? ""}`}>
-        {(props.image || TYPE_TAG_IMG_NAME_MAP[props.tag]) && (
+        {/* {(props.image || TYPE_TAG_IMG_NAME_MAP[props.tag]) && (
           <div className="keyword-tag-icon-container">
             {props.image ? (
               <img
@@ -238,10 +466,35 @@ const KeywordTag = (props: {
               />
             )}
           </div>
-        )}
-        <div className="keyword-tag-text">{TYPE_TAG_TEXT_MAP[props.tag]}</div>
+        )} */}
+        <div className="keyword-tag-text">
+          {TYPE_TAG_TEXT_MAP[LANGUAGE][props.tag]}
+        </div>
       </div>
     )
+  );
+};
+
+const KeywordIcon = (props: {
+  tag: string;
+  image?: string;
+  className?: string;
+}) => {
+  return (
+    props.image && <img className="buff-icon" src={cardFaceUrl(props.image)} />
+    // (props.image || TYPE_TAG_IMG_NAME_MAP[props.tag]) && (
+    //   props.image ? (
+    //     <img
+    //       className="buff-icon"
+    //       src={cardFaceUrl(props.image)}
+    //     />
+    //   ) : (
+    //     <div
+    //       className="buff-mask"
+    //       style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
+    //     />
+    //   )
+    // )
   );
 };
 
@@ -260,10 +513,14 @@ const Cost = (props: {
   return (
     <div className={rootClassName}>
       {props.cost.map(({ type, count }, i) => (
-        <div className="cost" data-readonly={props.readonly}>
+        <div className="cost" data-readonly={props.readonly} key={type}>
           <img src={diceImageUrl(type)} className={diceClassName} />
-          <div className="stroked-text-top">{count}</div>
-          <div className="stroked-text-bottom">{count}</div>
+          {type !== "GCG_COST_LEGEND" && (
+            <>
+              <div className="stroked-text-top">{count}</div>
+              <div className="stroked-text-bottom">{count}</div>
+            </>
+          )}
         </div>
       ))}
     </div>
@@ -276,58 +533,93 @@ type ChildData =
   | KeywordRawData
   | ActionCardRawData;
 
+const BOLD_COLOR = "#FFFFFFFF";
+
+const remapColors = (color: string | undefined) => {
+  const COLOR_MAPS = {
+    "#99FFFFFF": "#63bacd", // 冰
+    "#80C0FFFF": "#488ccb", // 水
+    "#FF9999FF": "#d6684b", // 火
+    "#FFACFFFF": "#917ce8", // 雷
+    "#80FFD7FF": "#5ca8a6", // 风
+    "#FFE699FF": "#d29d5d", // 岩
+    "#7EC236FF": "#88b750", // 草
+  } as Record<string, string>;
+  if (!color) {
+    return;
+  }
+  return COLOR_MAPS[color] ?? color;
+};
+
 const Token = ({ token }: { token: DescriptionToken }) => {
   switch (token.type) {
     case "plain":
-      return <span className={`description-${token.style}`}>{token.text}</span>;
-    case "keyword": {
-      const name = keywordNames.get(token.id) ?? `#${token.id}`;
-      if (token.boxedWithPostfix) {
-        return (
-          <span className="description-variable">
-            {name}
-            {token.boxedWithPostfix && (
-              <span className="keyword-boxed">{token.boxedWithPostfix}</span>
-            )}
-          </span>
-        );
-      } else {
-        return (
-          <>
-            {PREPEND_ICONS[token.id] && (
-              <img
-                className="description-keyword-icon"
-                src={PREPEND_ICONS[token.id]}
-              />
-            )}
+      return (
+        <span
+          className={`description-${token.style()}`}
+          style={{
+            "--color": remapColors(token.color),
+          }}
+        >
+          <Text text={token.text} />
+        </span>
+      );
+    case "boxedKeyword": {
+      return (
+        <span className="description-variable">
+          <Text text={token.text} />
+        </span>
+      );
+    }
+    case "icon": {
+      const { imageUrl, tagIcon } = DESCRIPTION_ICON_IMAGES[token.id] ?? {};
+      const overrideStyleClass = token.overrideStyle()
+        ? `description-${token.overrideStyle()}`
+        : "";
+      return (
+        <>
+          {imageUrl && <img className="description-icon" src={imageUrl} />}
+          {tagIcon && (
             <span
-              className="description-keyword"
-              style={{ "--color": KEYWORD_COLORS[token.id] }}
-            >
-              {name}
-            </span>
-          </>
-        );
-      }
+              className={`description-icon-tag ${overrideStyleClass}`}
+              style={{
+                "--image": `url("${tagImageUrl(tagIcon)}")`,
+              }}
+            />
+          )}
+        </>
+      );
     }
     case "reference":
+      const overrideStyleClass = token.overrideStyle()
+        ? `description-${token.overrideStyle()}`
+        : "";
       return (
-        <span className="description-reference">
-          {names.get(token.id) ?? `#${token.id}`}
+        <span
+          className={`description-token ref-${token.refType} ${overrideStyleClass}`}
+          style={{
+            "--manual-color": token.manualColor ?? "",
+          }}
+        >
+          <Text text={names.get(token.id) ?? `#${token.id}`} />
         </span>
       );
     case "lineBreak":
       return <br />;
     case "errored":
-      return <span className="description-errored">{token.text}</span>;
+      return (
+        <span className="description-token description-errored">
+          {token.text}
+        </span>
+      );
   }
 };
 
 const Description = ({ description }: { description: ParsedDescription }) => {
   return (
     <>
-      {description.map((token) => (
-        <Token token={token} />
+      {description.map((token, i) => (
+        <Token token={token} key={i} />
       ))}
     </>
   );
@@ -338,25 +630,61 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
     <div className="child-layout">
       {children.map((keyword) => (
         <div className="keyword-box-wrapper">
+          <div className="keyword-line"></div>
           {"cardFace" in keyword && keyword.cardFace && (
             <div className="keyword-card">
-              <img src={keyword_card_frame} className="keyword-card-frame" />
+              <img
+                src={keyword_cardback_bottom}
+                className="keyword-card-back-bottom"
+              />
+              <div
+                className="keyword-card-back-repeat"
+                style={{ "--image": `url("${keyword_cardback_repeat}")` }}
+              ></div>
               <img
                 src={cardFaceUrl(keyword.cardFace)}
                 className="keyword-card-face"
               />
-              <img src={keyword_card_shadow} className="keyword-card-shadow" />
+              <img src={keyword_card_frame} className="keyword-card-frame" />
             </div>
           )}
           <div className="keyword-box">
-            <div className="keyword-title">{keyword.name}</div>
-            <div className="keyword-tags">
-              <KeywordTag
-                tag={"type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"}
-                image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
-              />
-              {"tags" in keyword &&
-                keyword.tags.map((tag) => <KeywordTag tag={tag} key={tag} />)}
+            <div className="keyword-buff-box">
+              {keyword.id in BUFF_ICON_MAP && BUFF_ICON_MAP[keyword.id] ? (
+                <img
+                  className="buff-icon"
+                  src={BUFF_ICON_MAP[keyword.id]}
+                ></img>
+              ) : (
+                <KeywordIcon
+                  tag={
+                    "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
+                  }
+                  image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
+                />
+              )}
+              <div className="keyword-title-box">
+                <div className="keyword-title">
+                  <Text text={keyword.name} />
+                </div>
+                <div className="keyword-tags">
+                  <KeywordTag
+                    tag={
+                      "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
+                    }
+                    image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
+                  />
+                  {"tags" in keyword &&
+                    keyword.tags.map((tag) => (
+                      <KeywordTag tag={tag} key={tag} />
+                    ))}
+                  {DISPLAY_ID && (
+                    <div className="id-box">
+                      <div className="keyword-tag-text">ID: {keyword.id}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
             {"playCost" in keyword && (
               <Cost
@@ -366,10 +694,18 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
                     : keyword.playCost
                 }
-                readonly={keyword.type === "GCG_CARD_MODIFY"}
+                readonly={
+                  costReadonly.includes(keyword.id) ||
+                  [
+                    "GCG_SKILL_TAG_A",
+                    "GCG_SKILL_TAG_E",
+                    "GCG_SKILL_TAG_Q",
+                  ].includes(keyword.type)
+                }
+                // readonly={keyword.type === "GCG_CARD_MODIFY"}
               />
             )}
-            <div className="keyword-description">
+            <div className={`keyword-description keyword-description-${LANGUAGE}`}>
               <Description description={keyword.parsedDescription} />
             </div>
           </div>
@@ -380,25 +716,38 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
 };
 
 const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
+  if (skill.hidden) {
+    return null;
+  }
   return (
     <div className="skill-box figure" key={skill.id}>
-      <div className="skill-type">{TYPE_TAG_TEXT_MAP[skill.type]}</div>
+      {/* <div className="author-decorator-top">{AUTHOR_CONFIG.name}</div> */}
+      <div className="author-decorator-bottom">{AUTHOR_CONFIG.name}</div>
+      <div className="skill-type">
+        {TYPE_TAG_TEXT_MAP[LANGUAGE][skill.type]}
+      </div>
       {skill.playCost && <Cost type="skill" cost={skill.playCost} />}
       <div
         className="skill-icon"
         style={{
-          maskImage: `url("https://assets.gi-tcg.guyutongxue.site/assets/${skill.icon}.webp")`,
+          maskImage: `url("${
+            skill.icon
+              ? `https://assets.gi-tcg.guyutongxue.site/assets/${skill.icon}.webp`
+              : SKILL_ICON_MAP[skill.id]
+          }")`,
         }}
       ></div>
-      <div className="skill-title">{skill.name}</div>
-      <div className="description">
+      <div className="skill-title">
+        <Text text={skill.name} />
+        {DISPLAY_ID && <span className="id-box">ID: {skill.id}</span>}
+      </div>
+      <div className={`skill-description skill-description-${LANGUAGE}`}>
         <Description description={skill.parsedDescription} />
       </div>
       {skill.children.length > 0 && <Children children={skill.children} />}
     </div>
   );
 };
-
 
 const CardFace = (props: {
   className?: string;
@@ -439,13 +788,19 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
           </div>
           <div className="energy-bar">
             {Array.from({ length: character.maxEnergy }).map((_, i) => (
-              <img src={avatar_card_energy} className="energy" />
+              <img
+                src={SPECIAL_ENERGY_MAP[character.id] ?? avatar_card_energy}
+                key={i}
+                className="energy"
+              />
             ))}
           </div>
         </CardFace>
         <div className="character-info">
           <div className="character-title-wrapper">
-            <div className="character-title">{character.name}</div>
+            <div className="character-title">
+              <Text text={character.name} />
+            </div>
           </div>
           <div className="character-tags">
             {character.tags.map((tag) => (
@@ -453,13 +808,15 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
             ))}
           </div>
           <hr className="info-divider" />
-          <p className="info-story">{character.storyText}</p>
+          <p className="info-story">
+            <Text text={character.storyText} />
+          </p>
           <div className="spacer"></div>
           <SkillBox skill={normalSkill} />
         </div>
       </div>
       {otherSkills.map((skill) => (
-        <SkillBox skill={skill} />
+        <SkillBox skill={skill} key={skill.id} />
       ))}
     </div>
   );
@@ -468,14 +825,12 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
 const ActionCard = ({ card }: { card: ParsedActionCard }) => {
   return (
     <div className="action-card">
-      <CardFace
-        className="action-card-image-container"
-        cardFace={card.cardFace}
-      >
-        <Cost type="actionCard" cost={card.playCost} />
-      </CardFace>
       <div className="action-card-info figure">
-        <div className="action-card-title">{card.name}</div>
+        <div className="author-decorator-bottom">{AUTHOR_CONFIG.name}</div>
+        <div className="action-card-title">
+          <Text text={card.name} />
+          {DISPLAY_ID && <span className="id-box">ID: {card.id}</span>}
+        </div>
         <div className="action-card-tags">
           <Tag type="cardType" tag={card.type} />
           {card.tags.map((tag) => (
@@ -483,11 +838,25 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
           ))}
         </div>
         <div className="dashed-line" />
-        <div className="description">
+        <div className={`action-card-description action-card-description-${LANGUAGE}`}>
           <Description description={card.parsedDescription} />
         </div>
         {card.children.length > 0 && <Children children={card.children} />}
       </div>
+      <CardFace
+        isLegend={card.tags.includes("GCG_TAG_LEGEND")}
+        className="action-card-image-container"
+        cardFace={card.cardFace}
+      >
+        <Cost
+          type="actionCard"
+          cost={
+            card.playCost.length === 0
+              ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
+              : card.playCost
+          }
+        />
+      </CardFace>
     </div>
   );
 };
@@ -498,9 +867,10 @@ const App = () => {
       <div className="layout">
         <Character character={CHARACTER_PARSED} />
         <ActionCard card={CARD_PARSED} />
+        {/* {cardsParsed.map((c) => <ActionCard card={c} />)} */}
         <div className="version-layout">
           <div className="version-text">{VERSION}</div>
-          <img src={ninthspace} className="ninthspace" />
+          <img src={LOGO} className="logo" />
         </div>
       </div>
     </>
@@ -531,21 +901,30 @@ type ParsedChild =
   | ParsedActionCard
   | ParsedKeyword;
 
+type TokenStyle = "strong" | "light" | "dimmed";
+
 type DescriptionToken =
   | {
       type: "plain";
       text: string;
-      style: "strong" | "normal" | "light";
+      style: () => TokenStyle | "normal";
+      color?: string;
     }
   | {
-      type: "keyword";
+      type: "boxedKeyword";
+      text: string;
+    }
+  | {
+      type: "hiddenKeyword";
       id: number;
-      boxedWithPostfix?: string;
     }
   | {
       type: "reference";
       refType: string;
       id: number;
+      overrideStyle: () => TokenStyle | undefined;
+      // 手动指定天赋牌引用角色/技能的颜色
+      manualColor?: string;
     }
   | {
       type: "errored";
@@ -553,6 +932,11 @@ type DescriptionToken =
     }
   | {
       type: "lineBreak";
+    }
+  | {
+      type: "icon";
+      id: number;
+      overrideStyle: () => TokenStyle | undefined;
     };
 
 type ParsedDescription = DescriptionToken[];
@@ -572,90 +956,180 @@ const parseDescription = (
   rawDescription: string,
   keyMap: Record<string, string> = {},
 ): ParsedDescription => {
-  const text = rawDescription
+  const segments = rawDescription
+    .replace(/<color=#FFFFFFFF>(\$\[.*?\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
     .replace(/<\/color>/g, "###/COLOR###")
     .replace(/（/g, "###LBRACE###（")
     .replace(/）/g, "）###RBRACE###")
     .replace(/(\\n)+/g, "###BR###")
-    .replace(/\$?\{(.*?)\}/g, (_, g1: string) => {
+    .replace(/\$\{(.*?)\}/g, (_, g1: string) => {
       return keyMap[g1] ?? "";
-    });
-  const segments = text.replace(/\$\[(.*?)\]/g, "###REF#$1###").split("###");
+    })
+    .replace(/\{SPRITE_PRESET#(\d+)\}/g, "###SPRITE#$1###")
+    .replace(/\$\[K(3|4)\]：(\d+)/g, "###BOXED#$1#$2###")
+    .replace(/\$\[(.*?)\]/g, "###REF#$1###")
+    .split("###");
   const result: DescriptionToken[] = [];
-  const referencedIds: number[] = [];
-  const colors: string[] = [];
-  const braces: number[] = [];
+  interface ColorInfo {
+    rawColor: string;
+    readonly isBold: boolean;
+    isConditionBold: boolean;
+  }
+  interface ParenthesisInfo {
+    afterBr: boolean;
+  }
+  const colors: ColorInfo[] = [];
+  const parentheses: ParenthesisInfo[] = [];
   for (const text of segments) {
-    const style =
-      colors.length > 0 ? "strong" : braces.length > 0 ? "light" : "normal";
+    const lastToken = result[result.length - 1];
+    const rootColor = colors[colors.length - 1];
+    const rootParenthesis = parentheses[0];
+    const color = rootColor?.isBold ? void 0 : rootColor?.rawColor;
+    const styles = {
+      overrideStyle() {
+        return rootColor?.isConditionBold
+          ? "dimmed"
+          : rootColor?.isBold
+          ? "strong"
+          : rootParenthesis?.afterBr
+          ? "light"
+          : void 0;
+      },
+      style() {
+        return this.overrideStyle() ?? "normal";
+      },
+    };
+    // const when = colons.length > 0;
     if (text === "BR") {
       result.push({ type: "lineBreak" });
     } else if (text === "LBRACE") {
-      braces.push(1);
+      parentheses.push({
+        afterBr:
+          lastToken?.type === "lineBreak" || lastToken?.type === "boxedKeyword",
+      });
     } else if (text === "RBRACE") {
-      braces.pop();
+      parentheses.pop();
     } else if (text.startsWith("COLOR#")) {
-      const color = text.substring(6, 14);
-      colors.push(color);
-      continue;
+      const rawColor = text.substring(5, 14);
+      colors.push({
+        rawColor,
+        isBold: rawColor === BOLD_COLOR,
+        isConditionBold: false,
+      });
     } else if (text === "/COLOR") {
-      colors.pop();
-      continue;
+      const lastColor = colors.pop();
+      if (
+        lastToken?.type === "plain" &&
+        lastToken.text.endsWith("：") &&
+        lastColor?.isBold
+      ) {
+        lastColor.isConditionBold = true;
+      }
     } else if (text.startsWith("REF#")) {
       const ref = text.substring(4);
+      let usingKeywordId: number | null = null;
       if (ref === "D__KEY__ELEMENT") {
         const damageType = keyMap[ref];
         if (!damageType || !DAMAGE_KEYWORD_MAP[damageType]) {
           result.push({ type: "errored", text: ref });
           continue;
         }
-        result.push({ type: "keyword", id: DAMAGE_KEYWORD_MAP[damageType] });
+        usingKeywordId = DAMAGE_KEYWORD_MAP[damageType];
+      } else if (keyMap[ref]) {
+        result.push({ type: "plain", text: keyMap[ref], ...styles });
         continue;
-      }
-      if (keyMap[ref]) {
-        result.push({ type: "plain", text: keyMap[ref], style });
-        continue;
-      }
-      const refType = ref[0];
-      let id = Number(ref.substring(1));
-      if (refType === "K") {
-        result.push({ type: "keyword", id });
       } else {
-        result.push({ type: "reference", refType, id });
-      }
-    } else if (text) {
-      result.push({ type: "plain", text, style });
-    }
-  }
-  for (let i = 0; i < result.length; i++) {
-    const current = result[i];
-    const next: DescriptionToken | undefined = result[i + 1];
-    if (current.type === "keyword" && [3, 4].includes(current.id)) {
-      const match = next?.type === "plain" && next.text.match(/^(：\d+)/);
-      if (match) {
-        current.boxedWithPostfix = match[1];
-        next.text = next.text.substring(match[1].length);
-        if (!next.text) {
-          result.splice(i + 1, 1);
-          i++;
+        const refType = ref[0];
+        let id = Number(ref.substring(1));
+        if (refType === "K") {
+          usingKeywordId = id;
+        } else {
+          let manualColor: string | undefined = undefined;
+          if (refType === "A") {
+            manualColor = KEYWORD_COLORS[100 + (Math.floor(id / 100) % 10)];
+          } else if (refType === "S" && id.toString().length === 5) {
+            manualColor =
+              KEYWORD_COLORS[100 + Number(id.toString().slice(-4, -3))];
+          }
+          result.push({
+            type: "reference",
+            refType,
+            id,
+            manualColor,
+            ...styles,
+          });
         }
       }
+      if (usingKeywordId !== null) {
+        const keyword = keywords.find((e) => e.id === usingKeywordId);
+        if (keyword) {
+          result.push(
+            { type: "hiddenKeyword", id: usingKeywordId },
+            ...parseDescription(keyword.rawName).map((token) => {
+              if (token.type === "plain") {
+                return {
+                  ...token,
+                  style: () => {
+                    const outerStyle = styles.style();
+                    return outerStyle === "normal" ? token.style() : outerStyle;
+                  },
+                  color: KEYWORD_COLORS[usingKeywordId] ?? token.color,
+                } as const;
+              } else if (token.type === "reference" || token.type === "icon") {
+                return {
+                  ...token,
+                  // ...styles,
+                  overrideStyle: () => {
+                    const outerStyle = styles.overrideStyle();
+                    return outerStyle ?? token.overrideStyle();
+                  },
+                } as const;
+              } else {
+                return token;
+              }
+            }),
+          );
+        } else {
+          result.push({ type: "errored", text: `#${usingKeywordId}` });
+        }
+      }
+    } else if (text.startsWith("BOXED#")) {
+      const [_, id, count] = text.split("#");
+      const keywordId = Number(id);
+      const { name } = keywords.find((e) => e.id === keywordId)!;
+      result.push({
+        type: "boxedKeyword",
+        text: `${name}：${count}`,
+      });
+    } else if (text.startsWith("SPRITE#")) {
+      const id = Number(text.substring(7));
+      result.push({
+        type: "icon",
+        id,
+        ...styles,
+      });
+    } else if (text) {
+      result.push({
+        type: "plain",
+        text,
+        color,
+        ...styles,
+      });
     }
   }
   return result;
 };
 
-const skills = [...characters, ...entities].flatMap((e) => e.skills);
-const genericEntities = [...entities, ...actionCards];
+const skills = [...characters, ...entities].flatMap(
+  (e) => e.skills as SkillRawData[],
+);
+const genericEntities = [...actionCards, ...entities];
 
 const names = new Map<number, string>(
   [...genericEntities, ...characters, ...skills].map(
     (e) => [e.id, e.name] as const,
   ),
-);
-const keywordNames = new Map<number, string>(
-  keywords.map((e) => [e.id, e.name] as const),
 );
 
 const parseCharacterSkill = (
@@ -667,6 +1141,7 @@ const parseCharacterSkill = (
     skill.keyMap,
   );
   const children = appendChildren(skill, suppressedReferencedIds, true);
+  suppressedReferencedIds.push(skill.id);
   return {
     ...skill,
     parsedDescription,
@@ -702,7 +1177,6 @@ const appendChildren = (
           // @ts-expect-error
           skill.buffIcon = childData.buffIcon;
           moveBuffIcon = true;
-          result.push(...appendChildren(skill, suppressedReferencedIds));
         }
       }
       if (moveBuffIcon) {
@@ -711,13 +1185,26 @@ const appendChildren = (
       }
     }
   }
-  for (const child of parseDescription(childData.rawDescription)) {
+
+  const children =
+    childData.id in CHILDREN_CONFIG
+      ? parseDescription(CHILDREN_CONFIG[childData.id])
+      : parsedDescription;
+  for (const child of children) {
     if (child.type === "reference") {
       if (suppressedReferencedIds.includes(child.id)) {
         continue;
       }
       suppressedReferencedIds.push(child.id);
       switch (child.refType) {
+        case "S": {
+          const data = skills.find((sk) => sk.id === child.id);
+          if (!data) {
+            continue;
+          }
+          result.push(...appendChildren(data, suppressedReferencedIds));
+          break;
+        }
         case "C": {
           const data = genericEntities
             .filter((e) => e.id === child.id)
@@ -737,11 +1224,11 @@ const appendChildren = (
         case "A": {
           break;
         }
-        case "S": {
-          break;
-        }
       }
-    } else if (child.type === "keyword" && shownKeywords.includes(child.id)) {
+    } else if (
+      child.type === "hiddenKeyword" &&
+      shownKeywords.includes(child.id)
+    ) {
       if (suppressedReferencedIds.includes(-child.id)) {
         continue;
       }
@@ -783,10 +1270,16 @@ const parseActionCard = (
   };
 };
 
-const CHARACTER = characters.find((c) => c.id === 1503)!;
-const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
-
 const supIds: number[] = [];
+const CHARACTER = characters.find((c) => c.id === 1315)!;
+const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
+const cards = actionCards.filter(
+  (c) =>
+    c.sinceVersion === "v5.6.50-beta" &&
+    !(c.tags as string[]).includes("GCG_TAG_TALENT"),
+);
+const cardsParsed = cards.map((c) => parseActionCard(c, supIds));
+
 const CHARACTER_PARSED = parseCharacter(CHARACTER, supIds);
 const CARD_PARSED = parseActionCard(CARD, supIds);
 console.log(CHARACTER_PARSED);
