@@ -22,7 +22,6 @@ import en_characters from "./data_en/characters.json";
 import en_actionCards from "./data_en/action_cards.json";
 import en_keywords from "./data_en/keywords.json";
 import en_entities from "./data_en/entities.json";
-
 const LANGUAGE = "zh" as "zh" | "en"; //语言zh en
 const AUTHOR_CONFIG = [
   { name: "ninthspace", img: "/assets/frame/ninthspace.png" },
@@ -35,8 +34,18 @@ const DISPLAY_ID = true; //显示ID
 
 // 手动配置的child
 const CHILDREN_CONFIG = {
-  13152: "$[C113151],$[C113154],$[C117053],$[C122],$[C113155],$[C113156]",
+  12082: "$[C112081],$[C112082]", // 妮露 K1011=C112082
+  12102: "$[C112101],$[S12104]", // 那维莱特 K1020=S12104
+  12111: "", // 芙宁娜
+  12113: "$[C112114],$[C112115]", // 芙宁娜 K1209=C112115
+  13152: "$[C113151],$[C113154],$[C113155],$[C113156]", // 玛薇卡
 } as Record<number, string>;
+
+// 需要展示的规则解释ID
+const shownKeywords = [7];
+
+// 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
+const costReadonly = [112131, 112132, 112133, 112142];
 
 // 新卡技能icon //老卡我也不知道怎么实现的guyu再改改
 const SKILL_ICON_MAP = {
@@ -58,8 +67,6 @@ const BUFF_ICON_MAP = {
   1131561: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika1.png",
 } as Record<number, string>;
 
-const shownKeywords = [7]; //需要展示的规则解释ID
-const costReadonly = [0]; //费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 
 declare module "react" {
   interface CSSProperties {
@@ -1140,8 +1147,8 @@ const parseCharacterSkill = (
     skill.rawDescription,
     skill.keyMap,
   );
+  suppressedReferencedIds.push(skill.id);  
   const children = appendChildren(skill, suppressedReferencedIds, true);
-  suppressedReferencedIds.push(skill.id);
   return {
     ...skill,
     parsedDescription,
@@ -1271,7 +1278,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1315)!;
+const CHARACTER = characters.find((c) => c.id === 1214)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
