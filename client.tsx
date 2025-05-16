@@ -983,17 +983,17 @@ const parseDescription = (
   const parentheses: ParenthesisInfo[] = [];
   for (const text of segments) {
     const lastToken = result[result.length - 1];
-    const rootColor = colors[colors.length - 1];
+    const rootColor = colors[0];
     const rootParenthesis = parentheses[0];
     const color = rootColor?.isBold ? void 0 : rootColor?.rawColor;
     const styles = {
       overrideStyle() {
-        return rootColor?.isConditionBold
+        return rootParenthesis?.afterBr
+          ? "light"
+          : rootColor?.isConditionBold
           ? "dimmed"
           : rootColor?.isBold
           ? "strong"
-          : rootParenthesis?.afterBr
-          ? "light"
           : void 0;
       },
       style() {
