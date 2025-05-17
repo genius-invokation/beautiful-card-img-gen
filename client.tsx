@@ -37,14 +37,20 @@ const CHILDREN_CONFIG = {
   11142: "$[C111141],$[C111142]，$[C111143]", // 茜特菈莉 有个不知道哪来的错误夜魂加持
   12102: "$[C112101],$[S12104]", // 那维莱特 K1020=S12104
   12111: "", // 芙宁娜 普攻置空
+  13141: "", // 阿蕾奇诺 普攻置空
   13152: "$[C113151],$[C113154],$[C113155],$[C113156]", // 玛薇卡
+  14091: "", // 丽莎 普攻置空
+  14121: "", // 克洛琳德 普攻置空
+  15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117],", // 恰斯卡
+  16092: "$[C116097],$[C116091],$[C116092],$[C116093],$[C116095],$[C116096],", // 千织
+  16111: "", // 希诺宁 普攻置空
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
-const shownKeywords = [7];
+const shownKeywords = [0];
 
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
-const costReadonly = [112131, 112132, 112133, 112142];
+const costReadonly = [112131, 112132, 112133, 112142, 115112, 116102, 116112];
 
 // 新卡技能icon
 const SKILL_ICON_MAP = {
@@ -54,6 +60,9 @@ const SKILL_ICON_MAP = {
   13152: "./assets/card/demo/Skill_S_Mavuika_01.png",
   13153: "./assets/card/demo/UI_Talent_U_Mavuika_01.png",
   13154: "./assets/card/demo/Skill_S_Mavuika_06.png",
+  15112: "./assets/card/demo/UI_Talent_U_Chasca_01.png",
+  15113: "./assets/card/demo/UI_Talent_U_Chasca_02.png",
+  15114: "./assets/card/demo/Skill_S_Chasca_06.png",
 } as Record<number, string>;
 
 // 新卡bufficon
@@ -69,6 +78,8 @@ const BUFF_ICON_MAP = {
   1131541: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika2.png",
   1131551: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika3.png",
   1131561: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika1.png",
+  115111: "./assets/card/demo/UI_Gcg_Buff_Nightsoul_Wind.webp",
+  1151121: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Chasca.png",
 } as Record<number, string>;
 
 declare module "react" {
@@ -179,7 +190,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_PREPARE_SKILL: "准备技能",
     GCG_TAG_NYX_STATE: "夜魂态",
     GCG_TAG_SHEILD: "护盾",
-    GCG_TAG_DENDRO_PRODUCE: "草元素相关反应产物",
+    GCG_TAG_DENDRO_PRODUCE: "草元素相关反应",
     GCG_TAG_FALL_ATTACK: "下落攻击",
     GCG_TAG_FORBIDDEN_ATTACK: "无法使用技能",
     GCG_TAG_IMMUNE_CONTROL: "免疫控制",
@@ -1349,7 +1360,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1413)!;
+const CHARACTER = characters.find((c) => c.id === 1710)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
