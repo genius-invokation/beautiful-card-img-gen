@@ -657,18 +657,20 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
           )}
           <div className="keyword-box">
             <div className="keyword-buff-box">
-              {keyword.id in BUFF_ICON_MAP && BUFF_ICON_MAP[keyword.id] ? (
-                <img
-                  className="buff-icon"
-                  src={BUFF_ICON_MAP[keyword.id]}
-                ></img>
-              ) : (
-                <KeywordIcon
-                  tag={
-                    "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
-                  }
-                  image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
-                />
+              {!("cardFace" in keyword && keyword.cardFace) && (
+                keyword.id in BUFF_ICON_MAP && BUFF_ICON_MAP[keyword.id] ? (
+                  <img
+                    className="buff-icon"
+                    src={BUFF_ICON_MAP[keyword.id]}
+                  ></img>
+                ) : (
+                  <KeywordIcon
+                    tag={
+                      "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
+                    }
+                    image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
+                  />
+                )
               )}
               <div className="keyword-title-box">
                 <div className="keyword-title">
@@ -967,14 +969,14 @@ const parseDescription = (
     .replace(/<color=#FFFFFFFF>(\$\[.*?\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
     .replace(/<\/color>/g, "###/COLOR###")
-    .replace(/（/g, "###LBRACE###（")
-    .replace(/）/g, "）###RBRACE###")
+    .replace(/[（(]/g, "###LBRACE###（")
+    .replace(/[）)]/g, "）###RBRACE###")
     .replace(/(\\n)+/g, "###BR###")
     .replace(/\$\{(.*?)\}/g, (_, g1: string) => {
       return keyMap[g1] ?? "";
     })
     .replace(/\{SPRITE_PRESET#(\d+)\}/g, "###SPRITE#$1###")
-    .replace(/\$\[K(3|4)\]：(\d+)/g, "###BOXED#$1#$2###")
+    .replace(/\$\[K(3|4)\][：:](\d+)/g, "###BOXED#$1#$2###")
     .replace(/\$\[(.*?)\]/g, "###REF#$1###")
     .split("###");
   const result: DescriptionToken[] = [];
@@ -1028,7 +1030,7 @@ const parseDescription = (
       const lastColor = colors.pop();
       if (
         lastToken?.type === "plain" &&
-        lastToken.text.endsWith("：") &&
+        /[:：]$/.test(lastToken.text) && //lastToken.text.endsWith("：")
         lastColor?.isBold
       ) {
         lastColor.isConditionBold = true;
