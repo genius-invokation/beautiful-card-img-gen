@@ -96,6 +96,7 @@ img {
   overflow: visible;
   display: inline;
   align-items: center;
+  white-space: nowrap;
   border-radius: 0.25rem;
   --fg-color: #fefef4;
   --bg-color: #cab5a1;
@@ -578,9 +579,11 @@ span:not(.keyword-description):has(
 }
 
 .skill-title {
-  position: absolute;
+  position: relative;
+  margin: -2.6875rem 10rem -0.3125rem 4.5rem;
+  /* position: absolute;
   top: 85px;
-  left: 100px;
+  left: 100px; */
   font-size: 3rem;
   line-height: 1;
   color: #716a64;
