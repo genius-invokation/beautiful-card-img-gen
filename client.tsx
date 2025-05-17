@@ -67,6 +67,40 @@ const BUFF_ICON_MAP = {
   1131561: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika1.png",
 } as Record<number, string>;
 
+// 准备技能Skill_ID与其对应的准备状态Child_ID
+const PREPARE_SKILL_MAP = {
+  12074 : 112074,
+  12104 : 112102,
+  12135 : 112134,
+  // 13094 : 113091, // 迪希雅废弃技能
+  13095 : 113092,
+  13155 : 113157,
+  14054 : 114055,
+  15074 : 115071,
+  16074 : 116072,
+  22035 : 122032,
+  23046 : 123043,
+  24015 : 124011,
+  24016 : 124012,
+  24044 : 124043,
+  25025 : 125022,
+  25026 : 125023,
+  // 30034 : 130032, // 以下为不可玩角色
+  // 30045 : 130042,
+  // 30046 : 130043,
+  // 31065 : 131063,
+  // 32065 : 132062,
+  // 32066 : 132063,
+  // 33036 : 133034,
+  // 33075 : 133071,
+  // 33085 : 133081,
+  // 33086 : 133082,
+  // 34016 : 134014,
+  // 34085 : 134081,
+  // 35025 : 135021,
+} as Record<number, number>;
+
+
 
 declare module "react" {
   interface CSSProperties {
@@ -173,6 +207,15 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_PLACE: "场地",
     GCG_TAG_ALLY: "伙伴",
     GCG_TAG_ITEM: "道具",
+    GCG_TAG_PREPARE_SKILL: "准备技能",
+    GCG_TAG_NYX_STATE: "夜魂态",
+    GCG_TAG_SHEILD: "护盾",
+    GCG_TAG_DENDRO_PRODUCE: "草元素相关反应产物",
+    GCG_TAG_FALL_ATTACK: "下落攻击",
+    GCG_TAG_FORBIDDEN_ATTACK: "无法使用技能",
+    GCG_TAG_IMMUNE_CONTROL: "免疫控制",
+    GCG_TAG_IMMUNE_FREEZING: "免疫冻结",
+    GCG_TAG_SLOWLY: "战斗行动",
   },
   en: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
@@ -224,6 +267,15 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_PLACE: "Location",
     GCG_TAG_ALLY: "Companion",
     GCG_TAG_ITEM: "Item",
+    GCG_TAG_PREPARE_SKILL: "Prepare Skill",
+    GCG_TAG_NYX_STATE: "Nightsoul's Blessing State",
+    GCG_TAG_SHEILD: "Sheild",
+    GCG_TAG_DENDRO_PRODUCE: "Dendro-Related Reactions",
+    GCG_TAG_FALL_ATTACK: "Plunging Attack",
+    GCG_TAG_FORBIDDEN_ATTACK: "Cannot Use Skills",
+    GCG_TAG_IMMUNE_CONTROL: "Immune to Control",
+    GCG_TAG_IMMUNE_FREEZING: "Immune to Frozen",
+    GCG_TAG_SLOWLY: "Combat Action",
   },
 } as Record<string, Record<string, string>>;
 
@@ -271,6 +323,7 @@ const TYPE_TAG_IMG_NAME_MAP = {
   GCG_TAG_PLACE: "Card_Location",
   GCG_TAG_ALLY: "Card_Ally",
   GCG_TAG_ITEM: "Card_Item",
+  GCG_TAG_SLOWLY: "Card_CombatAction",
 } as Record<string, string>;
 
 const diceImageUrl = (type: string) =>
@@ -483,26 +536,39 @@ const KeywordTag = (props: {
 };
 
 const KeywordIcon = (props: {
+  id: number;
   tag: string;
   image?: string;
   className?: string;
 }) => {
-  return (
-    props.image && <img className="buff-icon" src={cardFaceUrl(props.image)} />
-    // (props.image || TYPE_TAG_IMG_NAME_MAP[props.tag]) && (
-    //   props.image ? (
-    //     <img
-    //       className="buff-icon"
-    //       src={cardFaceUrl(props.image)}
-    //     />
-    //   ) : (
+  if (props.id in BUFF_ICON_MAP && BUFF_ICON_MAP[props.id]) {
+    return (
+      <img
+        className="buff-icon"
+        src={BUFF_ICON_MAP[props.id]}
+      ></img>
+    )
+  } else if (props.id in PREPARE_SKILL_MAP && PREPARE_SKILL_MAP[props.id]) {
+    const prepareState = entities.find((e) => e.id === PREPARE_SKILL_MAP[props.id]);
+    if (prepareState && "buffIcon" in prepareState && prepareState.buffIcon) {
+      return(
+        <img
+          className="buff-icon"
+          src={cardFaceUrl(prepareState.buffIcon)}
+        ></img>
+      )
+    } else return(void 0)
+  } else {
+    return(
+      props.image && <img className="buff-icon" src={cardFaceUrl(props.image)} />
+    )
+  }  
+    // TYPE_TAG_IMG_NAME_MAP[props.tag] && (
     //     <div
     //       className="buff-mask"
     //       style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
     //     />
     //   )
-    // )
-  );
 };
 
 const Cost = (props: {
@@ -657,20 +723,14 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
           )}
           <div className="keyword-box">
             <div className="keyword-buff-box">
-              {!("cardFace" in keyword && keyword.cardFace) && (
-                keyword.id in BUFF_ICON_MAP && BUFF_ICON_MAP[keyword.id] ? (
-                  <img
-                    className="buff-icon"
-                    src={BUFF_ICON_MAP[keyword.id]}
-                  ></img>
-                ) : (
-                  <KeywordIcon
-                    tag={
-                      "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
-                    }
-                    image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
-                  />
-                )
+              {!("cardFace" in keyword && keyword.cardFace) && ( 
+                <KeywordIcon
+                  id={ keyword.id }
+                  tag={
+                    "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
+                  }
+                  image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
+                />
               )}
               <div className="keyword-title-box">
                 <div className="keyword-title">
@@ -683,6 +743,9 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     }
                     image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
                   />
+                  {keyword.id in PREPARE_SKILL_MAP && (
+                    <KeywordTag tag="GCG_TAG_PREPARE_SKILL"/>
+                  )}
                   {"tags" in keyword &&
                     keyword.tags.map((tag) => (
                       <KeywordTag tag={tag} key={tag} />
