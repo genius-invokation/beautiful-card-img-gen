@@ -34,10 +34,9 @@ const DISPLAY_ID = true; //显示ID
 
 // 手动配置的child
 const CHILDREN_CONFIG = {
-  12082: "$[C112081],$[C112082]", // 妮露 K1011=C112082
+  11142: "$[C111141],$[C111142]，$[C111143]", // 茜特菈莉 有个不知道哪来的错误夜魂加持
   12102: "$[C112101],$[S12104]", // 那维莱特 K1020=S12104
-  12111: "", // 芙宁娜
-  12113: "$[C112114],$[C112115]", // 芙宁娜 K1209=C112115
+  12111: "", // 芙宁娜 普攻置空
   13152: "$[C113151],$[C113154],$[C113155],$[C113156]", // 玛薇卡
 } as Record<number, string>;
 
@@ -47,8 +46,11 @@ const shownKeywords = [7];
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 const costReadonly = [112131, 112132, 112133, 112142];
 
-// 新卡技能icon //老卡我也不知道怎么实现的guyu再改改
+// 新卡技能icon
 const SKILL_ICON_MAP = {
+  11142: "./assets/card/demo/UI_Talent_U_Citlali_01.png",
+  11143: "./assets/card/demo/UI_Talent_U_Citlali_02.png",
+  11144: "./assets/card/demo/Skill_S_Citlali_02.png",
   13152: "./assets/card/demo/Skill_S_Mavuika_01.png",
   13153: "./assets/card/demo/UI_Talent_U_Mavuika_01.png",
   13154: "./assets/card/demo/Skill_S_Mavuika_06.png",
@@ -58,7 +60,9 @@ const SKILL_ICON_MAP = {
 // 应该是兼容老卡的，老卡用的是函数cardfaceurl，只是我目标路径没有老卡
 // 可能新卡和老卡都有用到cardfaceurl的地方，如果能作出区分也行
 const BUFF_ICON_MAP = {
-  13155: "./assets/card/demo/UI_Gcg_Buff_Common_Special.png",
+  111141: "./assets/card/demo/UI_Gcg_Buff_Nightsoul_Ice.webp",
+  111142: "./assets/card/demo/UI_Gcg_Buff_Citlali_Shiled.png",
+  111143: "./assets/card/demo/UI_Gcg_Buff_Citlali_E1.png",
   113151: "./assets/card/demo/UI_Gcg_Buff_Nightsoul_Fire.webp",
   113152: "./assets/card/demo/UI_Gcg_Buff_Mavuika_S.png",
   113153: "./assets/card/demo/UI_Gcg_Buff_Mavuika_E.png",
@@ -66,41 +70,6 @@ const BUFF_ICON_MAP = {
   1131551: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika3.png",
   1131561: "./assets/card/demo/UI_Gcg_Buff_Vehicle_Mavuika1.png",
 } as Record<number, string>;
-
-// 准备技能Skill_ID与其对应的准备状态Child_ID
-const PREPARE_SKILL_MAP = {
-  12074 : 112074,
-  12104 : 112102,
-  12135 : 112134,
-  // 13094 : 113091, // 迪希雅废弃技能
-  13095 : 113092,
-  13155 : 113157,
-  14054 : 114055,
-  15074 : 115071,
-  16074 : 116072,
-  22035 : 122032,
-  23046 : 123043,
-  24015 : 124011,
-  24016 : 124012,
-  24044 : 124043,
-  25025 : 125022,
-  25026 : 125023,
-  // 30034 : 130032, // 以下为不可玩角色
-  // 30045 : 130042,
-  // 30046 : 130043,
-  // 31065 : 131063,
-  // 32065 : 132062,
-  // 32066 : 132063,
-  // 33036 : 133034,
-  // 33075 : 133071,
-  // 33085 : 133081,
-  // 33086 : 133082,
-  // 34016 : 134014,
-  // 34085 : 134081,
-  // 35025 : 135021,
-} as Record<number, number>;
-
-
 
 declare module "react" {
   interface CSSProperties {
@@ -624,6 +593,31 @@ const remapColors = (color: string | undefined) => {
   return COLOR_MAPS[color] ?? color;
 };
 
+const KEYWORD_CHILD_MAP: Record<number, number> = Object.fromEntries(
+  keywords
+    .filter((k) => k.name && k.id > 1000)
+    .map((k) => {
+      const match = entities.find(
+        (e) => 
+          e.name === k.name && 
+          e.id > 110000 &&
+          !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
+      );
+      return match ? [k.id, match.id] : null;
+    })
+    .filter((pair): pair is [number, number] => !!pair)
+);
+
+const PREPARE_SKILL_MAP: Record<number, number> = Object.fromEntries(
+  entities
+    .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
+    )
+    .flatMap((entity) => {
+      const matches = [...entity.rawDescription.matchAll(/\$\[S(\d{5})\]/g)];
+      return matches.map((m) => [parseInt(m[1], 10), entity.id]);
+    })
+);
+
 const Token = ({ token }: { token: DescriptionToken }) => {
   switch (token.type) {
     case "plain":
@@ -1097,7 +1091,7 @@ const parseDescription = (
         lastColor?.isBold
       ) {
         lastColor.isConditionBold = true;
-      }
+      }      
     } else if (text.startsWith("REF#")) {
       const ref = text.substring(4);
       let usingKeywordId: number | null = null;
@@ -1114,10 +1108,21 @@ const parseDescription = (
       } else {
         const refType = ref[0];
         let id = Number(ref.substring(1));
+        let manualColor: string | undefined = undefined;
         if (refType === "K") {
-          usingKeywordId = id;
-        } else {
-          let manualColor: string | undefined = undefined;
+          const mappedC = KEYWORD_CHILD_MAP[id];
+          if (mappedC) {
+            result.push({
+              type: "reference",
+              refType: "C",
+              id: mappedC,
+              manualColor,
+              ...styles,
+            });
+          } else {
+            usingKeywordId = id;
+          }          
+        } else {  
           if (refType === "A") {
             manualColor = KEYWORD_COLORS[100 + (Math.floor(id / 100) % 10)];
           } else if (refType === "S" && id.toString().length === 5) {
@@ -1322,6 +1327,7 @@ const parseCharacter = (
   data: CharacterRawData,
   supIds: number[],
 ): ParsedCharacter => {
+  supIds.push(...data.skills.flatMap((sk) => sk.hidden ? [] : [sk.id]))
   const parsedSkills = data.skills.map((skill) =>
     parseCharacterSkill(skill, supIds),
   );
@@ -1343,7 +1349,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1214)!;
+const CHARACTER = characters.find((c) => c.id === 1413)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
