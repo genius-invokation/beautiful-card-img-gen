@@ -435,7 +435,7 @@ span:not(.keyword-description):has(
   width: 1.2em;
   /* aspect-ratio: 1; */
   /* margin-inline: 0.2em; */
-  vertical-align: -0.875rem;
+  vertical-align: -0.35em;
 }
 
 .description-icon-tag {
@@ -501,6 +501,8 @@ span:not(.keyword-description):has(
   padding: 4px 16px 2px 16px;
   margin-right: 12px;
   line-height: 1.36;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .figure {
