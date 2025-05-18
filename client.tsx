@@ -523,14 +523,14 @@ const KeywordIcon = (props: {
   image?: string;
   className?: string;
 }) => {
-  if (props.id in BUFF_ICON_MAP && BUFF_ICON_MAP[props.id]) {
+  if (props.id in BUFF_ICON_MAP && BUFF_ICON_MAP[props.id]) { // 新卡or手动定义的icon
     return (
       <img
         className="buff-icon"
         src={BUFF_ICON_MAP[props.id]}
       ></img>
     )
-  } else if (props.id in PREPARE_SKILL_MAP && PREPARE_SKILL_MAP[props.id]) {
+  } else if (props.id in PREPARE_SKILL_MAP && PREPARE_SKILL_MAP[props.id]) { // 准备技能icon特判
     const prepareState = entities.find((e) => e.id === PREPARE_SKILL_MAP[props.id]);
     if (prepareState && "buffIcon" in prepareState && prepareState.buffIcon) {
       return(
@@ -540,7 +540,7 @@ const KeywordIcon = (props: {
         ></img>
       )
     } else return(void 0)
-  } else if (["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(props.tag)) {
+  } else if (["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(props.tag)) { // 衍生形态技能icon特判
     return(
       <div 
         className="buff-mask" 
@@ -613,6 +613,7 @@ const remapColors = (color: string | undefined) => {
   return COLOR_MAPS[color] ?? color;
 };
 
+// 从keyword.id到同名entity.id的映射
 const KEYWORD_CHILD_MAP: Record<number, number> = Object.fromEntries(
   keywords
     .filter((k) => k.name && k.id > 1000)
@@ -628,6 +629,7 @@ const KEYWORD_CHILD_MAP: Record<number, number> = Object.fromEntries(
     .filter((pair): pair is [number, number] => !!pair)
 );
 
+// 从准备技能skill.id到准备技能state.id的映射
 const PREPARE_SKILL_MAP: Record<number, number> = Object.fromEntries(
   entities
     .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
@@ -1363,7 +1365,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1211)!;
+const CHARACTER = characters.find((c) => c.id === 2602)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
