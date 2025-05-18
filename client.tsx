@@ -1039,7 +1039,7 @@ const parseDescription = (
   keyMap: Record<string, string> = {},
 ): ParsedDescription => {
   const segments = rawDescription
-    .replace(/<color=#FFFFFFFF>(\$\[.*?\])<\/color>/g, "$1")
+    .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
     .replace(/<\/color>/g, "###/COLOR###")
     .replace(/[（(]/g, "###LBRACE###（")
@@ -1365,7 +1365,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 2602)!;
+const CHARACTER = characters.find((c) => c.id === 1210)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
