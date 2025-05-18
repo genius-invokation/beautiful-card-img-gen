@@ -44,10 +44,12 @@ const CHILDREN_CONFIG = {
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117],", // 恰斯卡
   16092: "$[C116097],$[C116091],$[C116092],$[C116093],$[C116095],$[C116096],", // 千织
   16111: "", // 希诺宁 普攻置空
+  21023: "$[C121021],$[S63011],$[S63012],$[S63013],",
+  22012: "$[C122010],$[C122011],$[C122012],$[C122013],", // 纯水精灵
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
-const shownKeywords = [0];
+const shownKeywords = [1012, 1013];
 
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 const costReadonly = [112131, 112132, 112133, 112142, 115112, 116102, 116112];
@@ -538,17 +540,24 @@ const KeywordIcon = (props: {
         ></img>
       )
     } else return(void 0)
+  } else if (["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(props.tag)) {
+    return(
+      <div 
+        className="buff-mask" 
+        style={{
+          maskImage: `url("${
+            props.image
+              ? `https://assets.gi-tcg.guyutongxue.site/assets/${props.image}.webp`
+              : SKILL_ICON_MAP[props.id]
+          }")`,
+        }}
+      />
+    )
   } else {
     return(
       props.image && <img className="buff-icon" src={cardFaceUrl(props.image)} />
     )
   }  
-    // TYPE_TAG_IMG_NAME_MAP[props.tag] && (
-    //     <div
-    //       className="buff-mask"
-    //       style={{ "--image": `url("${tagImageUrl(props.tag)}")` }}
-    //     />
-    //   )
 };
 
 const Cost = (props: {
@@ -734,7 +743,7 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                   tag={
                     "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
                   }
-                  image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
+                  image={"buffIcon" in keyword ? keyword.buffIcon : "icon" in keyword ? keyword.icon : void 0}
                 />
               )}
               <div className="keyword-title-box">
@@ -772,14 +781,8 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     : keyword.playCost
                 }
                 readonly={
-                  costReadonly.includes(keyword.id) ||
-                  [
-                    "GCG_SKILL_TAG_A",
-                    "GCG_SKILL_TAG_E",
-                    "GCG_SKILL_TAG_Q",
-                  ].includes(keyword.type)
+                  costReadonly.includes(keyword.id) || keyword.id in PREPARE_SKILL_MAP
                 }
-                // readonly={keyword.type === "GCG_CARD_MODIFY"}
               />
             )}
             <div className={`keyword-description keyword-description-${LANGUAGE}`}>
@@ -1360,7 +1363,7 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1710)!;
+const CHARACTER = characters.find((c) => c.id === 1211)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
