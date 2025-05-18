@@ -35,6 +35,7 @@ const DISPLAY_ID = true; //显示ID
 // 手动配置的child
 const CHILDREN_CONFIG = {
   11142: "$[C111141],$[C111142]，$[C111143]", // 茜特菈莉 有个不知道哪来的错误夜魂加持
+  12082: "$[C112081]",
   12102: "$[C112101],$[S12104]", // 那维莱特 K1020=S12104
   12111: "", // 芙宁娜 普攻置空
   13141: "", // 阿蕾奇诺 普攻置空
@@ -46,7 +47,8 @@ const CHILDREN_CONFIG = {
   16111: "", // 希诺宁 普攻置空
   21023: "$[C121021],$[S63011],$[S63012],$[S63013],",
   22012: "$[C122010],$[C122011],$[C122012],$[C122013],", // 纯水精灵
-  322027: "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215],", // 瑟琳
+  322027:
+    "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215],", // 瑟琳
   331702: "", // 草共鸣
   333020: "$[C333021],$[C333022],$[C333023],$[C333024],$[C333025],$[C333026],", // 奇瑰之汤
   333027: "", // 纵声欢唱
@@ -56,7 +58,10 @@ const CHILDREN_CONFIG = {
 const shownKeywords = [1012, 1013];
 
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
-const costReadonly = [112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022, 333023, 333024, 333025, 333026];
+const costReadonly = [
+  112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022,
+  333023, 333024, 333025, 333026,
+];
 
 // 新卡技能icon
 const SKILL_ICON_MAP = {
@@ -527,27 +532,31 @@ const KeywordIcon = (props: {
   image?: string;
   className?: string;
 }) => {
-  if (props.id in BUFF_ICON_MAP && BUFF_ICON_MAP[props.id]) { // 新卡or手动定义的icon
-    return (
-      <img
-        className="buff-icon"
-        src={BUFF_ICON_MAP[props.id]}
-      ></img>
-    )
-  } else if (props.id in PREPARE_SKILL_MAP && PREPARE_SKILL_MAP[props.id]) { // 准备技能icon特判
-    const prepareState = entities.find((e) => e.id === PREPARE_SKILL_MAP[props.id]);
+  if (props.id in BUFF_ICON_MAP && BUFF_ICON_MAP[props.id]) {
+    // 新卡or手动定义的icon
+    return <img className="buff-icon" src={BUFF_ICON_MAP[props.id]}></img>;
+  } else if (props.id in PREPARE_SKILL_MAP && PREPARE_SKILL_MAP[props.id]) {
+    // 准备技能icon特判
+    const prepareState = entities.find(
+      (e) => e.id === PREPARE_SKILL_MAP[props.id],
+    );
     if (prepareState && "buffIcon" in prepareState && prepareState.buffIcon) {
-      return(
+      return (
         <img
           className="buff-icon"
           src={cardFaceUrl(prepareState.buffIcon)}
         ></img>
-      )
-    } else return(void 0)
-  } else if (["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(props.tag)) { // 衍生形态技能icon特判
-    return(
-      <div 
-        className="buff-mask" 
+      );
+    } else return void 0;
+  } else if (
+    ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(
+      props.tag,
+    )
+  ) {
+    // 衍生形态技能icon特判
+    return (
+      <div
+        className="buff-mask"
         style={{
           maskImage: `url("${
             props.image
@@ -556,12 +565,14 @@ const KeywordIcon = (props: {
           }")`,
         }}
       />
-    )
+    );
   } else {
-    return(
-      props.image && <img className="buff-icon" src={cardFaceUrl(props.image)} />
-    )
-  }  
+    return (
+      props.image && (
+        <img className="buff-icon" src={cardFaceUrl(props.image)} />
+      )
+    );
+  }
 };
 
 const Cost = (props: {
@@ -622,27 +633,25 @@ const KEYWORD_CHILD_MAP: Record<number, number> = Object.fromEntries(
   keywords
     .filter((k) => k.name && k.id > 1000)
     .map((k) => {
-      const match = 
-        [...actionCards, ...entities].find(
-          (e) => 
-            e.name === k.name && 
-            e.id > 110000 &&
-            !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
-        );
+      const match = [...actionCards, ...entities].find(
+        (e) =>
+          e.name === k.name &&
+          e.id > 110000 &&
+          !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
+      );
       return match ? [k.id, match.id] : null;
     })
-    .filter((pair): pair is [number, number] => !!pair)
+    .filter((pair): pair is [number, number] => !!pair),
 );
 
 // 从准备技能skill.id到准备技能state.id的映射
 const PREPARE_SKILL_MAP: Record<number, number> = Object.fromEntries(
   entities
-    .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
-    )
+    .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"))
     .flatMap((entity) => {
       const matches = [...entity.rawDescription.matchAll(/\$\[S(\d{5})\]/g)];
       return matches.map((m) => [parseInt(m[1], 10), entity.id]);
-    })
+    }),
 );
 
 const Token = ({ token }: { token: DescriptionToken }) => {
@@ -744,13 +753,19 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
           )}
           <div className="keyword-box">
             <div className="keyword-buff-box">
-              {!("cardFace" in keyword && keyword.cardFace) && ( 
+              {!("cardFace" in keyword && keyword.cardFace) && (
                 <KeywordIcon
-                  id={ keyword.id }
+                  id={keyword.id}
                   tag={
                     "type" in keyword ? keyword.type : "GCG_RULE_EXPLANATION"
                   }
-                  image={"buffIcon" in keyword ? keyword.buffIcon : "icon" in keyword ? keyword.icon : void 0}
+                  image={
+                    "buffIcon" in keyword
+                      ? keyword.buffIcon
+                      : "icon" in keyword
+                      ? keyword.icon
+                      : void 0
+                  }
                 />
               )}
               <div className="keyword-title-box">
@@ -765,7 +780,7 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
                   />
                   {keyword.id in PREPARE_SKILL_MAP && (
-                    <KeywordTag tag="GCG_TAG_PREPARE_SKILL"/>
+                    <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
                   )}
                   {"tags" in keyword &&
                     keyword.tags.map((tag) => (
@@ -788,11 +803,14 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     : keyword.playCost
                 }
                 readonly={
-                  costReadonly.includes(keyword.id) || keyword.id in PREPARE_SKILL_MAP
+                  costReadonly.includes(keyword.id) ||
+                  keyword.id in PREPARE_SKILL_MAP
                 }
               />
             )}
-            <div className={`keyword-description keyword-description-${LANGUAGE}`}>
+            <div
+              className={`keyword-description keyword-description-${LANGUAGE}`}
+            >
               <Description description={keyword.parsedDescription} />
             </div>
           </div>
@@ -925,7 +943,9 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
           ))}
         </div>
         <div className="dashed-line" />
-        <div className={`action-card-description action-card-description-${LANGUAGE}`}>
+        <div
+          className={`action-card-description action-card-description-${LANGUAGE}`}
+        >
           <Description description={card.parsedDescription} />
         </div>
         {card.children.length > 0 && <Children children={card.children} />}
@@ -942,10 +962,7 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
               ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
               : card.playCost.length === 1 &&
                 card.playCost[0].type === "GCG_COST_LEGEND"
-              ? [
-                  { type: "GCG_COST_DICE_SAME", count: 0 },
-                  ...card.playCost,
-                ]
+              ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card.playCost]
               : card.playCost
           }
         />
@@ -1048,12 +1065,13 @@ const DAMAGE_KEYWORD_MAP = {
 const parseDescription = (
   rawDescription: string,
   keyMap: Record<string, string> = {},
+  ignoreParentheses = false,
 ): ParsedDescription => {
   const segments = rawDescription
     .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
     .replace(/<\/color>/g, "###/COLOR###")
-    .replace(/\$\[K(3|4)\](?::\s|：)(\d+)/g, "###BOXED#$1#$2###")    
+    .replace(/\$\[K(3|4)\](?::\s|：)(\d+)/g, "###BOXED#$1#$2###")
     .replace(/[（(]/g, "###LBRACE###（")
     .replace(/[）)]/g, "）###RBRACE###")
     .replace(/(\\n)+/g, "###BR###")
@@ -1077,8 +1095,9 @@ const parseDescription = (
   for (const text of segments) {
     const lastToken = result[result.length - 1];
     const rootColor = colors[0];
+    const currentColor = colors[colors.length - 1];
     const rootParenthesis = parentheses[0];
-    const color = rootColor?.isBold ? void 0 : rootColor?.rawColor;
+    const color = currentColor?.isBold ? void 0 : currentColor?.rawColor;
     const styles = {
       overrideStyle() {
         return rootParenthesis?.afterBr
@@ -1097,12 +1116,17 @@ const parseDescription = (
     if (text === "BR") {
       result.push({ type: "lineBreak" });
     } else if (text === "LBRACE") {
-      parentheses.push({
-        afterBr:
-          lastToken?.type === "lineBreak" || lastToken?.type === "boxedKeyword",
-      });
+      if (!ignoreParentheses) {
+        parentheses.push({
+          afterBr:
+            lastToken?.type === "lineBreak" ||
+            lastToken?.type === "boxedKeyword",
+        });
+      }
     } else if (text === "RBRACE") {
-      parentheses.pop();
+      if (!ignoreParentheses) {
+        parentheses.pop();
+      }
     } else if (text.startsWith("COLOR#")) {
       const rawColor = text.substring(5, 14);
       colors.push({
@@ -1118,7 +1142,7 @@ const parseDescription = (
         lastColor?.isBold
       ) {
         lastColor.isConditionBold = true;
-      }      
+      }
     } else if (text.startsWith("REF#")) {
       const ref = text.substring(4);
       let usingKeywordId: number | null = null;
@@ -1148,8 +1172,8 @@ const parseDescription = (
             });
           } else {
             usingKeywordId = id;
-          }          
-        } else {  
+          }
+        } else {
           if (refType === "A") {
             manualColor = KEYWORD_COLORS[100 + (Math.floor(id / 100) % 10)];
           } else if (refType === "S" && id.toString().length === 5) {
@@ -1168,9 +1192,10 @@ const parseDescription = (
       if (usingKeywordId !== null) {
         const keyword = keywords.find((e) => e.id === usingKeywordId);
         if (keyword) {
+          const rawName = keyword.rawName.split("|s1:").pop()!;
           result.push(
             { type: "hiddenKeyword", id: usingKeywordId },
-            ...parseDescription(keyword.rawName).map((token) => {
+            ...parseDescription(rawName).map((token) => {
               if (token.type === "plain") {
                 return {
                   ...token,
@@ -1243,9 +1268,10 @@ const parseCharacterSkill = (
   const parsedDescription = parseDescription(
     skill.rawDescription,
     skill.keyMap,
+    true,
   );
-  suppressedReferencedIds.push(skill.id);  
-  const children = appendChildren(skill, suppressedReferencedIds, true);
+  suppressedReferencedIds.push(skill.id);
+  const children = appendChildren(skill, suppressedReferencedIds, "children");
   return {
     ...skill,
     parsedDescription,
@@ -1256,14 +1282,14 @@ const parseCharacterSkill = (
 const appendChildren = (
   childData: ChildData,
   suppressedReferencedIds: number[],
-  childOnly = false,
+  scope: "all" | "self" | "children" = "all",
 ): ParsedChild[] => {
   const parsedDescription = parseDescription(
     childData.rawDescription,
     "keyMap" in childData ? childData.keyMap : {},
   );
   const result: ParsedChild[] = [];
-  if (!childOnly) {
+  if (scope !== "children") {
     const self = {
       ...childData,
       parsedDescription,
@@ -1289,11 +1315,15 @@ const appendChildren = (
       }
     }
   }
+  if (scope === "self") {
+    return result;
+  }
 
-  const children =
-    childData.id in CHILDREN_CONFIG
-      ? parseDescription(CHILDREN_CONFIG[childData.id])
-      : parsedDescription;
+  const manuallyConfigChilren = CHILDREN_CONFIG[childData.id];
+  const subScope = manuallyConfigChilren ? "self" : "all";
+  const children = manuallyConfigChilren
+    ? parseDescription(manuallyConfigChilren)
+    : parsedDescription;
   for (const child of children) {
     if (child.type === "reference") {
       if (suppressedReferencedIds.includes(child.id)) {
@@ -1306,7 +1336,9 @@ const appendChildren = (
           if (!data) {
             continue;
           }
-          result.push(...appendChildren(data, suppressedReferencedIds));
+          result.push(
+            ...appendChildren(data, suppressedReferencedIds, subScope),
+          );
           break;
         }
         case "C": {
@@ -1322,7 +1354,9 @@ const appendChildren = (
           if (!data) {
             continue;
           }
-          result.push(...appendChildren(data, suppressedReferencedIds));
+          result.push(
+            ...appendChildren(data, suppressedReferencedIds, subScope),
+          );
           break;
         }
         case "A": {
@@ -1354,7 +1388,7 @@ const parseCharacter = (
   data: CharacterRawData,
   supIds: number[],
 ): ParsedCharacter => {
-  supIds.push(...data.skills.flatMap((sk) => sk.hidden ? [] : [sk.id]))
+  supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
   const parsedSkills = data.skills.map((skill) =>
     parseCharacterSkill(skill, supIds),
   );
@@ -1368,16 +1402,16 @@ const parseActionCard = (
   data: ActionCardRawData,
   supIds: number[],
 ): ParsedActionCard => {
-  supIds.push(data.id)
+  supIds.push(data.id);
   return {
     ...data,
     parsedDescription: parseDescription(data.rawDescription),
-    children: appendChildren(data, supIds, true),
+    children: appendChildren(data, supIds, "children"),
   };
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 2602)!;
+const CHARACTER = characters.find((c) => c.id === 1313)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
