@@ -46,13 +46,17 @@ const CHILDREN_CONFIG = {
   16111: "", // 希诺宁 普攻置空
   21023: "$[C121021],$[S63011],$[S63012],$[S63013],",
   22012: "$[C122010],$[C122011],$[C122012],$[C122013],", // 纯水精灵
+  322027: "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215],", // 瑟琳
+  331702: "", // 草共鸣
+  333020: "$[C333021],$[C333022],$[C333023],$[C333024],$[C333025],$[C333026],", // 奇瑰之汤
+  333027: "", // 纵声欢唱
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
 const shownKeywords = [1012, 1013];
 
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
-const costReadonly = [112131, 112132, 112133, 112142, 115112, 116102, 116112];
+const costReadonly = [112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022, 333023, 333024, 333025, 333026];
 
 // 新卡技能icon
 const SKILL_ICON_MAP = {
@@ -150,7 +154,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_CARD_ONSTAGE: "出战状态",
     GCG_CARD_STATE: "状态",
     GCG_CARD_SUMMON: "召唤物",
-    GCG_CARD_SUPPORT: "支援牌",
+    GCG_CARD_ASSIST: "支援牌",
     GCG_CARD_MODIFY: "装备牌",
     GCG_TAG_ELEMENT_CRYO: "冰元素",
     GCG_TAG_ELEMENT_HYDRO: "水元素",
@@ -210,7 +214,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_CARD_ONSTAGE: "Combat Status",
     GCG_CARD_STATE: "Status",
     GCG_CARD_SUMMON: "Summon",
-    GCG_CARD_SUPPORT: "Support Card",
+    GCG_CARD_ASSIST: "Support Card",
     GCG_CARD_MODIFY: "Equipment Card",
     GCG_TAG_ELEMENT_CRYO: "Cryo",
     GCG_TAG_ELEMENT_HYDRO: "Hydro",
@@ -266,7 +270,7 @@ const TYPE_TAG_IMG_NAME_MAP = {
   GCG_CARD_ONSTAGE: "Custom_Summon",
   GCG_CARD_STATE: "Custom_Summon",
   GCG_CARD_SUMMON: "Custom_Summon",
-  GCG_CARD_SUPPORT: "Custom_ActionCard",
+  GCG_CARD_ASSIST: "Custom_ActionCard",
   GCG_CARD_MODIFY: "Custom_ActionCard",
   GCG_TAG_ELEMENT_CRYO: "Element_Ice",
   GCG_TAG_ELEMENT_HYDRO: "Element_Water",
@@ -337,7 +341,7 @@ const DESCRIPTION_ICON_IMAGES = {
   1101: { imageUrl: `/assets/UI_Gcg_DiceL_Ice.png` },
   1102: { imageUrl: `/assets/UI_Gcg_DiceL_Water.png` },
   1103: { imageUrl: `/assets/UI_Gcg_DiceL_Fire.png` },
-  1104: { imageUrl: `/assets/UI_Gcg_DiceL_Electric.png` },
+  1104: { imageUrl: `/assets/UI_Gcg_DiceL_Elec.png` },
   1105: { imageUrl: `/assets/UI_Gcg_DiceL_Wind.png` },
   1106: { imageUrl: `/assets/UI_Gcg_DiceL_Rock.png` },
   1107: { imageUrl: `/assets/UI_Gcg_DiceL_Grass.png` },
@@ -618,12 +622,13 @@ const KEYWORD_CHILD_MAP: Record<number, number> = Object.fromEntries(
   keywords
     .filter((k) => k.name && k.id > 1000)
     .map((k) => {
-      const match = entities.find(
-        (e) => 
-          e.name === k.name && 
-          e.id > 110000 &&
-          !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
-      );
+      const match = 
+        [...actionCards, ...entities].find(
+          (e) => 
+            e.name === k.name && 
+            e.id > 110000 &&
+            !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
+        );
       return match ? [k.id, match.id] : null;
     })
     .filter((pair): pair is [number, number] => !!pair)
@@ -935,6 +940,12 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
           cost={
             card.playCost.length === 0
               ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
+              : card.playCost.length === 1 &&
+                card.playCost[0].type === "GCG_COST_LEGEND"
+              ? [
+                  { type: "GCG_COST_DICE_SAME", count: 0 },
+                  ...card.playCost,
+                ]
               : card.playCost
           }
         />
@@ -1042,6 +1053,7 @@ const parseDescription = (
     .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
     .replace(/<\/color>/g, "###/COLOR###")
+    .replace(/\$\[K(3|4)\](?::\s|：)(\d+)/g, "###BOXED#$1#$2###")    
     .replace(/[（(]/g, "###LBRACE###（")
     .replace(/[）)]/g, "）###RBRACE###")
     .replace(/(\\n)+/g, "###BR###")
@@ -1049,7 +1061,6 @@ const parseDescription = (
       return keyMap[g1] ?? "";
     })
     .replace(/\{SPRITE_PRESET#(\d+)\}/g, "###SPRITE#$1###")
-    .replace(/\$\[K(3|4)\][：:](\d+)/g, "###BOXED#$1#$2###")
     .replace(/\$\[(.*?)\]/g, "###REF#$1###")
     .split("###");
   const result: DescriptionToken[] = [];
@@ -1357,6 +1368,7 @@ const parseActionCard = (
   data: ActionCardRawData,
   supIds: number[],
 ): ParsedActionCard => {
+  supIds.push(data.id)
   return {
     ...data,
     parsedDescription: parseDescription(data.rawDescription),
@@ -1365,11 +1377,12 @@ const parseActionCard = (
 };
 
 const supIds: number[] = [];
-const CHARACTER = characters.find((c) => c.id === 1210)!;
+const CHARACTER = characters.find((c) => c.id === 2602)!;
 const CARD = actionCards.find((c) => c.relatedCharacterId === CHARACTER.id)!;
 const cards = actionCards.filter(
   (c) =>
     c.sinceVersion === "v5.6.50-beta" &&
+    // c.obtainable &&
     !(c.tags as string[]).includes("GCG_TAG_TALENT"),
 );
 const cardsParsed = cards.map((c) => parseActionCard(c, supIds));
