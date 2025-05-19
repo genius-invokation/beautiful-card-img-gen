@@ -1,28 +1,3 @@
-import zh_characters from "./data/zh/characters.json";
-import zh_actionCards from "./data/zh/action_cards.json";
-import zh_keywords from "./data/zh/keywords.json";
-import zh_entities from "./data/zh/entities.json";
-
-import en_characters from "./data/en/characters.json";
-import en_actionCards from "./data/en/action_cards.json";
-import en_keywords from "./data/en/keywords.json";
-import en_entities from "./data/en/entities.json";
-
-const Data = {
-  zh: {
-    characters: zh_characters,
-    actionCards: zh_actionCards,
-    keywords: zh_keywords,
-    entities: zh_entities,
-  },
-  en: {
-    characters: en_characters,
-    actionCards: en_actionCards,
-    keywords: en_keywords,
-    entities: en_entities,
-  },
-};
-
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/ninthspace.png`,
   authorName: "ninthspace",
@@ -106,8 +81,6 @@ const COST_READONLY_ENTITIES = [
 import "./style.css";
 import { createRoot } from "react-dom/client";
 import {
-  entities,
-  keywords,
   type ActionCardRawData,
   type CharacterRawData,
   type EntityRawData,
@@ -558,7 +531,7 @@ const PageTitle = (props: { text: string }) => {
             points="0,37.2 8,37.2 69,96 8,156 0,156"
             fill="#f7f7ebbb"
             stroke="#ded3c3ff"
-            stroke-width="6"
+            strokeWidth="6"
           />
         </svg>
       </div>

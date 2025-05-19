@@ -2,6 +2,8 @@ import { BunRequest } from "bun";
 import { parse } from "node:path";
 import indexHtml from "./index.html";
 
+console.log(import.meta.env?.GITHUB_TOKEN);
+
 Bun.serve({
   port: 3000,
   routes: {
@@ -16,11 +18,8 @@ Bun.serve({
       const remote = url.searchParams.get("remote");
       if (remote) {
         const { name } = parse(url.pathname);
-        console.log(
-          `https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/${name}.json`,
-        );
         const data = await fetch(
-          `https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/${name}.json`,
+          `https://raw.githubusercontent.com/genius-invokation/genius-invokation-beta/refs/heads/beta/packages/static-data/src/data/${name}.json`,
           {
             headers: {
               Authorization: import.meta.env?.GITHUB_TOKEN
