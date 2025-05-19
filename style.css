@@ -884,10 +884,14 @@ span:not(.keyword-description):has(
 
 .action-card {
   display: flex;
-  flex-direction: row-reverse;
 }
-.action-card:nth-child(even) {
+.action-card:nth-child(even),
+.flip .action-card:nth-child(odd) {
   flex-direction: row;
+}
+.action-card:nth-child(odd),
+.flip .action-card:nth-child(even) {
+  flex-direction: row-reverse;
 }
 
 .action-card-info {
