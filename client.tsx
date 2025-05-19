@@ -22,17 +22,21 @@ import en_characters from "./data_en/characters.json";
 import en_actionCards from "./data_en/action_cards.json";
 import en_keywords from "./data_en/keywords.json";
 import en_entities from "./data_en/entities.json";
-const LANGUAGE = "zh" as "zh" | "en"; //语言zh en
+
+
+const LANGUAGE = "zh" as "zh" | "en"; // 语言zh en
 const AUTHOR_CONFIG = [
   { name: "ninthspace", img: "/assets/frame/ninthspace.png" },
   { name: "guyutongxue", img: "/assets/frame/guyu.png" },
   { name: "dudu-bot", img: "/assets/frame/dudubot.png" },
-][0]; //作者信息 0:ninthspace, 1:guyu, 2:dudu-bot
-const VERSION = "Beta 5.6 v3"; //版本号
-const CARD_BACK_IMAGE = "./assets/UI_Gcg_CardBack_Championship_09.png"; //牌背
-const DISPLAY_ID = true; //显示ID
+][0]; // 作者信息 0:ninthspace, 1:guyu, 2:dudu-bot
+const VERSION = "Beta 5.7 v3"; // 版本号
+const PAGE_TITLE = { zh: "5.7版本新增行动牌", en: "Action Cards added in 5.7" }; // 页面标题
+const MIERROR_LAYOUT = true; // 镜像布局
+const CARD_BACK_IMAGE = "./assets/UI_Gcg_CardBack_Championship_09.png"; // 牌背
+const DISPLAY_ID = true; // 显示ID
 const DISPLAY_STORY = false; // 显示卡牌故事false
-const DEBUG = false; // debug模式下会显示相关实体，匹配方式粗糙，FP/TN均有
+const DEBUG = true; // debug模式下会显示相关实体，匹配方式粗糙，FP/TN均有
 
 // 手动配置的child // 由于新的代码懒得改了，置空不能空着，随便写点啥
 const CHILDREN_CONFIG = {
@@ -166,6 +170,7 @@ const keyword_card_frame = "/assets/frame/keyword_card_frame.png";
 // const keyword_card_shadow = "/assets/frame/keyword_card_shadow.png";
 const keyword_cardback_repeat = "/assets/frame/UI_Gcg_CardBack_Repeat.png";
 const keyword_cardback_bottom = "/assets/frame/UI_Gcg_CardBack_Bottom.png";
+const page_title_icon = "/assets/frame/pagetitle.png";
 
 // 特殊能量，卡图右侧的能量条
 const SPECIAL_ENERGY_MAP = {
@@ -535,25 +540,58 @@ const Tag = (props: { type: TagType; tag: string; className?: string }) => {
   );
 };
 
-const NameIdCapsule = (props: {
-  id: number;
-  name?: string;
-}) => {
+const DebugBox = ({ character }: { character: ParsedCharacter }) => {
   return (
-    <div className="capsule">
-      <div className="capsule-left-part">
-        <div className="capsule-text">
-          {props.id}
-        </div>
-      </div>
-      <div className="capsule-right-part">
-        <div className="capsule-text">
-          {props.name ? props.name : names.get(props.id) ? names.get(props.id) : "#"}          
-        </div>
+    <div className="skill-box">
+      <div className="author-decorator-bottom">{AUTHOR_CONFIG.name}</div>
+      <div className="skill-type">Related Entities #Debug Mode#</div>
+      <div className="debug-box">
+        {getRelatedIds(character)
+          .flatMap((relatedid) => (
+            supIds.includes(relatedid)
+              ? []
+              : (
+                <div className="capsule">
+                  <div className="capsule-left-part">
+                    <div className="capsule-text">
+                      {relatedid}
+                    </div>
+                  </div>
+                  <div className="capsule-right-part">
+                    <div className="capsule-text">
+                      <Text text={names.get(relatedid) ? names.get(relatedid) : "#"} />
+                    </div>
+                  </div>
+                </div>
+              )
+          ))
+        }
       </div>
     </div>
   );
 };
+
+const PageTitle = (props: {text : string}) => {
+  return (
+    <div className="page-title-wrapper">
+      <img className="page-title-icon" src={page_title_icon} />
+      <div className="page-title">
+        <Text text={props.text} />
+      </div>
+      <div className="page-title-tail">
+        <svg width="80" height="192">
+          <polyline 
+            points="0,37.2 8,37.2 69,96 8,156 0,156" 
+            fill="#f7f7ebbb" 
+            stroke="#ded3c3ff" 
+            stroke-width="6"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
 
 
 const KeywordTag = (props: {
@@ -620,8 +658,8 @@ const KeywordIcon = (props: {
         className="buff-mask"
         style={{
           maskImage: `url("${props.image
-              ? `https://assets.gi-tcg.guyutongxue.site/assets/${props.image}.webp`
-              : SKILL_ICON_MAP[props.id]
+            ? `https://assets.gi-tcg.guyutongxue.site/assets/${props.image}.webp`
+            : SKILL_ICON_MAP[props.id]
             }")`,
         }}
       />
@@ -903,8 +941,8 @@ const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
         className="skill-icon"
         style={{
           maskImage: `url("${skill.icon
-              ? `https://assets.gi-tcg.guyutongxue.site/assets/${skill.icon}.webp`
-              : SKILL_ICON_MAP[skill.id]
+            ? `https://assets.gi-tcg.guyutongxue.site/assets/${skill.icon}.webp`
+            : SKILL_ICON_MAP[skill.id]
             }")`,
         }}
       ></div>
@@ -980,8 +1018,8 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
           </div>
           <hr className="info-divider" />
           <p className="info-story">
-            {DISPLAY_STORY && <Text text={character.storyText} />}           
-          </p>      
+            {DISPLAY_STORY && <Text text={character.storyText} />}
+          </p>
           <div className="spacer"></div>
           <SkillBox skill={normalSkill} />
         </div>
@@ -990,19 +1028,7 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
         <SkillBox skill={skill} key={skill.id} />
       ))}
       {DEBUG && getRelatedIds(character) &&
-        <div className="skill-box">
-          <div className="author-decorator-bottom">{AUTHOR_CONFIG.name}</div>
-          <div className="skill-type">Related Entities #Debug Mode#</div>
-          <div className="debug-box">
-            {getRelatedIds(character)
-              .flatMap((relatedid) => (
-                supIds.includes(relatedid)
-                  ? []
-                  : <NameIdCapsule id={relatedid} />
-              ))
-            }
-          </div>
-        </div>
+        <DebugBox character={character} key={character.id} />
       }
     </div>
   );
@@ -1127,17 +1153,17 @@ const DAMAGE_KEYWORD_MAP = {
   GCG_ELEMENT_DENDRO: 107,
 } as Record<string, number>;
 
- // 为debug准备的筛选有关id的功能
+// 为debug准备的筛选有关id的功能
 const getRelatedIds = (
   character: CharacterRawData,
 ): number[] => {
   const variants = VariantCharacters[character.id] || [];
   const allCharacterIds = [character.id, ...variants];
   const skillIds = characters
-    .filter((c) => 
+    .filter((c) =>
       allCharacterIds.includes(c.id)
     )
-    .flatMap((c) => 
+    .flatMap((c) =>
       c.skills.map((s) => s.id)
     );
   const cardIds = actionCards.flatMap((c) => {
@@ -1147,7 +1173,7 @@ const getRelatedIds = (
       (idStr[0] === "1" || idStr[0] === "2") &&
       allCharacterIds.includes(Number(idStr.slice(1, 5)))
     ) ? [c.id] : [];
-  });  
+  });
   const relatedEntity = entities
     .filter((e) => {
       const idStr = e.id.toString();
@@ -1159,7 +1185,7 @@ const getRelatedIds = (
     });
   const entityIds = relatedEntity.map((e) => e.id);
   const entitySkillIds = relatedEntity
-    .flatMap((e) => 
+    .flatMap((e) =>
       e.skills?.map((s) => s.id) || []
     );
   return Array.from(new Set([
@@ -1300,7 +1326,7 @@ const parseDescription = (
             ...styles,
           });
         } else {
-          result.push({ type: "errored", text: `${refType}${id}`  });
+          result.push({ type: "errored", text: `${refType}${id}` });
         }
       }
       if (usingKeywordId !== null) {
@@ -1493,8 +1519,8 @@ const parseCharacter = (
 ): ParsedCharacter => {
   supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
   const parsedSkills = data.skills.flatMap((skill) =>
-    skill.hidden 
-      ? [] 
+    skill.hidden
+      ? []
       : [parseCharacterSkill(skill, supIds)],
   );
   return {
@@ -1521,6 +1547,8 @@ const App = () => {
       <div className="layout">
         {/* <Character character={CHARACTER_PARSED} />
         <ActionCard card={CARD_PARSED} /> */}
+        <PageTitle text={PAGE_TITLE[LANGUAGE]} />
+        {!MIERROR_LAYOUT && <div className="horizontal-flip"></div>}
         {cardsParsed.map((c) => <ActionCard card={c} />)}
         <div className="version-layout">
           <div className="version-text">{VERSION}</div>
