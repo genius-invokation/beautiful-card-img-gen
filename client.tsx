@@ -1,9 +1,11 @@
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/ninthspace.png`,
   authorName: "ninthspace",
-  version: "v5.6.0",
+  version: "v5.5.0",
+  // solo: "A1503",
   displayStory: true,
   mirroredLayout: true,
+  localData: true,
 };
 
 // 新卡技能icon
@@ -488,7 +490,7 @@ const Tag = (props: { type: TagType; tag: string; className?: string }) => {
 };
 
 const DebugBox = ({ character }: { character: ParsedCharacter }) => {
-  const ctx =  useAppContext();
+  const ctx = useAppContext();
   const { authorName, supIds, names } = ctx;
   return (
     <div className="skill-box">
@@ -595,9 +597,12 @@ const KeywordIcon = (props: {
       );
     } else return void 0;
   } else if (
-    ["GCG_SKILL_TAG_A", "GCG_SKILL_TAG_E", "GCG_SKILL_TAG_Q"].includes(
-      props.tag,
-    )
+    [
+      "GCG_SKILL_TAG_A",
+      "GCG_SKILL_TAG_E",
+      "GCG_SKILL_TAG_Q",
+      "GCG_SKILL_TAG_VEHICLE",
+    ].includes(props.tag)
   ) {
     // 衍生形态技能icon特判
     return (
@@ -1092,7 +1097,10 @@ const DAMAGE_KEYWORD_MAP = {
 } as Record<string, number>;
 
 // 为debug准备的筛选有关id的功能
-const getRelatedIds = (ctx: AppContextValue, character: CharacterRawData): number[] => {
+const getRelatedIds = (
+  ctx: AppContextValue,
+  character: CharacterRawData,
+): number[] => {
   const { data } = ctx;
   // 角色关联 仅Debug用
   const VariantCharacters = {
@@ -1306,7 +1314,9 @@ const parseDescription = (
     } else if (text.startsWith("BOXED#")) {
       const [_, id, count] = text.split("#");
       const keywordId = Number(id);
-      const { name } = data.keywords.find((e) => e.id === keywordId) ?? { name : "" };
+      const { name } = data.keywords.find((e) => e.id === keywordId) ?? {
+        name: "",
+      };
       result.push({
         type: "boxedKeyword",
         text: `${name}：${count}`,
@@ -1408,9 +1418,7 @@ const appendChildren = (
           if (!skillData) {
             continue;
           }
-          result.push(
-            ...appendChildren(ctx, skillData, subScope),
-          );
+          result.push(...appendChildren(ctx, skillData, subScope));
           break;
         }
         case "C": {
@@ -1426,9 +1434,7 @@ const appendChildren = (
           if (!entityData) {
             continue;
           }
-          result.push(
-            ...appendChildren(ctx, entityData, subScope),
-          );
+          result.push(...appendChildren(ctx, entityData, subScope));
           break;
         }
         case "A": {
@@ -1484,6 +1490,10 @@ const parseActionCard = (
 
 interface AppProps {
   language?: "en" | "zh";
+  /**
+   * - 为 true 时，读取本地 /data/en 和 /data/zh 的数据。
+   * - 为 false 时，读取 genius-invokation-beta 的数据。
+   */
   localData?: boolean;
   authorName?: string;
   authorImageUrl?: string;
@@ -1547,7 +1557,7 @@ const App = (props: AppProps) => {
       const filename = category === "actionCards" ? "action_cards" : category;
       const url = props.localData
         ? `/data/${props.language || "zh"}/${filename}.json`
-        : `/data/${filename}.json?remote=1`
+        : `/data/${filename}.json?remote=1`;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -1683,12 +1693,12 @@ const AppImpl = (props: AppProps) => {
   if (props.solo) {
     const type = props.solo[0];
     const id = Number(props.solo.slice(1));
-    if (type === "C") {
+    if (type === "A") {
       const character = data.characters.find((c) => c.id === id);
       if (character) {
         return <Character character={parseCharacter(ctx, character)} />;
       }
-    } else if (type === "A") {
+    } else if (type === "C") {
       const actionCard = data.actionCards.find((c) => c.id === id);
       if (actionCard) {
         return <ActionCard card={parseActionCard(ctx, actionCard)} />;
