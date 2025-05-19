@@ -105,16 +105,18 @@ const COST_READONLY_ENTITIES = [
 
 import "./style.css";
 import { createRoot } from "react-dom/client";
-import type {
-  ActionCardRawData,
-  CharacterRawData,
-  EntityRawData,
-  KeywordRawData,
-  PlayCost,
-  SkillRawData,
+import {
+  entities,
+  keywords,
+  type ActionCardRawData,
+  type CharacterRawData,
+  type EntityRawData,
+  type KeywordRawData,
+  type PlayCost,
+  type SkillRawData,
 } from "@gi-tcg/static-data";
 
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // ID纠错 //目前仅芙宁娜
 const correctId = {
@@ -513,13 +515,14 @@ const Tag = (props: { type: TagType; tag: string; className?: string }) => {
 };
 
 const DebugBox = ({ character }: { character: ParsedCharacter }) => {
-  const { authorName, supIds, names } = useAppContext();
+  const ctx =  useAppContext();
+  const { authorName, supIds, names } = ctx;
   return (
     <div className="skill-box">
       <div className="author-decorator-bottom">{authorName}</div>
       <div className="skill-type">Related Entities #Debug Mode#</div>
       <div className="debug-box">
-        {getRelatedIds(character).flatMap((relatedid) =>
+        {getRelatedIds(ctx, character).flatMap((relatedid) =>
           supIds.includes(relatedid) ? (
             []
           ) : (
@@ -941,7 +944,8 @@ const CardFace = (props: {
 };
 
 const Character = ({ character }: { character: ParsedCharacter }) => {
-  const { debug, displayStory } = useAppContext();
+  const ctx = useAppContext();
+  const { debug, displayStory } = ctx;
   const [normalSkill, ...otherSkills] = character.parsedSkills;
   return (
     <div className="character">
@@ -987,7 +991,7 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
       {otherSkills.map((skill) => (
         <SkillBox skill={skill} key={skill.id} />
       ))}
-      {debug && getRelatedIds(character) && (
+      {debug && getRelatedIds(ctx, character) && (
         <DebugBox character={character} key={character.id} />
       )}
     </div>
@@ -1115,8 +1119,8 @@ const DAMAGE_KEYWORD_MAP = {
 } as Record<string, number>;
 
 // 为debug准备的筛选有关id的功能
-const getRelatedIds = (character: CharacterRawData): number[] => {
-  const { data } = useAppContext();
+const getRelatedIds = (ctx: AppContextValue, character: CharacterRawData): number[] => {
+  const { data } = ctx;
   // 角色关联 仅Debug用
   const VariantCharacters = {
     1211: [1212],
@@ -1161,11 +1165,12 @@ const getRelatedIds = (character: CharacterRawData): number[] => {
 };
 
 const parseDescription = (
+  ctx: AppContextValue,
   rawDescription: string,
   keyMap: Record<string, string> = {},
   ignoreParentheses = false,
 ): ParsedDescription => {
-  const { names, data, keywordToEntityMap } = useAppContext();
+  const { names, data, keywordToEntityMap } = ctx;
   const segments = rawDescription
     .replace(/<color=#FFFFFFFF>(\$\[[ACSK]\d+\])<\/color>/g, "$1")
     .replace(/<color=#([0-9A-F]{8})>/g, "###COLOR#$1###")
@@ -1297,7 +1302,7 @@ const parseDescription = (
           const rawName = keyword.rawName.split("|s1:").pop()!;
           result.push(
             { type: "hiddenKeyword", id: usingKeywordId },
-            ...parseDescription(rawName).map((token) => {
+            ...parseDescription(ctx, rawName).map((token) => {
               if (token.type === "plain") {
                 return {
                   ...token,
@@ -1328,7 +1333,7 @@ const parseDescription = (
     } else if (text.startsWith("BOXED#")) {
       const [_, id, count] = text.split("#");
       const keywordId = Number(id);
-      const { name } = data.keywords.find((e) => e.id === keywordId)!;
+      const { name } = data.keywords.find((e) => e.id === keywordId) ?? { name : "" };
       result.push({
         type: "boxedKeyword",
         text: `${name}：${count}`,
@@ -1353,16 +1358,17 @@ const parseDescription = (
 };
 
 const parseCharacterSkill = (
+  ctx: AppContextValue,
   skill: SkillRawData,
-  suppressedReferencedIds: number[] = [],
 ): ParsedSkill => {
   const parsedDescription = parseDescription(
+    ctx,
     skill.rawDescription,
     skill.keyMap,
     true,
   );
   // suppressedReferencedIds.push(skill.id);
-  const children = appendChildren(skill, suppressedReferencedIds, "children");
+  const children = appendChildren(ctx, skill, "children");
   return {
     ...skill,
     parsedDescription,
@@ -1371,12 +1377,13 @@ const parseCharacterSkill = (
 };
 
 const appendChildren = (
+  ctx: AppContextValue,
   childData: ChildData,
-  suppressedReferencedIds: number[],
   scope: "all" | "self" | "children" = "all",
 ): ParsedChild[] => {
-  const { data } = useAppContext();
+  const { data } = ctx;
   const parsedDescription = parseDescription(
+    ctx,
     childData.rawDescription,
     "keyMap" in childData ? childData.keyMap : {},
   );
@@ -1414,14 +1421,14 @@ const appendChildren = (
   const manuallyConfigChilren = CHILDREN_CONFIG[childData.id];
   const subScope = manuallyConfigChilren ? "self" : "all";
   const children = manuallyConfigChilren
-    ? parseDescription(manuallyConfigChilren)
+    ? parseDescription(ctx, manuallyConfigChilren)
     : parsedDescription;
   for (const child of children) {
     if (child.type === "reference") {
-      if (suppressedReferencedIds.includes(child.id)) {
+      if (ctx.supIds.includes(child.id)) {
         continue;
       }
-      suppressedReferencedIds.push(child.id);
+      ctx.supIds.push(child.id);
       switch (child.refType) {
         case "S": {
           const skillData = data.skills.find((sk) => sk.id === child.id);
@@ -1429,7 +1436,7 @@ const appendChildren = (
             continue;
           }
           result.push(
-            ...appendChildren(skillData, suppressedReferencedIds, subScope),
+            ...appendChildren(ctx, skillData, subScope),
           );
           break;
         }
@@ -1447,7 +1454,7 @@ const appendChildren = (
             continue;
           }
           result.push(
-            ...appendChildren(entityData, suppressedReferencedIds, subScope),
+            ...appendChildren(ctx, entityData, subScope),
           );
           break;
         }
@@ -1459,16 +1466,16 @@ const appendChildren = (
       child.type === "hiddenKeyword" &&
       SHOWN_KEYWORDS.includes(child.id)
     ) {
-      if (suppressedReferencedIds.includes(-child.id)) {
+      if (ctx.supIds.includes(-child.id)) {
         continue;
       }
-      suppressedReferencedIds.push(-child.id);
+      ctx.supIds.push(-child.id);
       const keywordData = data.keywords.find((e) => e.id === child.id);
       if (keywordData) {
         result.push({
           ...keywordData,
           type: "GCG_RULE_EXPLANATION",
-          parsedDescription: parseDescription(keywordData.rawDescription),
+          parsedDescription: parseDescription(ctx, keywordData.rawDescription),
         });
       }
     }
@@ -1477,12 +1484,12 @@ const appendChildren = (
 };
 
 const parseCharacter = (
+  ctx: AppContextValue,
   data: CharacterRawData,
-  supIds: number[],
 ): ParsedCharacter => {
-  supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
+  ctx.supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
   const parsedSkills = data.skills.flatMap((skill) =>
-    skill.hidden ? [] : [parseCharacterSkill(skill, supIds)],
+    skill.hidden ? [] : [parseCharacterSkill(ctx, skill)],
   );
   return {
     ...data,
@@ -1491,19 +1498,20 @@ const parseCharacter = (
 };
 
 const parseActionCard = (
+  ctx: AppContextValue,
   data: ActionCardRawData,
-  supIds: number[],
 ): ParsedActionCard => {
-  supIds.push(data.id);
+  ctx.supIds.push(data.id);
   return {
     ...data,
-    parsedDescription: parseDescription(data.rawDescription),
-    children: appendChildren(data, supIds, "children"),
+    parsedDescription: parseDescription(ctx, data.rawDescription),
+    children: appendChildren(ctx, data, "children"),
   };
 };
 
 interface AppProps {
   language?: "en" | "zh";
+  localData?: boolean;
   authorName?: string;
   authorImageUrl?: string;
   version?: `v${number}.${number}.${number}${"" | `-beta`}`;
@@ -1550,17 +1558,43 @@ const AppContext = createContext<AppContextValue>({
 const useAppContext = () => useContext(AppContext);
 
 const App = (props: AppProps) => {
-  const rawData = Data[props.language || "zh"];
+  const [rawData, setRawData] = useState<Record<string, any>>({
+    characters: [],
+    actionCards: [],
+    entities: [],
+    keywords: [],
+  });
+  useEffect(() => {
+    for (const category of [
+      "characters",
+      "actionCards",
+      "entities",
+      "keywords",
+    ]) {
+      const filename = category === "actionCards" ? "action_cards" : category;
+      const url = props.localData
+        ? `/data/${props.language || "zh"}/${filename}.json`
+        : `/data/${filename}.json?remote=1`
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          setRawData((prev) => ({
+            ...prev,
+            [category]: data,
+          }));
+        });
+    }
+  }, [props.localData, props.language]);
 
   const skills = [...rawData.characters, ...rawData.entities].flatMap(
     (e) => e.skills as SkillRawData[],
   );
   const genericEntities = [...rawData.actionCards, ...rawData.entities];
-  const data: AppContextValue["data"] = {
-    ...rawData, // TODO
+  const data = {
+    ...rawData,
     genericEntities,
     skills,
-  };
+  } as AppContextValue["data"];
   const supIds: number[] = [];
   const names = new Map<number, string>(
     [...genericEntities, ...rawData.characters, ...skills].map(
@@ -1607,7 +1641,8 @@ const App = (props: AppProps) => {
 };
 
 const AppImpl = (props: AppProps) => {
-  const { language = "zh", data, supIds } = useAppContext();
+  const ctx = useAppContext();
+  const { language = "zh", data, supIds } = ctx;
   if (props.version) {
     let versionStr: string = props.version;
     if (versionStr.startsWith("v")) {
@@ -1639,17 +1674,17 @@ const AppImpl = (props: AppProps) => {
         !ac.tags.includes("GCG_TAG_TALENT"),
     );
     const charactersParsed = shownCharacters.map((c) => {
-      const character = parseCharacter(c, supIds);
+      const character = parseCharacter(ctx, c);
       const talentRaw = data.actionCards.find(
         (ac) => ac.relatedCharacterId === character.id,
       );
       return {
         character,
-        talent: talentRaw ? parseActionCard(talentRaw, supIds) : null,
+        talent: talentRaw ? parseActionCard(ctx, talentRaw) : null,
       };
     });
     const actionCardsParsed = shownActionCards.map((c) =>
-      parseActionCard(c, supIds),
+      parseActionCard(ctx, c),
     );
     return (
       <>
@@ -1678,12 +1713,12 @@ const AppImpl = (props: AppProps) => {
     if (type === "C") {
       const character = data.characters.find((c) => c.id === id);
       if (character) {
-        return <Character character={parseCharacter(character, supIds)} />;
+        return <Character character={parseCharacter(ctx, character)} />;
       }
     } else if (type === "A") {
       const actionCard = data.actionCards.find((c) => c.id === id);
       if (actionCard) {
-        return <ActionCard card={parseActionCard(actionCard, supIds)} />;
+        return <ActionCard card={parseActionCard(ctx, actionCard)} />;
       }
     }
   }

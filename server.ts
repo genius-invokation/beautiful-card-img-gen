@@ -11,14 +11,41 @@ Bun.serve({
       const file = Bun.file(path);
       return new Response(file);
     },
+    "/data/*": async (req: BunRequest) => {
+      const url = new URL(req.url);
+      const remote = url.searchParams.get("remote");
+      if (remote) {
+        const { name } = parse(url.pathname);
+        console.log(
+          `https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/${name}.json`,
+        );
+        const data = await fetch(
+          `https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/${name}.json`,
+          {
+            headers: {
+              Authorization: import.meta.env?.GITHUB_TOKEN
+                ? `Bearer ${import.meta.env?.GITHUB_TOKEN}`
+                : (void 0 as any),
+            },
+          },
+        ).then((res) => res.json());
+        return new Response(JSON.stringify(data), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      const path = decodeURIComponent(url.pathname).slice(1);
+      const file = Bun.file(path);
+      return new Response(file);
+    },
     "/images/*": async (req: BunRequest) => {
       const path = decodeURIComponent(new URL(req.url).pathname).slice(1);
       const file = Bun.file(path);
       if (!(await file.exists())) {
         const { name } = parse(path);
-        console.log(name);
         return await fetch(
-          `https://assets.gi-tcg.guyutongxue.site/assets/${name}.webp`
+          `https://assets.gi-tcg.guyutongxue.site/assets/${name}.webp`,
         );
       }
       return new Response(file);
