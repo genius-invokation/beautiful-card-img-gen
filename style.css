@@ -18,7 +18,7 @@ body {
   font-family: "HYWH", sans-serif;
 
   --keyword-bg-color: #f0eadd;
-  transform: scale(50%);
+  /* transform: scale(50%); */
   transform-origin: 0 0;
 }
 
@@ -884,6 +884,9 @@ span:not(.keyword-description):has(
 
 .action-card {
   display: flex;
+}
+.action-card:first-child {
+  margin-top: 10rem;
 }
 .action-card:nth-child(even),
 .flip .action-card:nth-child(odd) {

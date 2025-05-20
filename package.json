@@ -1,5 +1,7 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "puppeteer": "^24.9.0"
+  },
   "devDependencies": {
     "@gi-tcg/static-data": "^0.17.1",
     "@types/bun": "^1.2.12",

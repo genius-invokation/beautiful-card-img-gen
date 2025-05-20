@@ -1,11 +1,13 @@
+const search = new URLSearchParams(window.location.search);
+
 const APP_CONFIG: AppProps = {
-  authorImageUrl: `/assets/frame/ninthspace.png`,
-  authorName: "ninthspace",
-  version: "v5.5.0",
-  // solo: "A1503",
-  displayStory: true,
-  mirroredLayout: true,
-  localData: true,
+  // authorImageUrl: `/assets/frame/ninthspace.png`,
+  authorName: "谷雨同学 & 璃澄_leture",
+  version: search.get("version") as any, // v5.5.0
+  solo: search.get("id") as any, // A1503
+  displayStory: search.has("display_story"),
+  mirroredLayout: search.has("mirrored_layout"),
+  localData: search.has("local_data"),
 };
 
 // 新卡技能icon
@@ -98,6 +100,11 @@ const correctId = {
   12123: 12112,
 } as Record<number, number>;
 
+declare global {
+  interface WindowEventMap {
+    config: CustomEvent<AppProps>;
+  }
+}
 declare module "react" {
   interface CSSProperties {
     [key: `--${string}`]: string | number | undefined;
@@ -1540,7 +1547,8 @@ const AppContext = createContext<AppContextValue>({
 
 const useAppContext = () => useContext(AppContext);
 
-const App = (props: AppProps) => {
+const App = () => {
+  const [appConfig, setAppConfig] = useState<AppProps>(APP_CONFIG);
   const [rawData, setRawData] = useState<Record<string, any>>({
     characters: [],
     actionCards: [],
@@ -1555,8 +1563,8 @@ const App = (props: AppProps) => {
       "keywords",
     ]) {
       const filename = category === "actionCards" ? "action_cards" : category;
-      const url = props.localData
-        ? `/data/${props.language || "zh"}/${filename}.json`
+      const url = appConfig.localData
+        ? `/data/${appConfig.language || "zh"}/${filename}.json`
         : `/data/${filename}.json?remote=1`;
       fetch(url)
         .then((res) => res.json())
@@ -1567,7 +1575,7 @@ const App = (props: AppProps) => {
           }));
         });
     }
-  }, [props.localData, props.language]);
+  }, [appConfig.localData, appConfig.language]);
 
   const skills = [...rawData.characters, ...rawData.entities].flatMap(
     (e) => e.skills as SkillRawData[],
@@ -1610,7 +1618,7 @@ const App = (props: AppProps) => {
   return (
     <AppContext.Provider
       value={{
-        ...props,
+        ...appConfig,
         data,
         names,
         supIds,
@@ -1618,14 +1626,15 @@ const App = (props: AppProps) => {
         prepareSkillToEntityMap,
       }}
     >
-      <AppImpl {...props} />
+      <AppImpl {...appConfig} />
     </AppContext.Provider>
   );
 };
 
 const AppImpl = (props: AppProps) => {
   const ctx = useAppContext();
-  const { language = "zh", data, supIds } = ctx;
+  const { language = "zh", data } = ctx;
+  ctx.supIds = [];
   if (props.version) {
     let versionStr: string = props.version;
     if (versionStr.startsWith("v")) {
@@ -1696,16 +1705,40 @@ const AppImpl = (props: AppProps) => {
     if (type === "A") {
       const character = data.characters.find((c) => c.id === id);
       if (character) {
-        return <Character character={parseCharacter(ctx, character)} />;
+        const talent = data.actionCards.find(
+          (ac) => ac.relatedCharacterId === character.id,
+        );
+        return (
+          <div className="layout">
+            <Character character={parseCharacter(ctx, character)} />
+            {talent && <ActionCard card={parseActionCard(ctx, talent)} />}
+            <div className="version-layout">
+              <div className="version-text">{props.authorName}</div>
+              <div />
+            </div>
+          </div>
+        );
       }
     } else if (type === "C") {
       const actionCard = data.actionCards.find((c) => c.id === id);
       if (actionCard) {
-        return <ActionCard card={parseActionCard(ctx, actionCard)} />;
+        return (
+          <div className="layout">
+            <ActionCard card={parseActionCard(ctx, actionCard)} />
+            <div className="version-layout">
+              <div className="version-text">{props.authorName}</div>
+              <div />
+            </div>
+          </div>
+        );
       }
     }
   }
   return <></>;
 };
 
-createRoot(document.getElementById("root")!).render(<App {...APP_CONFIG} />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
