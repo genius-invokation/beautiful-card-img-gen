@@ -1004,6 +1004,7 @@ span:not(.keyword-description):has(
 }
 
 .logo {
-  height: 5.75rem;
+  height: 8rem;
   opacity: 0.8;
+  margin-top: -1.3rem;
 }

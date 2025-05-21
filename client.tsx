@@ -1,13 +1,15 @@
 const search = new URLSearchParams(window.location.search);
 
 const APP_CONFIG: AppProps = {
-  // authorImageUrl: `/assets/frame/ninthspace.png`,
+  authorImageUrl: `/assets/frame/dudubot.png`,
   authorName: "谷雨同学 & 璃澄_leture",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
-  displayStory: search.has("display_story"),
-  mirroredLayout: search.has("mirrored_layout"),
-  localData: search.has("local_data"),
+  displayStory: !!search.get("display_story"),
+  displayId: !!search.get("display_id"),
+  mirroredLayout: !!search.get("mirrored_layout"),
+  localData: !!search.get("local_data"),
+  beta: !!search.get("beta"),
 };
 
 // 新卡技能icon
@@ -1499,9 +1501,10 @@ interface AppProps {
   language?: "en" | "zh";
   /**
    * - 为 true 时，读取本地 /data/en 和 /data/zh 的数据。
-   * - 为 false 时，读取 genius-invokation-beta 的数据。
+   * - 为 false 时，读取 genius-invokation(-beta) 的数据。
    */
   localData?: boolean;
+  beta?: boolean;
   authorName?: string;
   authorImageUrl?: string;
   version?: `v${number}.${number}.${number}${"" | `-beta`}`;
@@ -1563,9 +1566,12 @@ const App = () => {
       "keywords",
     ]) {
       const filename = category === "actionCards" ? "action_cards" : category;
-      const url = appConfig.localData
+      let url = appConfig.localData
         ? `/data/${appConfig.language || "zh"}/${filename}.json`
         : `/data/${filename}.json?remote=1`;
+      if (appConfig.beta) {
+        url += "&beta=1";
+      }
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -1714,7 +1720,11 @@ const AppImpl = (props: AppProps) => {
             {talent && <ActionCard card={parseActionCard(ctx, talent)} />}
             <div className="version-layout">
               <div className="version-text">{props.authorName}</div>
-              <div />
+              {props.authorImageUrl ? (
+                <img src={props.authorImageUrl} className="logo" />
+              ) : (
+                <div />
+              )}
             </div>
           </div>
         );
@@ -1727,7 +1737,11 @@ const AppImpl = (props: AppProps) => {
             <ActionCard card={parseActionCard(ctx, actionCard)} />
             <div className="version-layout">
               <div className="version-text">{props.authorName}</div>
-              <div />
+              {props.authorImageUrl ? (
+                <img src={props.authorImageUrl} className="logo" />
+              ) : (
+                <div />
+              )}
             </div>
           </div>
         );
