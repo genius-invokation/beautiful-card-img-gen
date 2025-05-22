@@ -1,15 +1,16 @@
 const search = new URLSearchParams(window.location.search);
+const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/dudubot.png`,
-  authorName: "谷雨同学 & 璃澄_leture",
+  authorName: beta ? "数据仅对Beta 5.7 v3有效，请以正式服为准" : "谷雨同学 & 嘟！嘟嘟！",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
   displayId: !!search.get("display_id"),
   mirroredLayout: !!search.get("mirrored_layout"),
   localData: !!search.get("local_data"),
-  beta: !!search.get("beta"),
+  beta: beta,
 };
 
 // 新卡技能icon

@@ -984,7 +984,7 @@ span:not(.keyword-description):has(
 }
 
 .version-text {
-  height: 3rem;
+  height: 3.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -992,7 +992,7 @@ span:not(.keyword-description):has(
 
   background-color: #fefef4;
   border: 1px solid #b4967e;
-  border-radius: 1.5rem;
+  border-radius: 1.6rem;
   overflow: hidden;
   word-break: break-word;
   font-size: 2.25rem;
@@ -1006,5 +1006,5 @@ span:not(.keyword-description):has(
 .logo {
   height: 8rem;
   opacity: 0.8;
-  margin-top: -1.3rem;
+  margin-top: -0.5rem;
 }
