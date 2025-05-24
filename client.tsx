@@ -3,7 +3,7 @@ const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/dudubot.png`,
-  authorName: beta ? "数据仅对Beta 5.7 v3有效，请以正式服为准" : "谷雨同学 & 嘟！嘟嘟！",
+  authorName: beta ? "数据仅对Beta5.7v3有效，请以正式服为准" : "guyutongxue & klezn",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -30,13 +30,13 @@ const MISSING_ICONS_URL = {
   113151: "/images/UI_Gcg_Buff_Nightsoul_Fire.webp",
   113152: "/images/UI_Gcg_Buff_Mavuika_S.png",
   113153: "/images/UI_Gcg_Buff_Mavuika_E.png",
-  1131541: "/images/UI_Gcg_Buff_Vehicle_Mavuika1.png",
-  1131551: "/images/UI_Gcg_Buff_Vehicle_Mavuika3.png",
-  1131561: "/images/UI_Gcg_Buff_Vehicle_Mavuika2.png",
+  113154: "/images/UI_Gcg_Buff_Vehicle_Mavuika1.png",
+  113155: "/images/UI_Gcg_Buff_Vehicle_Mavuika3.png",
+  113156: "/images/UI_Gcg_Buff_Vehicle_Mavuika2.png",
   115111: "/images/UI_Gcg_Buff_Nightsoul_Wind.webp",
-  1151121: "/images/UI_Gcg_Buff_Vehicle_Chasca.png",
-  301306: "/images/UI_Gcg_Buff_Common_Buff.png",
-  3130092: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
+  115112: "/images/UI_Gcg_Buff_Vehicle_Chasca.png",
+  301306: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
+  3130092: "/images/Skill_GCG_SaurusBaby.png",
   303240: "/images/UI_Gcg_Buff_Resurrection.png",
 } as Record<number, string>;
 
@@ -46,6 +46,7 @@ const CHILDREN_CONFIG = {
   12082: "$[C112081],$[C112082]", // 妮露 E
   12102: "$[C112101],$[S12104]", // 那维莱特 E K1020=S12104
   12111: "_", // 芙宁娜 A  // 置空不能空着，随便写点啥，下同
+  12142: "$[C112142],$[S1121422],$[C112143],$[C112141]", // 玛拉妮 E
   13141: "_", // 阿蕾奇诺 A
   13152:
     "$[C113151],$[C113154],$[S1131541],$[C113155],$[S1131551],$[C113156],$[S1131561],$[S13155]", // 玛薇卡 E
@@ -132,8 +133,8 @@ const PAGE_TITLE_ICON = "/assets/frame/pagetitle.png";
 
 // 特殊能量，卡图右侧的能量条
 const SPECIAL_ENERGY_MAP = {
-  1315: "/assets/frame/UI_TeyvatCard_LifeBg_Mavuika1.png",
-} as Record<number, string>;
+  1315: { type: "/assets/frame/UI_TeyvatCard_LifeBg_Mavuika1.png", count: 3 },
+} as Record<number, { type: string, count: number }>;
 
 const COST_TYPE_IMG_NAME_MAP = {
   GCG_COST_DICE_VOID: "Diff",
@@ -462,11 +463,11 @@ const Text = ({ text }: { text: string | undefined | null }) => {
   return text.split("·").flatMap((part, i, arr) =>
     i < arr.length - 1
       ? [
-          part,
-          <span key={i} className="middot">
-            ·
-          </span>,
-        ]
+        part,
+        <span key={i} className="middot">
+          ·
+        </span>,
+      ]
       : [part],
   );
 };
@@ -590,28 +591,59 @@ const KeywordIcon = (props: {
   className?: string;
 }) => {
   const { prepareSkillToEntityMap, data } = useAppContext();
-  if (MISSING_ICONS_URL[props.id]) {
-    // 新卡or手动定义的icon
-    return <img className="buff-icon" src={MISSING_ICONS_URL[props.id]}></img>;
+  const chooseImage = (props: {
+    id: number;
+    image?: string;
+  }) => {
+    if (props.image) {
+      return cardFaceUrl(props.image);
+    } else if (props.id in MISSING_ICONS_URL) {
+      return MISSING_ICONS_URL[props.id];
+    } else {
+      return tagImageUrl("GCG_CARD_EVENT");
+    }
+  };
+  if (props.tag === "GCG_RULE_EXPLANATION") {
+    return void 0;
   } else if (prepareSkillToEntityMap.get(props.id)) {
     // 准备技能icon特判
     const prepareState = data.entities.find(
       (e) => e.id === prepareSkillToEntityMap.get(props.id),
     );
-    if (prepareState && "buffIcon" in prepareState && prepareState.buffIcon) {
+    if (prepareState) {
       return (
         <img
           className="buff-icon"
-          src={cardFaceUrl(prepareState.buffIcon)}
+          src={chooseImage({ id: prepareState.id, image: prepareState.buffIcon })}
         ></img>
       );
     } else return void 0;
+  } else if (props.tag === "GCG_SKILL_TAG_VEHICLE") {
+    // 特技icon特判
+    const vehicleCard = data.entities.find(
+      (e) => e.id === Number(props.id.toString().slice(0, -1)),
+    );
+    if (vehicleCard) {
+      return (
+        <img
+          className="buff-icon"
+          src={chooseImage({ id: vehicleCard.id, image: vehicleCard.buffIcon })}
+        ></img>
+      );
+    } else {
+      return (
+        <img
+          className="buff-icon"
+          src={chooseImage({ id: props.id, image: props.image })}
+        ></img>
+      );
+    };
   } else if (
     [
       "GCG_SKILL_TAG_A",
       "GCG_SKILL_TAG_E",
       "GCG_SKILL_TAG_Q",
-      "GCG_SKILL_TAG_VEHICLE",
+      // "GCG_SKILL_TAG_VEHICLE",
     ].includes(props.tag)
   ) {
     // 衍生形态技能icon特判
@@ -619,19 +651,16 @@ const KeywordIcon = (props: {
       <div
         className="buff-mask"
         style={{
-          maskImage: `url("${
-            props.image
-              ? `/images/${props.image}.png`
-              : MISSING_ICONS_URL[props.id]
-          }")`,
+          maskImage: `url("${chooseImage({ id: props.id, image: props.image })}")`,
         }}
       />
     );
   } else {
     return (
-      props.image && (
-        <img className="buff-icon" src={cardFaceUrl(props.image)} />
-      )
+      <img
+        className="buff-icon"
+        src={chooseImage({ id: props.id, image: props.image })}
+      ></img>
     );
   }
 };
@@ -815,8 +844,8 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     "buffIcon" in keyword
                       ? keyword.buffIcon
                       : "icon" in keyword
-                      ? keyword.icon
-                      : void 0
+                        ? keyword.icon
+                        : void 0
                   }
                 />
               )}
@@ -831,16 +860,21 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     }
                     image={"buffIcon" in keyword ? keyword.buffIcon : void 0}
                   />
-                  {prepareSkillToEntityMap.has(keyword.id) && (
-                    <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
-                  )}
                   {"tags" in keyword &&
                     keyword.tags.map((tag) => (
                       <KeywordTag tag={tag} key={tag} />
                     ))}
+                  {prepareSkillToEntityMap.has(keyword.id) && (
+                    <KeywordTag tag="GCG_TAG_PREPARE_SKILL" />
+                  )}
                   {displayId && (
                     <div className="id-box">
                       <div className="keyword-tag-text">ID: {keyword.id}</div>
+                    </div>
+                  )}
+                  {prepareSkillToEntityMap.has(keyword.id) && displayId && (
+                    <div className="id-box">
+                      <div className="keyword-tag-text">ID: {prepareSkillToEntityMap.get(keyword.id)}</div>
                     </div>
                   )}
                 </div>
@@ -880,7 +914,7 @@ const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
   return (
     <div className="skill-box figure" key={skill.id}>
       {/* <div className="author-decorator-top">{AUTHOR_CONFIG.name}</div> */}
-      <div className="author-decorator-bottom">{authorName}</div>
+      {/* <div className="author-decorator-bottom">{authorName}</div> */}
       <div className="skill-type">
         {TYPE_TAG_TEXT_MAP[language][skill.type]}
       </div>
@@ -888,11 +922,10 @@ const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
       <div
         className="skill-icon"
         style={{
-          maskImage: `url("${
-            skill.icon
-              ? `/images/${skill.icon}.png`
-              : MISSING_ICONS_URL[skill.id]
-          }")`,
+          maskImage: `url("${skill.icon
+            ? `/images/${skill.icon}.png`
+            : MISSING_ICONS_URL[skill.id]
+            }")`,
         }}
       ></div>
       <div className="skill-title">
@@ -948,9 +981,18 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
             <div className="stroked-text-bottom">{character.hp}</div>
           </div>
           <div className="energy-bar">
-            {Array.from({ length: character.maxEnergy }).map((_, i) => (
+            {Array.from({
+              length: (
+                character.id in SPECIAL_ENERGY_MAP
+                  ? SPECIAL_ENERGY_MAP[character.id].count
+                  : character.maxEnergy
+              )
+            }).map((_, i) => (
               <img
-                src={SPECIAL_ENERGY_MAP[character.id] ?? AVATAR_CARD_ENERGY}
+                src={
+                  character.id in SPECIAL_ENERGY_MAP
+                    ? SPECIAL_ENERGY_MAP[character.id].type
+                    : AVATAR_CARD_ENERGY}
                 key={i}
                 className="energy"
               />
@@ -991,7 +1033,7 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
   return (
     <div className="action-card">
       <div className="action-card-info figure">
-        <div className="author-decorator-bottom">{authorName}</div>
+        {/* <div className="author-decorator-bottom">{authorName}</div> */}
         <div className="action-card-title">
           <Text text={card.name} />
           {displayId && <span className="id-box">ID: {card.id}</span>}
@@ -1022,8 +1064,8 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
               ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
               : card.playCost.length === 1 &&
                 card.playCost[0].type === "GCG_COST_LEGEND"
-              ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card.playCost]
-              : card.playCost
+                ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card.playCost]
+                : card.playCost
           }
         />
       </CardFace>
@@ -1059,39 +1101,39 @@ type TokenStyle = "strong" | "light" | "dimmed";
 
 type DescriptionToken =
   | {
-      type: "plain";
-      text: string;
-      style: () => TokenStyle | "normal";
-      color?: string;
-    }
+    type: "plain";
+    text: string;
+    style: () => TokenStyle | "normal";
+    color?: string;
+  }
   | {
-      type: "boxedKeyword";
-      text: string;
-    }
+    type: "boxedKeyword";
+    text: string;
+  }
   | {
-      type: "hiddenKeyword";
-      id: number;
-    }
+    type: "hiddenKeyword";
+    id: number;
+  }
   | {
-      type: "reference";
-      refType: string;
-      id: number;
-      overrideStyle: () => TokenStyle | undefined;
-      // 手动指定天赋牌引用角色/技能的颜色
-      manualColor?: string;
-    }
+    type: "reference";
+    refType: string;
+    id: number;
+    overrideStyle: () => TokenStyle | undefined;
+    // 手动指定天赋牌引用角色/技能的颜色
+    manualColor?: string;
+  }
   | {
-      type: "errored";
-      text: string;
-    }
+    type: "errored";
+    text: string;
+  }
   | {
-      type: "lineBreak";
-    }
+    type: "lineBreak";
+  }
   | {
-      type: "icon";
-      id: number;
-      overrideStyle: () => TokenStyle | undefined;
-    };
+    type: "icon";
+    id: number;
+    overrideStyle: () => TokenStyle | undefined;
+  };
 
 type ParsedDescription = DescriptionToken[];
 
@@ -1198,10 +1240,10 @@ const parseDescription = (
         return rootParenthesis?.afterBr
           ? "light"
           : rootColor?.isConditionBold
-          ? "dimmed"
-          : rootColor?.isBold
-          ? "strong"
-          : void 0;
+            ? "dimmed"
+            : rootColor?.isBold
+              ? "strong"
+              : void 0;
       },
       style() {
         return this.overrideStyle() ?? "normal";
@@ -1734,7 +1776,7 @@ const AppImpl = (props: AppProps) => {
       const actionCard = data.actionCards.find((c) => c.id === id);
       if (actionCard) {
         return (
-          <div className="layout">
+          <div className="layout" style={{ paddingTop: `0rem`, backgroundImage: `url("assets/frame/header_decor_onecard.png")` }}>
             <ActionCard card={parseActionCard(ctx, actionCard)} />
             <div className="version-layout">
               <div className="version-text">{props.authorName}</div>
