@@ -36,7 +36,7 @@ const MISSING_ICONS_URL = {
   115111: "/images/UI_Gcg_Buff_Nightsoul_Wind.webp",
   115112: "/images/UI_Gcg_Buff_Vehicle_Chasca.png",
   301306: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
-  3130092: "/images/Skill_GCG_SaurusBaby.png",
+  313009: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
   303240: "/images/UI_Gcg_Buff_Resurrection.png",
 } as Record<number, string>;
 
@@ -58,6 +58,7 @@ const CHILDREN_CONFIG = {
   16092: "$[C116091],$[C116092],$[C116093],$[C116095],$[C116096]", // 千织 E
   216091: "$[C116094]", // 千织 天赋
   16111: "_", // 希诺宁 A
+  16113: "_", // 希诺宁 Q
   17082: "$[C117082]", // 卡维 E
   21022: "$[C121022]", // 女士 E
   21023: "_", // 女士 Q
@@ -66,6 +67,7 @@ const CHILDREN_CONFIG = {
   22012: "$[C122011],$[C122012],$[C122013]", // 纯水精灵 E1
   22013: "_", // 纯水精灵 E2
   22052: "_", // 水丘丘 E
+  22053: "$[C122051],$[S1220511],$[S1220512]$[C122052]", // 水丘丘 Q
   23032: "$[C123032]", // 火镀金旅团 E
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
@@ -83,7 +85,7 @@ const SHOWN_KEYWORDS = [1012, 1013];
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 const COST_READONLY_ENTITIES = [
   112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022,
-  333023, 333024, 333025, 333026,
+  333023, 333024, 333025, 333026
 ];
 
 import "./style.css";
@@ -1659,7 +1661,7 @@ const App = () => {
     data.entities
       .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"))
       .flatMap((entity) => {
-        const matches = [...entity.rawDescription.matchAll(/\$\[S(\d{5})\]/g)];
+        const matches = [...entity.rawDescription.matchAll(/\$\[S(\d{5}|\d{7})\]/g)];
         return matches.map((m) => [parseInt(m[1], 10), entity.id]);
       }),
   );
