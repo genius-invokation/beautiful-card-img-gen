@@ -2,8 +2,8 @@ const search = new URLSearchParams(window.location.search);
 const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
-  authorImageUrl: `/assets/frame/dudubot.png`,
-  authorName: beta ? "数据仅对Beta5.7v3有效，请以正式服为准" : "guyutongxue & klezn",
+  authorImageUrl: `/assets/frame/ninthspace.png`,
+  authorName: beta ? "Beta 5.7 v4" : "Beta 5.7 v4",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -1611,12 +1611,11 @@ const App = () => {
       "keywords",
     ]) {
       const filename = category === "actionCards" ? "action_cards" : category;
-      let url = appConfig.localData
-        ? `/data/${appConfig.language || "zh"}/${filename}.json`
-        : `/data/${filename}.json?remote=1`;
-      if (appConfig.beta) {
-        url += "&beta=1";
-      }
+      const param =new URLSearchParams({
+        beta: beta ? '1' : '',
+        remote: appConfig.localData ? '' : '1'
+      })
+      let url = `/data/${appConfig.language || "zh"}/${filename}.json?${param}`
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
