@@ -2,8 +2,8 @@ const search = new URLSearchParams(window.location.search);
 const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
-  authorImageUrl: `/assets/frame/ninthspace.png`,
-  authorName: beta ? "Beta 5.7 v4" : "Beta 5.7 v4",
+  authorImageUrl: `/assets/frame/dudubot.png`,
+  authorName: beta ? "数据仅对 Beta 5.8 v1 有效，请以正式服为准" : "guyutongxue & klezn",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -15,6 +15,22 @@ const APP_CONFIG: AppProps = {
 
 // 新卡技能icon
 const MISSING_ICONS_URL = {
+  // 5.8
+  15122: "/images/Skill_S_Lanyan_01.png",
+  15123: "/images/Skill_E_Lanyan_01_HD.png",
+  115121: "/images/UI_Gcg_Buff_Lanyan_E1.png",
+  15132: "/images/Skill_S_Heizo_01.png",
+  15133: "/images/Skill_E_Heizo_01_HD.png",
+  15134: "/images/UI_Talent_S_Heizo_05.png",
+  115132: "/images/UI_Gcg_Buff_Heizo_E1.png",  
+  115133: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115134: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115135: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115136: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  27042: "/images/MonsterSkill_S_HookwalkerPrimo_01.png",
+  27043: "/images/MonsterSkill_E_HookwalkerPrimo_01_HD.png",
+  27044: "/images/MonsterSkill_S_HookwalkerPrimo_02.png",
+  // 5.7
   11142: "/images/UI_Talent_U_Citlali_01.png",
   11143: "/images/UI_Talent_U_Citlali_02.png",
   11144: "/images/Skill_S_Citlali_02.png",
@@ -54,6 +70,7 @@ const CHILDREN_CONFIG = {
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
+  15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
   16063: "$[C116062]", // 五郎 Q
   16092: "$[C116091],$[C116092],$[C116093],$[C116095],$[C116096]", // 千织 E
   216091: "$[C116094]", // 千织 天赋
@@ -948,7 +965,7 @@ const CardFace = (props: {
   cardFace: string;
   children?: React.ReactNode;
 }) => {
-  const { cardbackImage = "UI_Gcg_CardBack_Championship_09" } = useAppContext();
+  const { cardbackImage = "UI_Gcg_CardBack_Fonta_03" } = useAppContext();
   return (
     <div className={`card-face-component ${props.className ?? ""}`}>
       <img src={`/assets/${cardbackImage}.png`} className="card-back" />
