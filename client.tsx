@@ -3,7 +3,7 @@ const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/dudubot.png`,
-  authorName: beta ? "数据仅对 Beta 5.8 v1 有效，请以正式服为准" : "guyutongxue & klezn",
+  authorName: beta ? "数据仅对 Beta 5.8 v2 有效，请以正式服为准" : "guyutongxue & klezn",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
