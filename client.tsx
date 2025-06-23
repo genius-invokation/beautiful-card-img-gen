@@ -222,7 +222,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_ALLY: "伙伴",
     GCG_TAG_ITEM: "道具",
     GCG_TAG_PREPARE_SKILL: "准备技能",
-    GCG_TAG_NYX_STATE: "夜魂态",
+    GCG_TAG_NYX_STATE: "夜魂加持",
     GCG_TAG_SHEILD: "护盾",
     GCG_TAG_DENDRO_PRODUCE: "草元素相关反应",
     GCG_TAG_FALL_ATTACK: "下落攻击",
@@ -230,6 +230,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_IMMUNE_CONTROL: "免疫控制",
     GCG_TAG_IMMUNE_FREEZING: "免疫冻结",
     GCG_TAG_SLOWLY: "战斗行动",
+    GCG_TAG_NATION_SIMULANKA: "希穆兰卡",
   },
   en: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
