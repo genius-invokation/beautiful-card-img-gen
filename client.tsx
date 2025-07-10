@@ -2,8 +2,8 @@ const search = new URLSearchParams(window.location.search);
 const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
-  authorImageUrl: `/assets/frame/ninthspace.png`,
-  authorName: beta ? "Beta 5.7 v4" : "Beta 5.7 v4",
+  authorImageUrl: "",
+  authorName: beta ? "Beta" : "",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -15,29 +15,21 @@ const APP_CONFIG: AppProps = {
 
 // 新卡技能icon
 const MISSING_ICONS_URL = {
-  11142: "/images/UI_Talent_U_Citlali_01.png",
-  11143: "/images/UI_Talent_U_Citlali_02.png",
-  11144: "/images/Skill_S_Citlali_02.png",
-  13152: "/images/Skill_S_Mavuika_01.png",
-  13153: "/images/UI_Talent_U_Mavuika_01.png",
-  13154: "/images/Skill_S_Mavuika_06.png",
-  15112: "/images/UI_Talent_U_Chasca_01.png",
-  15113: "/images/UI_Talent_U_Chasca_02.png",
-  15114: "/images/Skill_S_Chasca_06.png",
-  111141: "/images/UI_Gcg_Buff_Nightsoul_Ice.webp",
-  111142: "/images/UI_Gcg_Buff_Citlali_Shiled.png",
-  111143: "/images/UI_Gcg_Buff_Citlali_E1.png",
-  113151: "/images/UI_Gcg_Buff_Nightsoul_Fire.webp",
-  113152: "/images/UI_Gcg_Buff_Mavuika_S.png",
-  113153: "/images/UI_Gcg_Buff_Mavuika_E.png",
-  113154: "/images/UI_Gcg_Buff_Vehicle_Mavuika1.png",
-  113155: "/images/UI_Gcg_Buff_Vehicle_Mavuika3.png",
-  113156: "/images/UI_Gcg_Buff_Vehicle_Mavuika2.png",
-  115111: "/images/UI_Gcg_Buff_Nightsoul_Wind.webp",
-  115112: "/images/UI_Gcg_Buff_Vehicle_Chasca.png",
-  301306: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
-  313009: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
-  303240: "/images/UI_Gcg_Buff_Resurrection.png",
+  // 5.8
+  15122: "/images/Skill_S_Lanyan_01.png",
+  15123: "/images/Skill_E_Lanyan_01_HD.png",
+  115121: "/images/UI_Gcg_Buff_Lanyan_E1.png",
+  15132: "/images/Skill_S_Heizo_01.png",
+  15133: "/images/Skill_E_Heizo_01_HD.png",
+  15134: "/images/UI_Talent_S_Heizo_05.png",
+  115132: "/images/UI_Gcg_Buff_Heizo_E1.png",  
+  115133: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115134: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115135: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  115136: "/images/UI_Gcg_DeBuff_Heizo_S.png",
+  27042: "/images/MonsterSkill_S_HookwalkerPrimo_01.png",
+  27043: "/images/MonsterSkill_E_HookwalkerPrimo_01_HD.png",
+  27044: "/images/MonsterSkill_S_HookwalkerPrimo_02.png",
 } as Record<number, string>;
 
 // 手动配置的child
@@ -54,6 +46,7 @@ const CHILDREN_CONFIG = {
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
+  15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
   16063: "$[C116062]", // 五郎 Q
   16092: "$[C116091],$[C116092],$[C116093],$[C116095],$[C116096]", // 千织 E
   216091: "$[C116094]", // 千织 天赋
@@ -205,7 +198,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_ALLY: "伙伴",
     GCG_TAG_ITEM: "道具",
     GCG_TAG_PREPARE_SKILL: "准备技能",
-    GCG_TAG_NYX_STATE: "夜魂态",
+    GCG_TAG_NYX_STATE: "夜魂加持",
     GCG_TAG_SHEILD: "护盾",
     GCG_TAG_DENDRO_PRODUCE: "草元素相关反应",
     GCG_TAG_FALL_ATTACK: "下落攻击",
@@ -213,6 +206,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_IMMUNE_CONTROL: "免疫控制",
     GCG_TAG_IMMUNE_FREEZING: "免疫冻结",
     GCG_TAG_SLOWLY: "战斗行动",
+    GCG_TAG_NATION_SIMULANKA: "希穆兰卡",
   },
   en: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
@@ -948,7 +942,7 @@ const CardFace = (props: {
   cardFace: string;
   children?: React.ReactNode;
 }) => {
-  const { cardbackImage = "UI_Gcg_CardBack_Championship_09" } = useAppContext();
+  const { cardbackImage = "UI_Gcg_CardBack_Fonta_03" } = useAppContext();
   return (
     <div className={`card-face-component ${props.className ?? ""}`}>
       <img src={`/assets/${cardbackImage}.png`} className="card-back" />

@@ -2,6 +2,7 @@ import { BunRequest } from "bun";
 import { parse } from "node:path";
 import indexHtml from "./index.html";
 import puppeteer from "puppeteer";
+import { CharacterRawData, EntityRawData, keywords } from "@gi-tcg/static-data";
 
 console.log(!!import.meta.env?.GITHUB_TOKEN);
 
@@ -16,9 +17,20 @@ const prodDataUrl =
 const betaDataUrl =
   "https://raw.githubusercontent.com/genius-invokation/genius-invokation-beta/refs/heads/beta/packages/static-data/";
 
+const CUSTOM_CHS: CharacterRawData[] = [];
+
+const CUSTOM_ENS: EntityRawData[] = [];
+
+const CUSTOM_DATA = {
+  characters: CUSTOM_CHS,
+  entities: CUSTOM_ENS,
+  action_cards: [],
+  keywords: [],
+};
+
 const loadData = (baseUrl: string) =>
   new Map(
-    ["characters", "action_cards", "entities", "keywords"].map(
+    (["characters", "action_cards", "entities", "keywords"] as const).map(
       (name) =>
         [
           name,
@@ -29,7 +41,7 @@ const loadData = (baseUrl: string) =>
                 : (void 0 as any),
             },
           })
-            .then((res) => res.json())
+            .then(async (res) => [...(await res.json()), ...CUSTOM_DATA[name]])
             .catch(() => []),
         ] as const,
     ),
@@ -53,11 +65,14 @@ const server = Bun.serve({
         const { name } = parse(url.pathname);
         const beta = !!url.searchParams.get("beta");
         const useData = beta ? data : prodData;
-        return new Response(JSON.stringify((await useData.get(name)) ?? []), {
-          headers: {
-            "Content-Type": "application/json",
+        return new Response(
+          JSON.stringify((await useData.get(name as any)) ?? []),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
       }
       const path = decodeURIComponent(url.pathname).slice(1);
       const file = Bun.file(path);
