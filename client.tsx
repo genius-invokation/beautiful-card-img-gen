@@ -3,7 +3,7 @@ const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
   authorImageUrl: `/assets/frame/dudubot.png`,
-  authorName: beta ? "数据仅对 Beta 5.8 v2 有效，请以正式服为准" : "guyutongxue & klezn",
+  authorName: beta ? "Beta" : "",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -30,30 +30,6 @@ const MISSING_ICONS_URL = {
   27042: "/images/MonsterSkill_S_HookwalkerPrimo_01.png",
   27043: "/images/MonsterSkill_E_HookwalkerPrimo_01_HD.png",
   27044: "/images/MonsterSkill_S_HookwalkerPrimo_02.png",
-  // 5.7
-  11142: "/images/UI_Talent_U_Citlali_01.png",
-  11143: "/images/UI_Talent_U_Citlali_02.png",
-  11144: "/images/Skill_S_Citlali_02.png",
-  13152: "/images/Skill_S_Mavuika_01.png",
-  13153: "/images/UI_Talent_U_Mavuika_01.png",
-  13154: "/images/Skill_S_Mavuika_06.png",
-  15112: "/images/UI_Talent_U_Chasca_01.png",
-  15113: "/images/UI_Talent_U_Chasca_02.png",
-  15114: "/images/Skill_S_Chasca_06.png",
-  111141: "/images/UI_Gcg_Buff_Nightsoul_Ice.webp",
-  111142: "/images/UI_Gcg_Buff_Citlali_Shiled.png",
-  111143: "/images/UI_Gcg_Buff_Citlali_E1.png",
-  113151: "/images/UI_Gcg_Buff_Nightsoul_Fire.webp",
-  113152: "/images/UI_Gcg_Buff_Mavuika_S.png",
-  113153: "/images/UI_Gcg_Buff_Mavuika_E.png",
-  113154: "/images/UI_Gcg_Buff_Vehicle_Mavuika1.png",
-  113155: "/images/UI_Gcg_Buff_Vehicle_Mavuika3.png",
-  113156: "/images/UI_Gcg_Buff_Vehicle_Mavuika2.png",
-  115111: "/images/UI_Gcg_Buff_Nightsoul_Wind.webp",
-  115112: "/images/UI_Gcg_Buff_Vehicle_Chasca.png",
-  301306: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
-  313009: "/images/UI_Gcg_Buff_Vehicle_SaurusBaby.png",
-  303240: "/images/UI_Gcg_Buff_Resurrection.png",
 } as Record<number, string>;
 
 // 手动配置的child
