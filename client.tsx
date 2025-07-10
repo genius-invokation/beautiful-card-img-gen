@@ -2,7 +2,7 @@ const search = new URLSearchParams(window.location.search);
 const beta = !!search.get("beta")
 
 const APP_CONFIG: AppProps = {
-  authorImageUrl: `/assets/frame/dudubot.png`,
+  authorImageUrl: "",
   authorName: beta ? "Beta" : "",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
