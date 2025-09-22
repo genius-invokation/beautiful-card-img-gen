@@ -13,17 +13,17 @@ const browser = await puppeteer.launch({
 const page = await browser.newPage();
 
 const prodDataUrl =
-  "https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/";
+  "https://raw.githubusercontent.com/genius-invokation/genius-invokation/refs/heads/main/packages/static-data/src/data/";
 const betaDataUrl =
-  "https://raw.githubusercontent.com/genius-invokation/genius-invokation-beta/refs/heads/beta/packages/static-data/";
+  "https://raw.githubusercontent.com/genius-invokation/genius-invokation-beta/refs/heads/beta/packages/static-data/src/data/";
+const customDataUrl = "";
 
-const CUSTOM_CHS: CharacterRawData[] = [];
-
-const CUSTOM_ENS: EntityRawData[] = [];
+const CUSTOM_CHARACTERS: CharacterRawData[] = JSON.parse(await Bun.file("./data/custom/characters.json").text());
+const CUSTOM_ENTITIES: EntityRawData[] = JSON.parse(await Bun.file("./data/custom/entities.json").text());;
 
 const CUSTOM_DATA = {
-  characters: CUSTOM_CHS,
-  entities: CUSTOM_ENS,
+  characters: CUSTOM_CHARACTERS,
+  entities: CUSTOM_ENTITIES,
   action_cards: [],
   keywords: [],
 };
@@ -31,24 +31,38 @@ const CUSTOM_DATA = {
 const loadData = (baseUrl: string) =>
   new Map(
     (["characters", "action_cards", "entities", "keywords"] as const).map(
-      (name) =>
-        [
-          name,
-          fetch(`${baseUrl}/src/data/${name}.json`, {
-            headers: {
-              Authorization: import.meta.env?.GITHUB_TOKEN
-                ? `Bearer ${import.meta.env?.GITHUB_TOKEN}`
-                : (void 0 as any),
-            },
-          })
-            .then(async (res) => [...(await res.json()), ...CUSTOM_DATA[name]])
-            .catch(() => []),
-        ] as const,
+      (name) => [
+        name,
+        fetch(`${baseUrl}/${name}.json`, {
+          headers: {
+            Authorization: import.meta.env?.GITHUB_TOKEN
+              ? `Bearer ${import.meta.env?.GITHUB_TOKEN}`
+              : (void 0 as any),
+          }, verbose: true
+        })
+          .then(async (res) => [...(await res.json()), ...CUSTOM_DATA[name]])
+          .catch(() => []),
+          // .then(async (res) => {
+          //   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          //   return [...(await res.json()), ...CUSTOM_DATA[name]];
+          // })
+          // .catch(async (err) => {
+          //   console.warn(`[fetch] ${name} failed, using fallback:`, err);
+          //   let fallbackUrl =
+          //     `###fallbackUrl###/${name}.json?remote=1`;
+          //   if (baseUrl.includes("beta")) {
+          //     fallbackUrl += "&beta=1";
+          //   }
+          //   const res = await fetch(fallbackUrl);
+          //   if (!res.ok) throw new Error(`[fallback] ${name} failed: HTTP ${res.status}`);
+          //   return [...(await res.json()), ...CUSTOM_DATA[name]];
+          // }),
+      ] as const,
     ),
   );
 
 // 预加载生产和测试环境数据
-const [prodData, data] = [loadData(prodDataUrl), loadData(betaDataUrl)];
+const [prodData, data, customData] = [loadData(prodDataUrl), loadData(betaDataUrl), loadData(customDataUrl)];
 
 const server = Bun.serve({
   routes: {
@@ -64,7 +78,8 @@ const server = Bun.serve({
       if (remote) {
         const { name } = parse(url.pathname);
         const beta = !!url.searchParams.get("beta");
-        const useData = beta ? data : prodData;
+        const custom = !!url.searchParams.get("custom");
+        const useData = custom ? customData : beta ? data : prodData;
         return new Response(
           JSON.stringify((await useData.get(name as any)) ?? []),
           {
@@ -99,7 +114,8 @@ const server = Bun.serve({
       const search = new URL(req.url).searchParams;
       const query = search.get("q");
       const beta = !!search.get("beta");
-      return renderCard(query ?? "", beta);
+      const custom = !!search.get("custom");
+      return renderCard(query ?? "", beta, custom);
     },
   },
   port: import.meta.env?.PORT || 8013,
@@ -109,11 +125,11 @@ const homepage = `http://${server.hostname}:${server.port}`;
 await page.goto(homepage, { waitUntil: "networkidle0" });
 console.log(`Server running at ${homepage}`);
 
-const renderCard = async (nameOrId: string, beta: boolean) => {
+const renderCard = async (nameOrId: string, beta: boolean, custom: boolean) => {
   if (!nameOrId) {
     throw new Error("nameOrId is required");
   }
-  const useData = beta ? data : prodData;
+  const useData = custom ? customData : beta ? data : prodData;
   const namedThings = (
     await Promise.all([useData.get("action_cards"), useData.get("characters")])
   )
@@ -131,6 +147,7 @@ const renderCard = async (nameOrId: string, beta: boolean) => {
     display_story: "1",
     display_id: "1",
     beta: beta ? "1" : "",
+    custom: custom ? "1" : "",
   });
   if (String(id).length === 4) {
     search.set("id", `A${id}`);

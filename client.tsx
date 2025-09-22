@@ -1,9 +1,20 @@
 const search = new URLSearchParams(window.location.search);
-const beta = !!search.get("beta")
+const beta = !!search.get("beta");
+const custom = !!search.get("custom");
+
+const VERSION = "6.0 v1"; // Luna I
 
 const APP_CONFIG: AppProps = {
-  authorImageUrl: "",
-  authorName: beta ? "Beta" : "",
+  authorImageUrl: custom
+    ? "/assets/logo/custom.png"
+    : beta
+    ? "/assets/logo/beta.png"
+    : "/assets/logo/normal.png",
+  authorName: custom
+    ? "custom data"
+    : beta
+    ? `Beta ${VERSION}`
+    : "authorName",
   version: search.get("version") as any, // v5.5.0
   solo: search.get("id") as any, // A1503
   displayStory: !!search.get("display_story"),
@@ -11,25 +22,33 @@ const APP_CONFIG: AppProps = {
   mirroredLayout: !!search.get("mirrored_layout"),
   localData: !!search.get("local_data"),
   beta: beta,
+  language: (search.get("l") as "zh" | "en" | undefined) ?? "zh",
+  custom: custom,
 };
 
 // 新卡技能icon
 const MISSING_ICONS_URL = {
-  // 5.8
-  15122: "/images/Skill_S_Lanyan_01.png",
-  15123: "/images/Skill_E_Lanyan_01_HD.png",
-  115121: "/images/UI_Gcg_Buff_Lanyan_E1.png",
-  15132: "/images/Skill_S_Heizo_01.png",
-  15133: "/images/Skill_E_Heizo_01_HD.png",
-  15134: "/images/UI_Talent_S_Heizo_05.png",
-  115132: "/images/UI_Gcg_Buff_Heizo_E1.png",  
-  115133: "/images/UI_Gcg_DeBuff_Heizo_S.png",
-  115134: "/images/UI_Gcg_DeBuff_Heizo_S.png",
-  115135: "/images/UI_Gcg_DeBuff_Heizo_S.png",
-  115136: "/images/UI_Gcg_DeBuff_Heizo_S.png",
-  27042: "/images/MonsterSkill_S_HookwalkerPrimo_01.png",
-  27043: "/images/MonsterSkill_E_HookwalkerPrimo_01_HD.png",
-  27044: "/images/MonsterSkill_S_HookwalkerPrimo_02.png",
+  // 6.1
+  15152: "Skill_S_Ifa_01",
+  15153: "Skill_E_Ifa_01_HD",
+  115151: "UI_Gcg_Buff_Nightsoul_Wind",
+  1151521: "UI_Gcg_Buff_Vehicle_Ifa",
+  115153: "UI_Gcg_DeBuff_Ifa_S",
+  115154: "UI_Gcg_DeBuff_Ifa_S",
+  115155: "UI_Gcg_DeBuff_Ifa_S",
+  115156: "UI_Gcg_DeBuff_Ifa_S",
+
+  14152: "Skill_S_Varesa_01",
+  14153: "Skill_E_Varesa_01_HD",
+  14154: "UI_Talent_S_Varesa_05",
+  114151: "UI_Gcg_Buff_Nightsoul_Elec",
+  114152: "UI_Gcg_Buff_Varesa_S",
+  114153: "UI_Gcg_Buff_Varesa_Q",
+  114154: "UI_Gcg_Buff_Varesa_E",
+
+  22062: "MonsterSkill_S_Narcissusborn_01",
+  22063: "MonsterSkill_E_Narcissusborn_01_HD",
+  22064: "MonsterSkill_S_Narcissusborn_02",
 } as Record<number, string>;
 
 // 手动配置的child
@@ -45,8 +64,12 @@ const CHILDREN_CONFIG = {
   14091: "_", // 丽莎 A
   14092: "$[C114091]", // 丽莎 E
   14121: "_", // 克洛琳德 A
+  14143: "$[C114142]", // 伊安珊 Q v1引用bug
+  14151: "_", // 瓦雷莎 A
+  14153: "$[C114152]$[S14155]", // 瓦雷莎 Q
   15114: "$[C115113],$[C115114],$[C115115],$[C115116],$[C115117]", // 恰斯卡 P
   15133: "$[C115133],$[C115134],$[C115135],$[C115136]", // 鹿野院 Q
+  15153: "$[C115153],$[C115154],$[C115155],$[C115156]", // 伊法 Q
   16063: "$[C116062]", // 五郎 Q
   16092: "$[C116091],$[C116092],$[C116093],$[C116095],$[C116096]", // 千织 E
   216091: "$[C116094]", // 千织 天赋
@@ -62,6 +85,7 @@ const CHILDREN_CONFIG = {
   22052: "_", // 水丘丘 E
   22053: "$[C122051],$[S1220511],$[S1220512]$[C122052]", // 水丘丘 Q
   23032: "$[C123032]", // 火镀金旅团 E
+  23053: "_", // 火龙王 Q
   27032: "$[C127033]", // 草镀金旅团 E
   322027:
     "$[C302206],$[C302207],$[C302208],$[C302209],$[C302210],$[C302211],$[C302212],$[C302213],$[C302214],$[C302215]", // 瑟琳
@@ -73,12 +97,12 @@ const CHILDREN_CONFIG = {
 } as Record<number, string>;
 
 // 需要展示的规则解释ID
-const SHOWN_KEYWORDS = [1012, 1013];
+const SHOWN_KEYWORDS = [1012, 1013, 66];
 
 // 费用只读的ID，全部实体都写在这，准备技能已经做了特判不用写了
 const COST_READONLY_ENTITIES = [
-  112131, 112132, 112133, 112142, 115112, 116102, 116112, 333021, 333022,
-  333023, 333024, 333025, 333026
+  112131, 112132, 112133, 112142, 115112, 115152, 116102, 116112, 333021,
+  333022, 333023, 333024, 333025, 333026,
 ];
 
 import "./style.css";
@@ -129,7 +153,7 @@ const PAGE_TITLE_ICON = "/assets/frame/pagetitle.png";
 // 特殊能量，卡图右侧的能量条
 const SPECIAL_ENERGY_MAP = {
   1315: { type: "/assets/frame/UI_TeyvatCard_LifeBg_Mavuika1.png", count: 3 },
-} as Record<number, { type: string, count: number }>;
+} as Record<number, { type: string; count: number }>;
 
 const COST_TYPE_IMG_NAME_MAP = {
   GCG_COST_DICE_VOID: "Diff",
@@ -207,6 +231,7 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_IMMUNE_FREEZING: "免疫冻结",
     GCG_TAG_SLOWLY: "战斗行动",
     GCG_TAG_NATION_SIMULANKA: "希穆兰卡",
+    GCG_TAG_ADVENTURE_PLACE: "冒险地点",
   },
   en: {
     GCG_RULE_EXPLANATION: "Detailed Rules",
@@ -267,6 +292,8 @@ const TYPE_TAG_TEXT_MAP = {
     GCG_TAG_IMMUNE_CONTROL: "Immune to Control",
     GCG_TAG_IMMUNE_FREEZING: "Immune to Frozen",
     GCG_TAG_SLOWLY: "Combat Action",
+    GCG_TAG_NATION_SIMULANKA: "Simulanka",
+    GCG_TAG_ADVENTURE_PLACE: "Adventure Spot",
   },
 } as Record<string, Record<string, string>>;
 
@@ -315,6 +342,8 @@ const TYPE_TAG_IMG_NAME_MAP = {
   GCG_TAG_ALLY: "Card_Ally",
   GCG_TAG_ITEM: "Card_Item",
   GCG_TAG_SLOWLY: "Card_CombatAction",
+  GCG_TAG_NATION_SIMULANKA: "Card_Simulanka",
+  GCG_TAG_ADVENTURE_PLACE: "Card_Adventure",
 } as Record<string, string>;
 
 const diceImageUrl = (type: string) =>
@@ -386,6 +415,7 @@ const DESCRIPTION_ICON_IMAGES = {
   3505: { tagIcon: "GCG_TAG_ARKHE_OUSIA" },
   // ?: { tagIcon: "GCG_TAG_CAMP_SACREAD" },
   // ?: { tagIcon: "GCG_TAG_CAMP_ERIMITE" },
+  3901: { tagIcon: "GCG_TAG_ADVENTURE_PLACE" },
 } as Record<number, DescriptionIconImage>;
 
 const KEYWORD_COLORS = {
@@ -459,12 +489,12 @@ const Text = ({ text }: { text: string | undefined | null }) => {
   return text.split("·").flatMap((part, i, arr) =>
     i < arr.length - 1
       ? [
-        part,
-        <span key={i} className="middot">
-          ·
-        </span>,
-      ]
-      : [part],
+          part,
+          <span key={i} className="middot">
+            ·
+          </span>,
+        ]
+      : [part]
   );
 };
 
@@ -520,7 +550,7 @@ const DebugBox = ({ character }: { character: ParsedCharacter }) => {
                 </div>
               </div>
             </div>
-          ),
+          )
         )}
       </div>
     </div>
@@ -587,14 +617,11 @@ const KeywordIcon = (props: {
   className?: string;
 }) => {
   const { prepareSkillToEntityMap, data } = useAppContext();
-  const chooseImage = (props: {
-    id: number;
-    image?: string;
-  }) => {
+  const chooseImage = (props: { id: number; image?: string }) => {
     if (props.image) {
       return cardFaceUrl(props.image);
     } else if (props.id in MISSING_ICONS_URL) {
-      return MISSING_ICONS_URL[props.id];
+      return `/images/${MISSING_ICONS_URL[props.id]}.png`;
     } else {
       return tagImageUrl("GCG_CARD_EVENT");
     }
@@ -604,22 +631,25 @@ const KeywordIcon = (props: {
   } else if (prepareSkillToEntityMap.get(props.id)) {
     // 准备技能icon特判
     const prepareState = data.entities.find(
-      (e) => e.id === prepareSkillToEntityMap.get(props.id),
+      (e) => e.id === prepareSkillToEntityMap.get(props.id)
     );
-    if (prepareState) {
+    if (prepareState && !(props.id in MISSING_ICONS_URL)) {
       return (
         <img
           className="buff-icon"
-          src={chooseImage({ id: prepareState.id, image: prepareState.buffIcon })}
+          src={chooseImage({
+            id: prepareState.id,
+            image: prepareState.buffIcon,
+          })}
         ></img>
       );
     } else return void 0;
   } else if (props.tag === "GCG_SKILL_TAG_VEHICLE") {
     // 特技icon特判
     const vehicleCard = data.entities.find(
-      (e) => e.id === Number(props.id.toString().slice(0, -1)),
+      (e) => e.id === Number(props.id.toString().slice(0, -1))
     );
-    if (vehicleCard) {
+    if (vehicleCard && !(props.id in MISSING_ICONS_URL)) {
       return (
         <img
           className="buff-icon"
@@ -633,7 +663,7 @@ const KeywordIcon = (props: {
           src={chooseImage({ id: props.id, image: props.image })}
         ></img>
       );
-    };
+    }
   } else if (
     [
       "GCG_SKILL_TAG_A",
@@ -647,7 +677,10 @@ const KeywordIcon = (props: {
       <div
         className="buff-mask"
         style={{
-          maskImage: `url("${chooseImage({ id: props.id, image: props.image })}")`,
+          maskImage: `url("${chooseImage({
+            id: props.id,
+            image: props.image,
+          })}")`,
         }}
       />
     );
@@ -840,8 +873,8 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                     "buffIcon" in keyword
                       ? keyword.buffIcon
                       : "icon" in keyword
-                        ? keyword.icon
-                        : void 0
+                      ? keyword.icon
+                      : void 0
                   }
                 />
               )}
@@ -870,7 +903,9 @@ const Children = ({ children }: { children: ParsedChild[] }) => {
                   )}
                   {prepareSkillToEntityMap.has(keyword.id) && displayId && (
                     <div className="id-box">
-                      <div className="keyword-tag-text">ID: {prepareSkillToEntityMap.get(keyword.id)}</div>
+                      <div className="keyword-tag-text">
+                        ID: {prepareSkillToEntityMap.get(keyword.id)}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -918,10 +953,11 @@ const SkillBox = ({ skill }: { skill: ParsedSkill }) => {
       <div
         className="skill-icon"
         style={{
-          maskImage: `url("${skill.icon
-            ? `/images/${skill.icon}.png`
-            : MISSING_ICONS_URL[skill.id]
-            }")`,
+          maskImage: `url("${
+            skill.icon
+              ? `/images/${skill.icon}.png`
+              : `/images/${MISSING_ICONS_URL[skill.id]}.png`
+          }")`,
         }}
       ></div>
       <div className="skill-title">
@@ -942,7 +978,7 @@ const CardFace = (props: {
   cardFace: string;
   children?: React.ReactNode;
 }) => {
-  const { cardbackImage = "UI_Gcg_CardBack_Fonta_03" } = useAppContext();
+  const { cardbackImage = "UI_Gcg_CardBack_Championship_11" } = useAppContext();
   return (
     <div className={`card-face-component ${props.className ?? ""}`}>
       <img src={`/assets/${cardbackImage}.png`} className="card-back" />
@@ -978,17 +1014,17 @@ const Character = ({ character }: { character: ParsedCharacter }) => {
           </div>
           <div className="energy-bar">
             {Array.from({
-              length: (
+              length:
                 character.id in SPECIAL_ENERGY_MAP
                   ? SPECIAL_ENERGY_MAP[character.id].count
-                  : character.maxEnergy
-              )
+                  : character.maxEnergy,
             }).map((_, i) => (
               <img
                 src={
                   character.id in SPECIAL_ENERGY_MAP
                     ? SPECIAL_ENERGY_MAP[character.id].type
-                    : AVATAR_CARD_ENERGY}
+                    : AVATAR_CARD_ENERGY
+                }
                 key={i}
                 className="energy"
               />
@@ -1060,8 +1096,8 @@ const ActionCard = ({ card }: { card: ParsedActionCard }) => {
               ? [{ type: "GCG_COST_DICE_SAME", count: 0 }]
               : card.playCost.length === 1 &&
                 card.playCost[0].type === "GCG_COST_LEGEND"
-                ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card.playCost]
-                : card.playCost
+              ? [{ type: "GCG_COST_DICE_SAME", count: 0 }, ...card.playCost]
+              : card.playCost
           }
         />
       </CardFace>
@@ -1097,39 +1133,39 @@ type TokenStyle = "strong" | "light" | "dimmed";
 
 type DescriptionToken =
   | {
-    type: "plain";
-    text: string;
-    style: () => TokenStyle | "normal";
-    color?: string;
-  }
+      type: "plain";
+      text: string;
+      style: () => TokenStyle | "normal";
+      color?: string;
+    }
   | {
-    type: "boxedKeyword";
-    text: string;
-  }
+      type: "boxedKeyword";
+      text: string;
+    }
   | {
-    type: "hiddenKeyword";
-    id: number;
-  }
+      type: "hiddenKeyword";
+      id: number;
+    }
   | {
-    type: "reference";
-    refType: string;
-    id: number;
-    overrideStyle: () => TokenStyle | undefined;
-    // 手动指定天赋牌引用角色/技能的颜色
-    manualColor?: string;
-  }
+      type: "reference";
+      refType: string;
+      id: number;
+      overrideStyle: () => TokenStyle | undefined;
+      // 手动指定天赋牌引用角色/技能的颜色
+      manualColor?: string;
+    }
   | {
-    type: "errored";
-    text: string;
-  }
+      type: "errored";
+      text: string;
+    }
   | {
-    type: "lineBreak";
-  }
+      type: "lineBreak";
+    }
   | {
-    type: "icon";
-    id: number;
-    overrideStyle: () => TokenStyle | undefined;
-  };
+      type: "icon";
+      id: number;
+      overrideStyle: () => TokenStyle | undefined;
+    };
 
 type ParsedDescription = DescriptionToken[];
 
@@ -1147,7 +1183,7 @@ const DAMAGE_KEYWORD_MAP = {
 // 为debug准备的筛选有关id的功能
 const getRelatedIds = (
   ctx: AppContextValue,
-  character: CharacterRawData,
+  character: CharacterRawData
 ): number[] => {
   const { data } = ctx;
   // 角色关联 仅Debug用
@@ -1179,7 +1215,7 @@ const getRelatedIds = (
   });
   const entityIds = relatedEntity.map((e) => e.id);
   const entitySkillIds = relatedEntity.flatMap(
-    (e) => e.skills?.map((s) => s.id) || [],
+    (e) => e.skills?.map((s) => s.id) || []
   );
   return Array.from(
     new Set([
@@ -1189,7 +1225,7 @@ const getRelatedIds = (
       ...cardIds,
       ...entityIds,
       ...entitySkillIds,
-    ]),
+    ])
   );
 };
 
@@ -1197,7 +1233,7 @@ const parseDescription = (
   ctx: AppContextValue,
   rawDescription: string,
   keyMap: Record<string, string> = {},
-  ignoreParentheses = false,
+  ignoreParentheses = false
 ): ParsedDescription => {
   const { names, data, keywordToEntityMap } = ctx;
   const segments = rawDescription
@@ -1236,10 +1272,10 @@ const parseDescription = (
         return rootParenthesis?.afterBr
           ? "light"
           : rootColor?.isConditionBold
-            ? "dimmed"
-            : rootColor?.isBold
-              ? "strong"
-              : void 0;
+          ? "dimmed"
+          : rootColor?.isBold
+          ? "strong"
+          : void 0;
       },
       style() {
         return this.overrideStyle() ?? "normal";
@@ -1353,7 +1389,7 @@ const parseDescription = (
               } else {
                 return token;
               }
-            }),
+            })
           );
         } else {
           result.push({ type: "errored", text: `K${usingKeywordId}` });
@@ -1390,13 +1426,13 @@ const parseDescription = (
 
 const parseCharacterSkill = (
   ctx: AppContextValue,
-  skill: SkillRawData,
+  skill: SkillRawData
 ): ParsedSkill => {
   const parsedDescription = parseDescription(
     ctx,
     skill.rawDescription,
     skill.keyMap,
-    true,
+    true
   );
   // suppressedReferencedIds.push(skill.id);
   const children = appendChildren(ctx, skill, "children");
@@ -1410,13 +1446,13 @@ const parseCharacterSkill = (
 const appendChildren = (
   ctx: AppContextValue,
   childData: ChildData,
-  scope: "all" | "self" | "children" = "all",
+  scope: "all" | "self" | "children" = "all"
 ): ParsedChild[] => {
   const { data } = ctx;
   const parsedDescription = parseDescription(
     ctx,
     childData.rawDescription,
-    "keyMap" in childData ? childData.keyMap : {},
+    "keyMap" in childData ? childData.keyMap : {}
   );
   const result: ParsedChild[] = [];
   if (scope !== "children") {
@@ -1477,7 +1513,7 @@ const appendChildren = (
                 ...acc,
                 ...e,
               }),
-              {} as EntityRawData & ActionCardRawData,
+              {} as EntityRawData & ActionCardRawData
             );
           if (!entityData) {
             continue;
@@ -1512,11 +1548,11 @@ const appendChildren = (
 
 const parseCharacter = (
   ctx: AppContextValue,
-  data: CharacterRawData,
+  data: CharacterRawData
 ): ParsedCharacter => {
   ctx.supIds.push(...data.skills.flatMap((sk) => (sk.hidden ? [] : [sk.id])));
   const parsedSkills = data.skills.flatMap((skill) =>
-    skill.hidden ? [] : [parseCharacterSkill(ctx, skill)],
+    skill.hidden ? [] : [parseCharacterSkill(ctx, skill)]
   );
   return {
     ...data,
@@ -1526,7 +1562,7 @@ const parseCharacter = (
 
 const parseActionCard = (
   ctx: AppContextValue,
-  data: ActionCardRawData,
+  data: ActionCardRawData
 ): ParsedActionCard => {
   ctx.supIds.push(data.id);
   return {
@@ -1554,6 +1590,7 @@ interface AppProps {
   displayStory?: boolean;
   /** debug模式下会显示相关实体，匹配方式粗糙，FP/TN均有 */
   debug?: boolean;
+  custom?: boolean;
 }
 
 interface AppContextValue extends AppProps {
@@ -1605,11 +1642,12 @@ const App = () => {
       "keywords",
     ]) {
       const filename = category === "actionCards" ? "action_cards" : category;
-      const param =new URLSearchParams({
-        beta: beta ? '1' : '',
-        remote: appConfig.localData ? '' : '1'
-      })
-      let url = `/data/${appConfig.language || "zh"}/${filename}.json?${param}`
+      const param = new URLSearchParams({
+        beta: beta ? "1" : "",
+        remote: appConfig.localData ? "" : "1",
+        custom: appConfig.custom ? "1" : "",
+      });
+      let url = `/data/${appConfig.language || "zh"}/${filename}.json?${param}`;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -1622,7 +1660,7 @@ const App = () => {
   }, [appConfig.localData, appConfig.language]);
 
   const skills = [...rawData.characters, ...rawData.entities].flatMap(
-    (e) => e.skills as SkillRawData[],
+    (e) => e.skills as SkillRawData[]
   );
   const genericEntities = [...rawData.actionCards, ...rawData.entities];
   const data = {
@@ -1633,8 +1671,8 @@ const App = () => {
   const supIds: number[] = [];
   const names = new Map<number, string>(
     [...genericEntities, ...rawData.characters, ...skills].map(
-      (e) => [e.id, e.name] as const,
-    ),
+      (e) => [e.id, e.name] as const
+    )
   );
   const keywordToEntityMap = new Map(
     data.keywords
@@ -1644,19 +1682,21 @@ const App = () => {
           (e) =>
             e.name === k.name &&
             e.id > 110000 &&
-            !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"),
+            !(e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL")
         );
         return match ? [k.id, match.id] : null;
       })
-      .filter((pair): pair is [number, number] => !!pair),
+      .filter((pair): pair is [number, number] => !!pair)
   );
   const prepareSkillToEntityMap = new Map(
     data.entities
       .filter((e) => (e.tags as string[]).includes("GCG_TAG_PREPARE_SKILL"))
       .flatMap((entity) => {
-        const matches = [...entity.rawDescription.matchAll(/\$\[S(\d{5}|\d{7})\]/g)];
+        const matches = [
+          ...entity.rawDescription.matchAll(/\$\[S(\d{5}|\d{7})\]/g),
+        ];
         return matches.map((m) => [parseInt(m[1], 10), entity.id]);
-      }),
+      })
   );
 
   return (
@@ -1689,7 +1729,9 @@ const AppImpl = (props: AppProps) => {
     }
     const [major, minor, patch] = versionStr.split(".");
     const isBeta = Number(patch) >= 50;
-    const mainVersionText = isBeta
+    const mainVersionText = !!VERSION
+      ? VERSION
+      : isBeta
       ? `${major}.${Number(minor) + 1}`
       : `${major}.${minor}`;
     const versionText = isBeta
@@ -1701,18 +1743,18 @@ const AppImpl = (props: AppProps) => {
       en: `Action Cards added in ${mainVersionText}`,
     };
     const shownCharacters = data.characters.filter(
-      (ch) => ch.sinceVersion === props.version,
+      (ch) => ch.sinceVersion === props.version
     );
     const shownActionCards = data.actionCards.filter(
       (ac) =>
         ac.sinceVersion === props.version &&
         ac.obtainable &&
-        !ac.tags.includes("GCG_TAG_TALENT"),
+        !ac.tags.includes("GCG_TAG_TALENT")
     );
     const charactersParsed = shownCharacters.map((c) => {
       const character = parseCharacter(ctx, c);
       const talentRaw = data.actionCards.find(
-        (ac) => ac.relatedCharacterId === character.id,
+        (ac) => ac.relatedCharacterId === character.id
       );
       return {
         character,
@@ -1720,7 +1762,7 @@ const AppImpl = (props: AppProps) => {
       };
     });
     const actionCardsParsed = shownActionCards.map((c) =>
-      parseActionCard(ctx, c),
+      parseActionCard(ctx, c)
     );
     return (
       <>
@@ -1728,6 +1770,10 @@ const AppImpl = (props: AppProps) => {
           <div className="layout" key={character.id}>
             <Character character={character} />
             {talent && <ActionCard card={talent} />}
+            <div className="version-layout">
+              <div className="version-text">{versionText}</div>
+              <img src={props.authorImageUrl} className="logo" />
+            </div>
           </div>
         ))}
         <div className={`layout ${props.mirroredLayout ? "flip" : ""}`}>
@@ -1750,7 +1796,7 @@ const AppImpl = (props: AppProps) => {
       const character = data.characters.find((c) => c.id === id);
       if (character) {
         const talent = data.actionCards.find(
-          (ac) => ac.relatedCharacterId === character.id,
+          (ac) => ac.relatedCharacterId === character.id
         );
         return (
           <div className="layout">
@@ -1771,7 +1817,13 @@ const AppImpl = (props: AppProps) => {
       const actionCard = data.actionCards.find((c) => c.id === id);
       if (actionCard) {
         return (
-          <div className="layout" style={{ paddingTop: `0rem`, backgroundImage: `url("assets/frame/header_decor_onecard.png")` }}>
+          <div
+            className="layout"
+            style={{
+              paddingTop: `0rem`,
+              backgroundImage: `url("assets/frame/header_decor_onecard.png")`,
+            }}
+          >
             <ActionCard card={parseActionCard(ctx, actionCard)} />
             <div className="version-layout">
               <div className="version-text">{props.authorName}</div>
@@ -1792,5 +1844,5 @@ const AppImpl = (props: AppProps) => {
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
